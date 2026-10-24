@@ -1,0 +1,1784 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>E251 Modules 5–8 Study Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one calm reading column (~66ch) under a sticky module bar. Graphs live on a quiet "stage" surface and use the
+   course's own graph colors: demand blue, supply orange, CS green, PS purple, revenue yellow box, DWL gray triangle. */
+:root{
+  --bg:#F2F5F7; --surface:#FFFFFF; --sunk:#E7EDF1; --ink:#15202A; --muted:#566874; --line:#D2DBE2;
+  --accent:#1F4FD1; --accent-ink:#FFFFFF; --accent-soft:#E2E9FB;
+  --good:#17744A; --good-soft:#DDF2E6; --bad:#B02E28; --bad-soft:#FAE3E1; --hint-soft:#FFF3CC;
+  --stage:#FBFCFD; --grid:#E3E9EE;
+  --d:#2F5BE0; --d-ink:#2449BE; --s:#E0592A; --s-ink:#B6430F;
+  --cs:#22A06B; --cs-ink:#11744A; --ps:#8E5BD9; --ps-ink:#6A3DB8;
+  --rev:#E9B600; --rev-ink:#7F6200; --dwl:#7C8994; --dwl-ink:#4A5661; --ext:#B5179E; --ext-ink:#931080;
+  --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",Verdana,"Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E151B; --surface:#16202A; --sunk:#1E2A35; --ink:#E6EDF2; --muted:#9BAAB6; --line:#2B3A47;
+  --accent:#86A8FF; --accent-ink:#0E151B; --accent-soft:#1D2A49;
+  --good:#5DD39B; --good-soft:#15342A; --bad:#FF8C82; --bad-soft:#3B1F1E; --hint-soft:#3A3115;
+  --stage:#121B23; --grid:#22303C;
+  --d:#7EA2FF; --d-ink:#9DB8FF; --s:#FF8A5B; --s-ink:#FFA27E;
+  --cs:#46CC8E; --cs-ink:#6FE0A9; --ps:#B48FF5; --ps-ink:#C8AEFA;
+  --rev:#F2C83A; --rev-ink:#F5D466; --dwl:#8D9BA7; --dwl-ink:#B3BFC9; --ext:#EE68D5; --ext-ink:#F48BE2;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E151B; --surface:#16202A; --sunk:#1E2A35; --ink:#E6EDF2; --muted:#9BAAB6; --line:#2B3A47;
+  --accent:#86A8FF; --accent-ink:#0E151B; --accent-soft:#1D2A49;
+  --good:#5DD39B; --good-soft:#15342A; --bad:#FF8C82; --bad-soft:#3B1F1E; --hint-soft:#3A3115;
+  --stage:#121B23; --grid:#22303C;
+  --d:#7EA2FF; --d-ink:#9DB8FF; --s:#FF8A5B; --s-ink:#FFA27E;
+  --cs:#46CC8E; --cs-ink:#6FE0A9; --ps:#B48FF5; --ps-ink:#C8AEFA;
+  --rev:#F2C83A; --rev-ink:#F5D466; --dwl:#8D9BA7; --dwl-ink:#B3BFC9; --ext:#EE68D5; --ext-ink:#F48BE2;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 18px/1.65 var(--f-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.015em}
+h1{font-weight:800;font-size:clamp(2.1rem,6vw,3.1rem);line-height:1.04}
+h2{font-weight:800;font-size:clamp(1.45rem,3.6vw,1.8rem);line-height:1.15}
+h3{font-weight:700;font-size:1.25rem;line-height:1.2}
+p{margin:0}
+code,.mono{font-family:var(--f-mono);font-size:.86em}
+.muted{color:var(--muted)} .small{font-size:15px}
+
+/* top bar */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topbar-in{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:10px;height:58px}
+.brand{font:800 19px/1 var(--f-display);letter-spacing:-.02em;white-space:nowrap;color:var(--ink);text-decoration:none}
+.brand span{color:var(--accent)}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;padding-block:6px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{flex:none;font:700 14px/1 var(--f-body);color:var(--muted);text-decoration:none;padding:9px 12px;border-radius:999px;white-space:nowrap}
+.tabs a:hover{color:var(--ink);background:var(--sunk)}
+.tabs a[aria-current="page"]{background:var(--ink);color:var(--bg)}
+.duechip{flex:none;font:600 13px/1 var(--f-mono);padding:8px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);text-decoration:none;white-space:nowrap}
+
+main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:36px 110px}
+.view{max-width:760px;margin:0 auto}
+.eyebrow{font:600 13px/1.2 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.lede{font-size:20px;line-height:1.55;color:var(--muted);margin-top:14px;max-width:62ch}
+
+/* buttons */
+.btn{font:700 15px/1.2 var(--f-body);display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:999px;
+  border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;text-decoration:none;min-height:44px}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
+.btn.ghost:hover{color:var(--ink);border-color:var(--line)}
+.btn:disabled{opacity:.45;cursor:default;filter:none}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+
+/* home */
+.hero{padding-block:8px 8px}
+.hero h1{max-width:15ch}
+.hero .row{margin-top:26px}
+.mods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:44px}
+.mod{display:flex;flex-direction:column;gap:8px;padding:20px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);text-decoration:none}
+.mod:hover{border-color:var(--accent)}
+.mod .n{font:800 15px/1 var(--f-mono);color:var(--accent)}
+.mod h3{font-size:1.2rem}
+.mod p{font-size:15px;color:var(--muted);line-height:1.5}
+.mod.wide{grid-column:1/-1}
+.prog{margin-top:auto;padding-top:8px}
+.prog .bar{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden}
+.prog .bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .4s}
+.prog .lbl{font:400 12.5px/1.2 var(--f-mono);color:var(--muted);margin-top:6px}
+.section{margin-top:64px}
+.section > h2{margin-bottom:8px}
+.how{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:0;border-top:1px solid var(--line)}
+.how li{display:grid;grid-template-columns:minmax(0,13rem) minmax(0,1fr);gap:6px 22px;padding:16px 0;border-bottom:1px solid var(--line)}
+.how b{font-family:var(--f-display);font-size:17px;line-height:1.3}
+.how p{font-size:16px;line-height:1.55}
+.how cite{display:block;font:400 12.5px/1.4 var(--f-mono);color:var(--muted);font-style:normal;margin-top:4px}
+.plan{width:100%;border-collapse:collapse;font-size:16px;margin-top:18px}
+.plan td,.plan th{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.plan th{font:600 12.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.plan td:first-child{white-space:nowrap;font-weight:700;font-variant-numeric:tabular-nums}
+.foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+
+/* module pages */
+.mod-head{padding-bottom:8px}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:22px}
+.toc button{font:600 13px/1 var(--f-mono);padding:8px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer}
+.toc button:hover{color:var(--ink);border-color:var(--ink)}
+.chunk{margin-top:64px;scroll-margin-top:84px}
+.chunk-no{font:600 14px/1 var(--f-mono);color:var(--accent);margin-bottom:10px;letter-spacing:.04em}
+.chunk > h2{margin-bottom:16px}
+.chunk > p,.chunk > .pts{max-width:66ch}
+.chunk > p + p{margin-top:12px}
+.pts{padding-left:1.1em;margin:0;display:grid;gap:10px}
+.pts li::marker{color:var(--accent)}
+.key{margin-top:22px;padding:16px 20px;border-radius:14px;background:var(--accent-soft)}
+.key-l,.w-l{font:600 12.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.worked{margin-top:24px;padding:18px 20px;border-radius:14px;border:1.5px dashed var(--line);background:var(--surface)}
+.steps{list-style:none;counter-reset:s;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:2em minmax(0,1fr) auto;gap:10px;align-items:baseline;font-size:16.5px}
+.steps li::before{content:counter(s);font:600 13px var(--f-mono);color:var(--muted)}
+.steps code{background:var(--sunk);padding:3px 8px;border-radius:6px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.turn{margin-top:22px;font-weight:700}
+.tw{overflow-x:auto;margin-top:18px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.t{width:100%;border-collapse:collapse;font-size:15.5px;line-height:1.45}
+.t th,.t td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.t tr:last-child td{border-bottom:0}
+.t th{font:600 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--sunk)}
+.t td.num{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.t .hl td{background:var(--accent-soft)}
+.mnemonic{margin-top:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mnemonic div{padding:14px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:16px}
+.mnemonic b{display:block;font-family:var(--f-display);font-size:17px;margin-bottom:4px}
+.next{margin-top:72px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* quiz cards */
+.q{margin-top:26px;padding:20px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.q.pre{border-style:dashed}
+.q-top{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px}
+.q-tag{font:600 12.5px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.q.pre .q-tag{color:var(--ext-ink)}
+.q-meta{font:400 12.5px/1 var(--f-mono);color:var(--muted)}
+.q-text{font-weight:700;font-size:18px;line-height:1.5}
+.q-sub{font-size:15px;color:var(--muted);margin-top:4px}
+.opts{display:grid;gap:8px;margin-top:14px}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:11px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);font:inherit;font-size:16.5px;line-height:1.45;color:inherit;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt .k{flex:none;font:600 13px/1.9 var(--f-mono);color:var(--muted);width:1.3em}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.right .k{color:var(--good)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{color:var(--bad)}
+.opt:disabled:not(.right):not(.wrong){opacity:.6}
+.q-fb{margin-top:14px;padding:13px 16px;border-radius:12px;background:var(--sunk);font-size:16.5px;line-height:1.55}
+.q-fb.ok{background:var(--good-soft)} .q-fb.no{background:var(--bad-soft)} .q-fb.hint{background:var(--hint-soft)}
+.q-fb b:first-child{margin-right:4px}
+.numf{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.numin{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);padding:0 12px;min-height:46px}
+.numin:focus-within{border-color:var(--accent)}
+.numin span{font:600 16px var(--f-mono);color:var(--muted)}
+.numin input{border:0;background:transparent;font:600 17px var(--f-mono);color:var(--ink);width:9ch;outline:none;padding:10px 0}
+.sort{display:grid;gap:8px;margin-top:14px}
+.srow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,15rem) 1.4em;gap:10px;align-items:center;padding:8px 10px;border-radius:10px;background:var(--bg)}
+.srow label{font-size:16px;line-height:1.4}
+.srow select{font:inherit;font-size:15px;padding:8px 10px;border-radius:9px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);min-height:42px;width:100%}
+.srow.ok{background:var(--good-soft)} .srow.no{background:var(--bad-soft)}
+.srow .mark{font-weight:700;text-align:center}
+.srow.ok .mark{color:var(--good)} .srow.no .mark{color:var(--bad)}
+.srow .fix{grid-column:1/-1;font-size:14px;color:var(--bad);margin-top:-4px}
+.sort + .btn{margin-top:14px}
+textarea{width:100%;font:inherit;font-size:16.5px;line-height:1.5;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);padding:12px 14px;margin-top:14px;resize:vertical}
+textarea:focus{border-color:var(--accent);outline:none}
+.q textarea + .btn{margin-top:10px}
+.selfrate{margin-top:14px}
+.selfrate p{font-weight:700;font-size:16px;margin-bottom:8px}
+.selfrate .btn.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* motion player */
+.vp,.ix{margin-top:34px;border:1px solid var(--line);border-radius:18px;background:var(--surface);overflow:hidden}
+.vp-head,.ix-head{padding:16px 20px 12px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.vp-kick{font:600 12px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.vp-head h3,.ix-head h3{font-size:1.2rem;width:100%}
+.vp-stage,.ix-stage{position:relative;background:var(--stage);border-block:1px solid var(--line)}
+.vp-stage svg,.ix-stage svg{display:block;width:100%;height:auto}
+.vp-stage{cursor:pointer}
+.vp-big{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:700 16px/1 var(--f-body);display:flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;border:0;background:var(--accent);color:var(--accent-ink);cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.vp-big svg{width:14px;height:14px}
+.vp-cap{padding:14px 20px 6px;min-height:6.4em;font-size:17px;line-height:1.55}
+.vp-step{font:600 12.5px var(--f-mono);color:var(--accent);margin-right:6px;white-space:nowrap}
+.vp-ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:6px 16px 10px}
+.vp-ctrl .btn{min-height:38px;padding:7px 14px;font-size:14px}
+.vp-scrub{flex:1 1 140px;min-width:0;accent-color:var(--accent);height:28px}
+.vp-time{font:400 12.5px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums;min-width:8.5ch}
+.vp-ctrl .btn[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.vp-chapters{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0 16px 14px}
+.vp-chapters button{font:600 12.5px/1 var(--f-body);padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+.vp-chapters button:hover{color:var(--ink);border-color:var(--ink)}
+.vp-chapters button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.vp-chapters button.chk::after{content:" ?";color:var(--ext-ink)}
+.vp-check{padding:6px 20px 18px;border-top:1px solid var(--line);background:var(--bg)}
+.vp-check .q{margin-top:14px}
+.vp-check .row{margin-top:12px}
+.vp-tx{padding:0 20px 16px;font-size:15px}
+.vp-tx summary{cursor:pointer;color:var(--muted);font-weight:700}
+.vp-tx ol{margin:10px 0 0;padding-left:1.3em;display:grid;gap:6px;color:var(--muted)}
+.ix-ctrl{padding:14px 20px 4px;display:grid;gap:14px}
+.ix-ctrl label{display:flex;justify-content:space-between;gap:10px;font-weight:700;font-size:15.5px}
+.ix-ctrl output{font-family:var(--f-mono);font-weight:600;color:var(--accent)}
+.ix-ctrl input[type=range]{width:100%;accent-color:var(--accent);height:28px}
+.ends{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:-6px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:10px 20px 18px}
+.stats div{padding:10px 12px;border-radius:12px;background:var(--bg)}
+.stats b{display:block;font:600 20px/1.2 var(--f-mono);font-variant-numeric:tabular-nums}
+.stats span{font-size:13px;color:var(--muted)}
+.verdict{display:inline-block;font:700 13px/1 var(--f-body);padding:6px 10px;border-radius:999px;margin-top:4px}
+.verdict.eff{background:var(--good-soft);color:var(--good)} .verdict.off{background:var(--bad-soft);color:var(--bad)}
+.share{display:flex;height:16px;border-radius:8px;overflow:hidden;margin-top:6px;background:var(--sunk)}
+.share i{display:block;height:100%}
+.share .b{background:var(--d)} .share .s{background:var(--s)}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.shl{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font:600 15px/1.3 var(--f-mono);margin-top:8px}
+.presets .btn{min-height:36px;padding:6px 12px;font-size:13.5px}
+
+/* wrap-up */
+.dump{margin-top:72px;padding:22px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.dump h3{margin-bottom:8px}
+.dump .row{margin-top:12px}
+.summary{margin-top:16px;padding:16px 18px;border-radius:12px;background:var(--accent-soft)}
+.summary ul{margin:0;padding-left:1.1em;display:grid;gap:8px;font-size:16.5px}
+
+/* review */
+.rv-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:28px}
+.rv-stats div{padding:16px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.rv-stats b{display:block;font:800 30px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.rv-stats span{font-size:14px;color:var(--muted)}
+.rv-bar{display:flex;justify-content:space-between;font:600 13px var(--f-mono);color:var(--muted);margin-top:28px}
+.rv-track{height:6px;border-radius:3px;background:var(--sunk);margin-top:8px;overflow:hidden}
+.rv-track i{display:block;height:100%;background:var(--accent);transition:width .3s}
+#rv-run .row{margin-top:16px}
+.endcard{margin-top:28px;padding:22px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.endcard h3{margin-bottom:8px}
+
+/* SVG graph text */
+svg text{font-family:var(--f-body)}
+.tk{font:400 12px var(--f-mono);fill:var(--muted)}
+.al{font:700 13px var(--f-body);fill:var(--muted)}
+.gr{stroke:var(--grid);stroke-width:1}
+.ax{stroke:var(--ink);stroke-width:1.6}
+.lbl{font-weight:700;paint-order:stroke;stroke:var(--stage);stroke-width:4px;stroke-linejoin:round}
+.chip{font:600 12px var(--f-mono)}
+
+@media (max-width:640px){
+  body{font-size:17px}
+  .mods{grid-template-columns:minmax(0,1fr)}
+  .how li{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .stats div:last-child{grid-column:1/-1}
+  .srow{grid-template-columns:minmax(0,1fr) 1.4em}
+  .srow select{grid-column:1/2;grid-row:2}
+  .srow .mark{grid-row:1/3;grid-column:2}
+  .mnemonic{grid-template-columns:minmax(0,1fr)}
+  .steps li{grid-template-columns:1.6em minmax(0,1fr)}
+  .steps code{grid-column:2;justify-self:start}
+  .vp-cap{min-height:8.4em;font-size:16px}
+  .brand b{display:none}
+  .vp-stage .lbl,.ix-stage .lbl{font-size:18px!important}
+  .vp-stage .tk,.ix-stage .tk,.vp-stage .chip,.ix-stage .chip{font-size:15px}
+  .vp-stage .al,.ix-stage .al{font-size:16px}
+  .rv-stats b{font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="#home">E251<b> <span>5–8</span></b></a>
+    <nav class="tabs" aria-label="Study guide sections">
+      <a href="#home">Home</a>
+      <a href="#m5">5 · Efficiency</a>
+      <a href="#m6">6 · Price controls</a>
+      <a href="#m7">7 · Market failures</a>
+      <a href="#m8">8 · Firms &amp; costs</a>
+      <a href="#review">Review</a>
+      <a href="#midterm">Midterm 1</a>
+    </nav>
+    <a class="duechip" href="#review" title="Questions due for review"><span data-due>0</span> due</a>
+  </div>
+</header>
+
+<main>
+<!-- ========================= HOME ========================= -->
+<section class="view" data-view="home">
+  <div class="hero">
+    <p class="eyebrow">ECON E251 · Fall 2026 · Modules 5–8</p>
+    <h1>Markets, failures and firms</h1>
+    <p class="lede">Short notes with a question after each one, plus animated graphs that build every key diagram step by step. Built from your Top Hat notes for Modules 5–8, with the Midterm 1 practice set at the end.</p>
+    <div class="row">
+      <a class="btn primary" href="#m5">Start with Module 5</a>
+      <a class="btn" href="#review">Review what’s due (<span data-due>0</span>)</a>
+    </div>
+  </div>
+
+  <div class="mods">
+    <a class="mod" href="#m5"><span class="n">Module 5</span><h3>Markets: efficiency and equity</h3><p>Allocation methods, consumer and producer surplus, deadweight loss, Rawls vs Nozick.</p><div class="prog" data-prog="m5"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
+    <a class="mod" href="#m6"><span class="n">Module 6</span><h3>Ceilings, floors, taxes and subsidies</h3><p>Rent control, minimum wage, tax incidence and elasticity, subsidies and quotas.</p><div class="prog" data-prog="m6"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
+    <a class="mod" href="#m7"><span class="n">Module 7</span><h3>Other market failures</h3><p>Externalities, Pigovian taxes, Coase, public goods, free riders, the commons, Ostrom.</p><div class="prog" data-prog="m7"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
+    <a class="mod" href="#m8"><span class="n">Module 8</span><h3>Firms, production and costs</h3><p>Economic profit, market structures, HHI, diminishing returns, cost curves, LRAC.</p><div class="prog" data-prog="m8"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
+    <a class="mod wide" href="#midterm"><span class="n">Midterm 1 practice</span><h3>The nine Top Hat practice problems, with worked answers</h3><p>PPC, demand shifts, opportunity cost and three elasticity calculations.</p><div class="prog" data-prog="mt"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
+  </div>
+
+  <div class="section">
+    <h2>Why it’s built this way</h2>
+    <p class="muted">Each feature uses a study method with strong evidence behind it. The short version: testing yourself beats rereading, and spreading practice out beats cramming.</p>
+    <ul class="how">
+      <li><b>Guess first</b><div><p>Each module opens with a question before you’ve read anything. Even a wrong guess makes the real answer stick better once you see it.</p><cite>Pretesting effect · Richland, Kornell &amp; Kao, 2009</cite></div></li>
+      <li><b>Small chunk, then a question</b><div><p>Notes come in short pieces, each followed by a question. Pulling an answer out of memory strengthens it far more than reading it again.</p><cite>Retrieval practice · Roediger &amp; Karpicke, 2006 · rated “high utility” by Dunlosky et al., 2013</cite></div></li>
+      <li><b>Graphs that build as you listen</b><div><p>The videos draw one piece of a graph at a time, with the words timed to the motion. Turn on Narrate to hear the words instead of reading them.</p><cite>Dual coding · Paivio · Mayer’s multimedia principles: segmenting, signaling, modality, temporal contiguity</cite></div></li>
+      <li><b>Worked examples, then fewer hints</b><div><p>You see a full solution, then solve a similar problem yourself, with a hint if your first try misses.</p><cite>Worked-example effect · Sweller &amp; Cooper, 1985 · fading, Renkl &amp; Atkinson, 2003</cite></div></li>
+      <li><b>Explain it in your words</b><div><p>Typing an explanation and comparing it with a model answer shows you exactly what you don’t understand yet.</p><cite>Self-explanation · Chi et al., 1994</cite></div></li>
+      <li><b>Spaced, mixed review</b><div><p>Missed questions come back right away. Correct ones return after 1, 3, 7, 14 and 30 days. Review sets mix modules, the way an exam does.</p><cite>Spacing · Cepeda et al., 2006 · Interleaving · Rohrer &amp; Taylor, 2007</cite></div></li>
+      <li><b>Brain dump at the end</b><div><p>Before leaving a module, write everything you remember, then check it against the summary.</p><cite>Free recall · Karpicke &amp; Blunt, 2011</cite></div></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>A spaced plan for this week</h2>
+    <p class="muted">About 30–45 minutes a module. The Module 8 homework is due Monday, October 26 at 11:59 pm ET.</p>
+    <div class="tw" style="border:0;background:none">
+    <table class="plan">
+      <thead><tr><th>When</th><th>Do this</th></tr></thead>
+      <tbody>
+        <tr><td>Sat Oct 24</td><td>Module 5, then Module 6. Watch each video and answer every question.</td></tr>
+        <tr><td>Sun Oct 25</td><td>Review what’s due (about 10 minutes), then Modules 7 and 8.</td></tr>
+        <tr><td>Tue Oct 27</td><td>Review what’s due, then one mixed set of 10.</td></tr>
+        <tr><td>Fri Oct 30</td><td>Review what’s due, then the Midterm 1 practice.</td></tr>
+        <tr><td>After that</td><td>Every 2–3 days until the exam, clear the review queue.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p>Notes summarize your Top Hat module pages. Practice answers are worked out here, not Top Hat’s official key. Progress is saved in this browser only.</p>
+    <button class="btn ghost" id="reset" type="button">Reset my progress</button>
+  </div>
+</section>
+
+<!-- ========================= MODULE 5 ========================= -->
+<section class="view" data-view="m5" hidden>
+  <header class="mod-head">
+    <p class="eyebrow">Module 5</p>
+    <h1>Markets: efficiency and equity</h1>
+    <p class="lede">Who gets scarce goods, how much value a market creates, and whether the result is fair.</p>
+    <div class="toc"><button data-jump="m5-s1">5.1 Allocation</button><button data-jump="m5-s2">5.2 Demand &amp; CS</button><button data-jump="m5-s3">5.3 Supply &amp; PS</button><button data-jump="m5-s4">5.4 Efficiency</button><button data-jump="m5-s5">5.5 Fairness</button><button data-jump="m5-wrap">Wrap-up</button></div>
+  </header>
+  <div data-q="m5-pre" data-pre></div>
+
+  <article class="chunk" id="m5-s1">
+    <p class="chunk-no">5.1</p>
+    <h2>Nine ways to hand out scarce things</h2>
+    <p>Scarcity means something has to decide who gets what. Most goods use more than one method. Concert tickets have a price <em>and</em> a line.</p>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Method</th><th>Works best when</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><b>Market price</b></td><td>People who value it most are willing and able to pay</td><td>Pizza, shoes, haircuts</td></tr>
+        <tr><td><b>Sharing equally</b></td><td>Few people want it</td><td>The last piece of cake</td></tr>
+        <tr><td><b>First-come, first-served</b></td><td>One person can be served at a time</td><td>Concerts, sports, restaurants</td></tr>
+        <tr><td><b>Lottery</b></td><td>People can’t be told apart and there’s a shortage</td><td>Concert tickets, lifesaving medicine</td></tr>
+        <tr><td><b>Contest</b></td><td>Effort is hard to watch, so you judge results</td><td>Scholarships, trophies</td></tr>
+        <tr><td><b>Command</b></td><td>There’s a clear chain of authority</td><td>The military</td></tr>
+        <tr><td><b>Majority rule</b></td><td>Deciding on government goods</td><td>Voting on how tax money is spent</td></tr>
+        <tr><td><b>Personal characteristics</b></td><td>Traits like age decide it (risk of bias)</td><td>Senior and student discounts</td></tr>
+        <tr><td><b>Force</b></td><td>The stronger party just takes it</td><td>Theft. This is why markets need property rights and laws.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="key"><p class="key-l">Key idea</p><p>Market price is the most <b>efficient</b> method: goods go to the people who value them most and can pay. Non-price methods are often seen as <b>fairer</b>.</p></div>
+    <div data-q="m5-1"></div>
+    <div data-q="m5-sort1"></div>
+  </article>
+
+  <article class="chunk" id="m5-s2">
+    <p class="chunk-no">5.2</p>
+    <h2>Demand is marginal benefit</h2>
+    <ul class="pts">
+      <li><b>Value</b> is what a good is worth to you, the most you’d pay. <b>Price</b> is what you actually pay.</li>
+      <li>The height of the demand curve at any quantity is the buyer’s willingness to pay for one more unit. That is <b>marginal benefit</b>, so demand = MB.</li>
+      <li><b>Market demand</b> is the <b>horizontal sum</b>: add quantities at each price. At $6, Steve buys 30 boxes of cookies and Sara buys 15, so the market buys 45.</li>
+      <li><b>Consumer surplus (CS)</b> is value minus price, added up over every unit. On a graph it’s the area <b>below demand and above the price</b>.</li>
+    </ul>
+    <div class="worked">
+      <p class="w-l">Worked example · Steve’s consumer surplus</p>
+      <p>Steve’s demand curve starts at $12 on the price axis. The price is $6 and he buys 30 boxes.</p>
+      <ol class="steps">
+        <li><span>Height of the triangle</span><code>$12 − $6 = $6</code></li>
+        <li><span>Base of the triangle</span><code>30 boxes</code></li>
+        <li><span>Consumer surplus</span><code>½ × 30 × $6 = $90</code></li>
+        <li><span>What he spends (the box under the price)</span><code>$6 × 30 = $180</code></li>
+        <li><span>Total value to Steve = CS + spending</span><code>$90 + $180 = $270</code></li>
+      </ol>
+    </div>
+    <p class="turn">Your turn. Same steps, new numbers.</p>
+    <div data-q="m5-3"></div>
+    <div data-q="m5-4"></div>
+    <div data-q="m5-5"></div>
+  </article>
+
+  <article class="chunk" id="m5-s3">
+    <p class="chunk-no">5.3</p>
+    <h2>Supply is marginal cost</h2>
+    <ul class="pts">
+      <li><b>Cost</b> is what a seller gives up to produce. <b>Price</b> is what the seller receives.</li>
+      <li>The height of the supply curve is the <b>minimum price</b> the seller will accept for one more unit. That is <b>marginal cost</b>, so supply = MC.</li>
+      <li><b>Producer surplus (PS)</b> is price minus marginal cost, added up. On a graph it’s the area <b>above supply and below the price</b>.</li>
+      <li>For sellers: total revenue (P × Q) minus total cost (the red triangle under supply) = PS. The course treats this as the seller’s profit.</li>
+    </ul>
+    <div class="worked">
+      <p class="w-l">Worked example · Barbara’s producer surplus</p>
+      <p>Barbara’s supply curve starts at $0. The price is $8 and she sells 30 boxes.</p>
+      <ol class="steps">
+        <li><span>Height of the triangle</span><code>$8 − $0 = $8</code></li>
+        <li><span>Producer surplus</span><code>½ × 30 × $8 = $120</code></li>
+        <li><span>Her 10th box: minimum price $2, sells for $8</span><code>PS = $6</code></li>
+        <li><span>Total revenue</span><code>$8 × 30 = $240</code></li>
+        <li><span>Total cost = TR − PS</span><code>$240 − $120 = $120</code></li>
+      </ol>
+    </div>
+    <p class="turn">Your turn.</p>
+    <div data-q="m5-6"></div>
+    <div data-q="m5-7"></div>
+    <div data-q="m5-8"></div>
+  </article>
+
+  <article class="chunk" id="m5-s4">
+    <p class="chunk-no">5.4</p>
+    <h2>When is a market efficient?</h2>
+    <ul class="pts">
+      <li>At equilibrium, <b>MB = MC</b>. Total surplus (CS + PS) is as big as it can be, and there’s <b>no deadweight loss</b>. Adam Smith called the force behind this the invisible hand.</li>
+      <li><b>Pareto efficient</b>: you can’t make anyone better off without making someone else worse off.</li>
+      <li><b>Underproduction</b>: less than equilibrium, so <b>MB &gt; MC</b>. Course examples: rent control, immunizations, public highways.</li>
+      <li><b>Overproduction</b>: more than equilibrium, so <b>MC &gt; MB</b>. Course examples: pollution from electricity, overfishing.</li>
+      <li>Both create <b>deadweight loss (DWL)</b>, surplus that nobody gets.</li>
+      <li>Six causes of market failure: price and quantity regulations, taxes and subsidies, high transaction costs, externalities, public goods and common resources, monopoly.</li>
+    </ul>
+    <div data-video="v5"></div>
+    <div data-ix="i5"></div>
+    <div data-q="m5-9"></div>
+    <div data-q="m5-10"></div>
+  </article>
+
+  <article class="chunk" id="m5-s5">
+    <p class="chunk-no">5.5</p>
+    <h2>Is it fair? Results versus rules</h2>
+    <p>An efficient market can still leave people out. At $6 a box, anyone who can’t afford $6 gets no cookies. Economists judge fairness two ways.</p>
+    <div class="tw"><table class="t">
+      <thead><tr><th></th><th>Fair results</th><th>Fair rules</th></tr></thead>
+      <tbody>
+        <tr><td><b>Big idea</b></td><td>Judge the outcome: who ends up with what (distributive justice).</td><td>Judge the process: same rules and equal opportunity for everyone.</td></tr>
+        <tr><td><b>Thinkers</b></td><td>Utilitarians. <b>John Rawls</b>, <i>A Theory of Justice</i> (1971): make the poorest as well off as possible, without shrinking the pie, and no discrimination.</td><td><b>Robert Nozick</b>, <i>Anarchy, State, and Utopia</i> (1974): protect property rights and voluntary exchange.</td></tr>
+        <tr><td><b>Measure</b></td><td>Income inequality.</td><td>Economic mobility.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="worked">
+      <p class="w-l">Worked example · the utilitarian case</p>
+      <p>Because of diminishing marginal utility, an extra dollar matters more to a poorer person.</p>
+      <ol class="steps">
+        <li><span>Take $5,000 from someone earning $130,000</span><code>−2 utils</code></li>
+        <li><span>Give it to someone earning $20,000</span><code>+10 utils</code></li>
+        <li><span>Net change in total utility</span><code>+8 utils</code></li>
+        <li><span>Keep going until marginal utilities are equal</span><code>MU₁ = MU₂</code></li>
+      </ol>
+      <p class="small muted" style="margin-top:12px">The catch: taxes are costly to run (complex tax code) and taxing work effort cuts output. Bigger transfers shrink the pie.</p>
+    </div>
+    <div data-q="m5-11"></div>
+    <div data-q="m5-12"></div>
+    <div data-q="m5-13"></div>
+    <div data-q="m5-ex"></div>
+  </article>
+
+  <div class="dump" id="m5-wrap">
+    <p class="eyebrow">Before you leave Module 5</p>
+    <h3>Brain dump</h3>
+    <p>Without scrolling up, write everything you remember about surplus, efficiency and fairness. Then compare with the summary.</p>
+    <label class="sr" for="dump-m5">Your brain dump for Module 5</label>
+    <textarea id="dump-m5" rows="5" placeholder="CS is the area below demand and above price…"></textarea>
+    <div class="row"><button class="btn" type="button" data-reveal="sum-m5">Compare with the summary</button></div>
+    <div class="summary" id="sum-m5" hidden><ul>
+      <li>Nine allocation methods. Market price is the most efficient. Non-price methods are often seen as fairer.</li>
+      <li>Demand = MB. CS = area below demand, above price = ½ × Q × (intercept − P).</li>
+      <li>Supply = MC. PS = area above supply, below price = ½ × Q × (P − intercept). PS = TR − TC.</li>
+      <li>Efficient: MB = MC, total surplus maximized, no DWL. Under: MB &gt; MC. Over: MC &gt; MB.</li>
+      <li>The DWL triangle’s tip points to the efficient quantity.</li>
+      <li>Fair results (utilitarians, Rawls) vs fair rules (Nozick). Redistribution has a cost: it shrinks the pie.</li>
+    </ul></div>
+  </div>
+  <nav class="next"><a class="btn ghost" href="#home">Home</a><a class="btn primary" href="#m6">Next: Module 6</a></nav>
+</section>
+
+<!-- ========================= MODULE 6 ========================= -->
+<section class="view" data-view="m6" hidden>
+  <header class="mod-head">
+    <p class="eyebrow">Module 6</p>
+    <h1>Price ceilings, floors, taxes and subsidies</h1>
+    <p class="lede">What happens when the government sets prices or adds a wedge between what buyers pay and what sellers keep.</p>
+    <div class="toc"><button data-jump="m6-s0">Super Bowl</button><button data-jump="m6-s1">6.1 Ceilings</button><button data-jump="m6-s2">6.2 Floors</button><button data-jump="m6-s3">6.3 Taxes</button><button data-jump="m6-s4">6.4 Subsidies &amp; quotas</button><button data-jump="m6-wrap">Wrap-up</button></div>
+  </header>
+  <div data-q="m6-pre" data-pre></div>
+
+  <article class="chunk" id="m6-s0">
+    <p class="chunk-no">Opener</p>
+    <h2>Why do Super Bowl tickets resell for so much?</h2>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Year</th><th>Face value</th><th>In 2019 dollars</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1967</td><td class="num">$12</td><td class="num">$92</td></tr>
+        <tr><td class="num">1996</td><td class="num">about $350</td><td class="num">$559</td></tr>
+        <tr><td class="num">2019</td><td class="num">$2,557</td><td class="num">resale average about $8,000</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:14px">If fans happily pay about $8,000, the face value is below what the market would set. Scalpers may simply be finding the market-clearing price. Keep that question in mind for 6.1.</p>
+  </article>
+
+  <article class="chunk" id="m6-s1">
+    <p class="chunk-no">6.1</p>
+    <h2>Price ceilings: rent control</h2>
+    <ul class="pts">
+      <li>A <b>price ceiling</b> is a legal maximum. A <b>price floor</b> is a legal minimum.</li>
+      <li>A ceiling only <b>binds</b> if it’s set <b>below</b> equilibrium. A floor only binds if it’s <b>above</b>. Non-binding ones do nothing.</li>
+      <li>A binding rent ceiling makes landlords cut back from Qe to Qs, so there’s a <b>shortage</b>.</li>
+      <li>With only Qs apartments, renters would pay a much higher P2 for the last one. That gap feeds <b>black markets</b>. In Seinfeld’s “The Andrea Doria,” George loses the apartment to someone who “just gave the super 50 bucks.”</li>
+      <li>Apartments get rationed by non-price methods: first-come, lottery, contests, even discrimination. <b>Search activity</b> raises the real cost above the legal rent.</li>
+      <li>Rent control: New York, San Francisco, London, Paris. None: Chicago, Atlanta, Dallas, Seattle.</li>
+    </ul>
+    <div class="mnemonic">
+      <div><b>Ceiling: low to bind</b>A ceiling only hurts if it’s low enough to hit your head. Set below equilibrium: shortage.</div>
+      <div><b>Floor: high to bind</b>A floor only trips you if it’s raised above where you stand. Set above equilibrium: surplus.</div>
+    </div>
+    <div data-video="v6a"></div>
+    <div data-q="m6-1"></div>
+    <div data-q="m6-2"></div>
+  </article>
+
+  <article class="chunk" id="m6-s2">
+    <p class="chunk-no">6.2</p>
+    <h2>Price floors: the minimum wage</h2>
+    <ul class="pts">
+      <li>In the labor market the roles flip: <b>workers supply</b> labor and <b>firms demand</b> it.</li>
+      <li>The federal minimum wage (Fair Labor Standards Act) is a binding floor. A local <b>living wage</b> sits even higher.</li>
+      <li>At the floor, more people want jobs than firms will fill. That labor surplus is <b>unemployment</b>.</li>
+      <li>Employment is set by demand, so it’s <b>underproduction</b>: a yellow box of search costs and a gray DWL triangle. It hits the least-skilled workers hardest, though economists debate how much.</li>
+      <li>Farm price supports are a floor where the government buys the surplus.</li>
+    </ul>
+    <div data-q="m6-3"></div>
+    <div data-q="m6-4"></div>
+  </article>
+
+  <article class="chunk" id="m6-s3">
+    <p class="chunk-no">6.3</p>
+    <h2>Taxes: who really pays?</h2>
+    <ul class="pts">
+      <li><b>Tax incidence</b> is how the burden of a tax splits between buyers and sellers.</li>
+      <li>Sin taxes (alcohol, tobacco, gambling, sugar) and gas taxes target goods with inelastic demand.</li>
+      <li><b>It doesn’t matter who the law taxes.</b> Taxing buyers or sellers gives the same split.</li>
+      <li><b>The more inelastic side pays more.</b> Income tax falls mostly on workers because labor supply is fairly inelastic.</li>
+      <li>A tax causes underproduction. Yellow box = tax revenue. Gray triangle = DWL. No DWL only if demand or supply is perfectly inelastic.</li>
+    </ul>
+    <div data-video="v6b"></div>
+    <div class="tw"><table class="t">
+      <thead><tr><th>If this is true</th><th>Who pays the whole tax</th></tr></thead>
+      <tbody>
+        <tr><td>Demand is perfectly inelastic</td><td><b>Buyers</b></td></tr>
+        <tr><td>Demand is perfectly elastic</td><td><b>Sellers</b></td></tr>
+        <tr><td>Supply is perfectly inelastic</td><td><b>Sellers</b></td></tr>
+        <tr><td>Supply is perfectly elastic</td><td><b>Buyers</b></td></tr>
+      </tbody>
+    </table></div>
+    <div data-ix="i6"></div>
+    <div data-q="m6-v2" data-meta="from the video"></div>
+    <div data-q="m6-6"></div>
+    <div data-q="m6-7"></div>
+    <div data-q="m6-8"></div>
+    <div data-q="m6-9"></div>
+    <div class="worked">
+      <p class="w-l">Now with fewer hints · movie tickets</p>
+      <p>A $4 tax per ticket. Before: $10 and 200 tickets. After: buyers pay $11 and 160 tickets sell. Use the same steps as the pizza video.</p>
+    </div>
+    <div data-q="m6-f1"></div>
+    <div data-q="m6-f2"></div>
+    <div data-q="m6-f3"></div>
+    <div data-q="m6-f4"></div>
+  </article>
+
+  <article class="chunk" id="m6-s4">
+    <p class="chunk-no">6.4</p>
+    <h2>Subsidies and quotas</h2>
+    <ul class="pts">
+      <li><b>Subsidy</b> ($6 per pizza to sellers): supply shifts right. Price falls from $8 to $5, quantity rises from 75 to 100, and sellers get $5 + $6 = $11. Now <b>MSC $11 &gt; MSB $5</b>: overproduction and DWL. Example: farm subsidies.</li>
+      <li><b>Quota</b> (T-shirt imports): equilibrium is $8 and 100,000 shirts. A 50,000 quota makes supply vertical at 50,000. Buyers pay $12, but the cost is $4. The $8 gap times 50,000 is <b>quota rents</b> (yellow box). <b>MSB $12 &gt; MSC $4</b>: underproduction and DWL.</li>
+    </ul>
+    <div data-q="m6-10"></div>
+    <div data-q="m6-11"></div>
+    <div data-q="m6-ex"></div>
+  </article>
+
+  <div class="dump" id="m6-wrap">
+    <p class="eyebrow">Before you leave Module 6</p>
+    <h3>Brain dump</h3>
+    <p>Write what you remember about ceilings, floors, tax incidence, subsidies and quotas. Then compare.</p>
+    <label class="sr" for="dump-m6">Your brain dump for Module 6</label>
+    <textarea id="dump-m6" rows="5" placeholder="A binding ceiling is below equilibrium and causes…"></textarea>
+    <div class="row"><button class="btn" type="button" data-reveal="sum-m6">Compare with the summary</button></div>
+    <div class="summary" id="sum-m6" hidden><ul>
+      <li>Binding ceiling: below equilibrium. Shortage, black markets, search costs, underproduction, DWL.</li>
+      <li>Binding floor: above equilibrium. Surplus. In labor markets the surplus is unemployment.</li>
+      <li>Tax: buyers’ price − sellers’ price = tax. Revenue = tax × new Q. DWL = ½ × ΔQ × tax.</li>
+      <li>Who the law taxes doesn’t matter. The more inelastic side pays more.</li>
+      <li>Perfectly inelastic demand or supply: no DWL.</li>
+      <li>Subsidy: overproduction (MSC &gt; MSB). Quota: underproduction (MSB &gt; MSC) with quota rents.</li>
+    </ul></div>
+  </div>
+  <nav class="next"><a class="btn ghost" href="#m5">Back: Module 5</a><a class="btn primary" href="#m7">Next: Module 7</a></nav>
+</section>
+
+<!-- ========================= MODULE 7 ========================= -->
+<section class="view" data-view="m7" hidden>
+  <header class="mod-head">
+    <p class="eyebrow">Module 7</p>
+    <h1>Other market failures</h1>
+    <p class="lede">Spillovers onto third parties, goods nobody can be kept from using, and resources that get used up.</p>
+    <div class="toc"><button data-jump="m7-s1">7.1 Types</button><button data-jump="m7-s2">7.2 Negative ext.</button><button data-jump="m7-s3">7.3 Coase</button><button data-jump="m7-s4">7.4 Positive ext.</button><button data-jump="m7-s5">7.5 Goods</button><button data-jump="m7-s6">7.6 Free riders</button><button data-jump="m7-s7">7.7 Commons</button><button data-jump="m7-wrap">Wrap-up</button></div>
+  </header>
+  <div data-q="m7-pre" data-pre></div>
+
+  <article class="chunk" id="m7-s1">
+    <p class="chunk-no">7.1</p>
+    <h2>Four kinds of market failure</h2>
+    <p>A market fails when it produces too much or too little. The course groups the causes into four: <b>fairness</b> (Module 6), <b>externalities</b>, <b>public goods</b> and <b>common resources</b>. Market power comes later.</p>
+  </article>
+
+  <article class="chunk" id="m7-s2">
+    <p class="chunk-no">7.2</p>
+    <h2>Negative externalities</h2>
+    <ul class="pts">
+      <li>An <b>externality</b> is a cost or benefit that spills onto a third party. Examples of costs: fracking, CO₂, smog, mercury.</li>
+      <li><b>MSC = MC + marginal external cost.</b> The vertical gap between supply and MSC is the size of the externality.</li>
+      <li>The market ignores that cost, so it makes too much: <b>overproduction</b>, where MSC &gt; MSB.</li>
+      <li>Study tip: the DWL triangle’s tip points toward the efficient quantity. <b>Left tip = overproduction. Right tip = underproduction.</b></li>
+    </ul>
+    <div data-video="v7a"></div>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Fix</th><th>How it works</th><th>Catch</th></tr></thead>
+      <tbody>
+        <tr class="hl"><td><b>Pigovian tax</b></td><td>Tax = marginal external cost at the efficient quantity (Arthur Pigou)</td><td>Cheapest to run and monitor, so most economists prefer it</td></tr>
+        <tr><td><b>Emission charges</b></td><td>A price per unit of pollution</td><td>Pollution is hard to measure</td></tr>
+        <tr><td><b>Marketable permits</b></td><td>Cap total pollution, let firms trade permits, cut the cap over time</td><td>Transaction costs</td></tr>
+        <tr><td><b>Property rights</b></td><td>Give someone ownership so they bargain over it</td><td>Only works in some cases (see Coase)</td></tr>
+      </tbody>
+    </table></div>
+    <div data-q="m7-1"></div>
+    <div data-q="m7-2"></div>
+    <div data-q="m7-3"></div>
+  </article>
+
+  <article class="chunk" id="m7-s3">
+    <p class="chunk-no">7.3</p>
+    <h2>The Coase theorem</h2>
+    <p>Ronald Coase: if <b>transaction costs are low</b> and <b>few parties</b> are involved, it doesn’t matter who gets the property rights. The two sides will bargain their way to the efficient outcome.</p>
+    <p>Course example: a Louisiana gas driller and an environmental group can bargain. It breaks down with many parties, and nobody holds property rights to air, lakes or oceans.</p>
+    <div data-q="m7-4"></div>
+    <div data-q="m7-5"></div>
+  </article>
+
+  <article class="chunk" id="m7-s4">
+    <p class="chunk-no">7.4</p>
+    <h2>Positive externalities</h2>
+    <ul class="pts">
+      <li><b>MSB = MB + marginal external benefit.</b> Examples: education, vaccines (COVID-19).</li>
+      <li>Hershey, PA smells like chocolate: a plus for visitors, maybe a minus for residents.</li>
+      <li>The market ignores the benefit to others, so it makes too little: <b>underproduction</b>, where MSB &gt; MSC.</li>
+      <li>Fixes: a <b>subsidy or voucher</b> equal to the external benefit (Pell Grants, state funding for IU), <b>public provision</b>, and <b>patents and copyrights</b>.</li>
+    </ul>
+    <div data-q="m7-v2" data-meta="from the video"></div>
+    <div data-q="m7-6"></div>
+  </article>
+
+  <article class="chunk" id="m7-s5">
+    <p class="chunk-no">7.5</p>
+    <h2>Four types of goods</h2>
+    <p><b>Rival</b>: one person’s use leaves less for others. <b>Excludable</b>: people who don’t pay can be kept out.</p>
+    <div class="tw"><table class="t">
+      <thead><tr><th></th><th>Excludable</th><th>Not excludable</th></tr></thead>
+      <tbody>
+        <tr><td><b>Rival</b></td><td><b>Private good</b><br>Pizza</td><td><b>Common resource</b><br>Air, water, fish stocks</td></tr>
+        <tr><td><b>Not rival</b></td><td><b>Natural monopoly</b><br>Electricity</td><td><b>Public good</b><br>Streetlights, highways, national defense</td></tr>
+      </tbody>
+    </table></div>
+    <div data-q="m7-sort"></div>
+  </article>
+
+  <article class="chunk" id="m7-s6">
+    <p class="chunk-no">7.6</p>
+    <h2>Public goods and free riders</h2>
+    <ul class="pts">
+      <li>Public goods are non-rival, non-excludable and indivisible. If neighbors ask you to chip in $20 for a park, you can enjoy it whether you pay or not. That’s the <b>free-rider problem</b>.</li>
+      <li>So markets underproduce public goods, and they get funded by taxes.</li>
+      <li>Market demand for a <b>private</b> good is the <b>horizontal</b> sum of individual demands. For a <b>public</b> good it’s the <b>vertical</b> sum. Efficient amount: MSB = MSC.</li>
+    </ul>
+    <div data-video="v7b"></div>
+    <div data-q="m7-7"></div>
+  </article>
+
+  <article class="chunk" id="m7-s7">
+    <p class="chunk-no">7.7</p>
+    <h2>The tragedy of the commons</h2>
+    <ul class="pts">
+      <li>Northwest Atlantic cod were overfished in the 1970s and 1980s and collapsed by 1992. Each boat ignores the cost it puts on everyone else, so <b>MSC &gt; MSB</b> and the resource is overused. It works like a negative externality, and the free-rider problem is worse than with public goods.</li>
+      <li>Fixes: (1) <b>property rights</b> such as fishing licenses, (2) a <b>quota</b> at the sustainable amount, handed out by a non-price method, (3) <b>individual transferable quotas (IFQs)</b> that work like marketable permits. Sometimes governments do nothing for political reasons.</li>
+      <li><b>Elinor Ostrom</b> of IU won the 2009 Nobel Prize in Economics, the first woman to win it, for <i>Governing the Commons</i> (1990). Communities can manage shared resources themselves using eight design principles:</li>
+    </ul>
+    <div class="tw"><table class="t"><tbody>
+      <tr><td class="num">1</td><td>Clearly defined boundaries</td><td class="num">5</td><td>Graduated sanctions</td></tr>
+      <tr><td class="num">2</td><td>Rules that fit local conditions</td><td class="num">6</td><td>Cheap, quick conflict resolution</td></tr>
+      <tr><td class="num">3</td><td>Collective-choice arrangements</td><td class="num">7</td><td>Recognized right to organize</td></tr>
+      <tr><td class="num">4</td><td>Effective monitoring</td><td class="num">8</td><td>Nested enterprises for larger systems</td></tr>
+    </tbody></table></div>
+    <div data-q="m7-8"></div>
+    <div data-q="m7-9"></div>
+    <div data-q="m7-10"></div>
+    <div data-q="m7-11"></div>
+    <div data-q="m7-ex"></div>
+  </article>
+
+  <div class="dump" id="m7-wrap">
+    <p class="eyebrow">Before you leave Module 7</p>
+    <h3>Brain dump</h3>
+    <p>Write what you remember about externalities, Coase, types of goods and the commons. Then compare.</p>
+    <label class="sr" for="dump-m7">Your brain dump for Module 7</label>
+    <textarea id="dump-m7" rows="5" placeholder="MSC = MC + …"></textarea>
+    <div class="row"><button class="btn" type="button" data-reveal="sum-m7">Compare with the summary</button></div>
+    <div class="summary" id="sum-m7" hidden><ul>
+      <li>Negative externality: MSC = MC + MEC. Overproduction. DWL tip points left. Fix: Pigovian tax = MEC.</li>
+      <li>Positive externality: MSB = MB + MEB. Underproduction. DWL tip points right. Fix: subsidy = MEB.</li>
+      <li>Coase: low transaction costs + few parties → bargaining reaches efficiency, whoever owns the rights.</li>
+      <li>Private (rival, excludable), public (neither), common resource (rival only), natural monopoly (excludable only).</li>
+      <li>Public goods: free riders, funded by taxes, vertical sum of demands.</li>
+      <li>Commons: overuse (cod). Fixes: property rights, quotas, IFQs. Ostrom’s eight principles.</li>
+    </ul></div>
+  </div>
+  <nav class="next"><a class="btn ghost" href="#m6">Back: Module 6</a><a class="btn primary" href="#m8">Next: Module 8</a></nav>
+</section>
+
+<!-- ========================= MODULE 8 ========================= -->
+<section class="view" data-view="m8" hidden>
+  <header class="mod-head">
+    <p class="eyebrow">Module 8 · homework due Mon Oct 26</p>
+    <h1>Firms, production and costs</h1>
+    <p class="lede">What firms count as cost, how markets are structured, and why cost curves have the shapes they do.</p>
+    <div class="toc"><button data-jump="m8-s1">8.1 Profit</button><button data-jump="m8-s2">8.2 Organizing</button><button data-jump="m8-s3">8.3 Market types</button><button data-jump="m8-s4">8.4 SR vs LR</button><button data-jump="m8-s5">8.5 Production</button><button data-jump="m8-s6">8.6 Costs</button><button data-jump="m8-s7">8.7 MC &amp; MP</button><button data-jump="m8-s8">8.8 Long run</button><button data-jump="m8-wrap">Wrap-up</button></div>
+  </header>
+  <div data-q="m8-pre" data-pre></div>
+
+  <article class="chunk" id="m8-s1">
+    <p class="chunk-no">8.1</p>
+    <h2>Accounting profit vs economic profit</h2>
+    <ul class="pts">
+      <li>Firms aim to maximize profit. <b>Accounting profit</b> = sales minus bills paid. (Enron, 2001, shows how far books can drift from reality.)</li>
+      <li><b>Economic profit</b> also subtracts <b>opportunity costs</b>.</li>
+      <li><b>Explicit costs</b> come with a bill: dough, cheese, electricity, rent.</li>
+      <li><b>Implicit costs</b> don’t, and they count only in economic profit.</li>
+      <li><b>Normal profit</b> is the entrepreneur’s pay for running the firm. It’s part of cost.</li>
+    </ul>
+    <div class="worked">
+      <p class="w-l">Worked example · implicit costs of a pizza shop</p>
+      <ol class="steps">
+        <li><span>Depreciation: a $5,000 oven is worth $4,000 after a year</span><code>$1,000</code></li>
+        <li><span>Forgone interest: $5,000 of savings could earn 3%</span><code>$150</code></li>
+        <li><span>Owner’s time: a forgone neuroscientist salary</span><code>$125,000</code></li>
+        <li><span>Total implicit costs</span><code>$126,150</code></li>
+      </ol>
+    </div>
+    <div data-q="m8-1"></div>
+    <div data-q="m8-2"></div>
+    <div data-q="m8-3"></div>
+  </article>
+
+  <article class="chunk" id="m8-s2">
+    <p class="chunk-no">8.2</p>
+    <h2>Organizing production</h2>
+    <ul class="pts">
+      <li>Firms run on <b>command systems</b> (orders) or <b>incentive systems</b> (rewards). Information can be perfect or imperfect, symmetric or asymmetric.</li>
+      <li><b>Adverse selection</b> = hidden information <i>before</i> a deal. Used cars (the seller knows more), health insurance (the buyer knows more).</li>
+      <li><b>Moral hazard</b> = changed behavior <i>after</i> a deal. Driving aggressively once insured.</li>
+      <li><b>Principal-agent problem</b>: owners and workers want different things. Fixes: ownership, profit sharing, bonuses, long-term contracts.</li>
+    </ul>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Type</th><th>Benefit</th><th>Cost</th></tr></thead>
+      <tbody>
+        <tr><td><b>Proprietorship</b></td><td>Owner makes every decision and keeps all profit</td><td>Unlimited liability</td></tr>
+        <tr><td><b>Partnership</b></td><td>Shared duties and funds</td><td>Unlimited (shared) liability, disagreements</td></tr>
+        <tr><td><b>Corporation</b></td><td>Limited liability, earns the most revenue</td><td>Double taxation, small shareholders have little say</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted" style="margin-top:8px">Hybrids: S corp, C corp, LLC.</p>
+    <div data-q="m8-4"></div>
+    <div data-q="m8-5"></div>
+  </article>
+
+  <article class="chunk" id="m8-s3">
+    <p class="chunk-no">8.3</p>
+    <h2>Four market types and how to measure them</h2>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Market</th><th>Features</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><b>Perfect competition</b></td><td>Many sellers, identical product, easy entry</td><td>Corn</td></tr>
+        <tr><td><b>Monopolistic competition</b></td><td>Slightly different products, easy entry</td><td>Chipotle, Starbucks</td></tr>
+        <tr><td><b>Oligopoly</b></td><td>Few firms, hard entry</td><td>Music and movie industries</td></tr>
+        <tr><td><b>Monopoly</b></td><td>One producer, very high barriers</td><td>Electric company</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Measure</th><th>Scale</th></tr></thead>
+      <tbody>
+        <tr><td><b>Four-firm concentration ratio</b><br><span class="small muted">share held by the 4 biggest firms</span></td><td>~0% perfect competition · 0–40% monopolistic competition · 40–70% oligopoly · 70–100% very concentrated · 100% monopoly<br><span class="small muted">Weakness: ignores other firms and relative size.</span></td></tr>
+        <tr><td><b>HHI</b><br><span class="small muted">sum of squared market shares</span></td><td>&lt;100 perfect competition · 100–1,500 monopolistic competition · 1,500–2,500 moderate concentration · &gt;2,500 oligopoly · 10,000 monopoly</td></tr>
+      </tbody>
+    </table></div>
+    <div class="worked">
+      <p class="w-l">Worked example · HHI</p>
+      <p>Four firms with shares of 40%, 30%, 20% and 10%.</p>
+      <ol class="steps">
+        <li><span>Square each share</span><code>1,600 · 900 · 400 · 100</code></li>
+        <li><span>Add them</span><code>HHI = 3,000</code></li>
+        <li><span>Read the scale</span><code>&gt; 2,500 → oligopoly</code></li>
+      </ol>
+    </div>
+    <div data-q="m8-sort"></div>
+    <div data-q="m8-6"></div>
+    <div data-q="m8-7"></div>
+    <div data-q="m8-8"></div>
+  </article>
+
+  <article class="chunk" id="m8-s4">
+    <p class="chunk-no">8.4</p>
+    <h2>Short run vs long run</h2>
+    <p><b>Short run</b>: at least one input is fixed, usually plant size. Only labor can change. <b>Long run</b>: every input can change. It’s about flexibility, not a set amount of time.</p>
+    <p><b>Sunk costs</b> are already spent and can’t be recovered, so they shouldn’t affect decisions.</p>
+    <div data-q="m8-9"></div>
+  </article>
+
+  <article class="chunk" id="m8-s5">
+    <p class="chunk-no">8.5</p>
+    <h2>Production and diminishing returns</h2>
+    <ul class="pts">
+      <li><b>Total product (TP)</b>: output from a given amount of labor and capital.</li>
+      <li><b>Average product</b> AP = TP ÷ workers. <b>Marginal product</b> MP = change in TP from one more worker.</li>
+      <li><b>Diminishing returns</b>: with a fixed kitchen, each new cook adds less. Too many cooks in the kitchen.</li>
+      <li>TP is an upside-down U that peaks where MP = 0. MP crosses AP at AP’s highest point. Keep hiring while MP &gt; 0, never when MP &lt; 0.</li>
+    </ul>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Workers</th><th>TP (bushels)</th><th>MP</th><th>AP</th><th></th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td class="num">10</td><td class="num">10</td><td class="num">10</td><td class="small">course numbers</td></tr>
+        <tr><td class="num">2</td><td class="num">26</td><td class="num">16</td><td class="num">13</td><td class="small">course numbers</td></tr>
+        <tr class="hl"><td class="num">3</td><td class="num">36</td><td class="num">10</td><td class="num">12</td><td class="small">diminishing returns start</td></tr>
+        <tr><td class="num">4</td><td class="num">42</td><td class="num">6</td><td class="num">10.5</td><td class="small muted">example</td></tr>
+        <tr><td class="num">5</td><td class="num">44</td><td class="num">2</td><td class="num">8.8</td><td class="small muted">example</td></tr>
+        <tr><td class="num">6</td><td class="num">42</td><td class="num">−2</td><td class="num">7</td><td class="small muted">don’t hire</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small muted" style="margin-top:8px">Rows 1–2 and “diminishing returns start at worker 3” come from the course. Rows 3–6 are example numbers, since the rest of the course table was an image.</p>
+    <div data-q="m8-10"></div>
+    <div data-q="m8-11"></div>
+    <div data-q="m8-12"></div>
+  </article>
+
+  <article class="chunk" id="m8-s6">
+    <p class="chunk-no">8.6</p>
+    <h2>Short-run cost curves</h2>
+    <div class="tw"><table class="t">
+      <thead><tr><th>Formula</th><th>At 2 units of corn (course example)</th></tr></thead>
+      <tbody>
+        <tr><td><code>TC = TFC + TVC</code></td><td class="num">$20 + $14 = $34</td></tr>
+        <tr><td><code>AFC = TFC ÷ Q</code></td><td class="num">$20 ÷ 2 = $10</td></tr>
+        <tr><td><code>AVC = TVC ÷ Q</code></td><td class="num">$14 ÷ 2 = $7</td></tr>
+        <tr><td><code>ATC = TC ÷ Q = AFC + AVC</code></td><td class="num">$34 ÷ 2 = $17</td></tr>
+        <tr><td><code>MC = ΔTC ÷ ΔQ</code></td><td class="num">$34 − $30 = $4</td></tr>
+      </tbody>
+    </table></div>
+    <ul class="pts" style="margin-top:18px">
+      <li>Shapes: TFC is flat. TVC and TC are S-shaped. AVC, ATC and MC are U-shaped. AFC always falls.</li>
+      <li><b>MC crosses AVC and ATC at their minimums.</b> MC below an average pulls it down. MC above pulls it up.</li>
+      <li>Higher productivity or a lower wage shifts AVC, ATC and MC down. AFC doesn’t move.</li>
+    </ul>
+    <div data-video="v8a"></div>
+    <div data-q="m8-13"></div>
+    <div data-q="m8-15"></div>
+    <div class="worked">
+      <p class="w-l">Now with fewer hints · same farm at 4 units</p>
+      <p>Same curves as the video. At 4 units, TFC is still $20 and TVC is $28. At 3 units, TVC was $18.</p>
+    </div>
+    <div data-q="m8-f1"></div>
+    <div data-q="m8-f2"></div>
+    <div data-q="m8-f3"></div>
+    <div data-q="m8-f4"></div>
+  </article>
+
+  <article class="chunk" id="m8-s7">
+    <p class="chunk-no">8.7</p>
+    <h2>Marginal cost mirrors marginal product</h2>
+    <p><code>MC = wage ÷ MP</code>. With a $10 wage, a worker who adds 10 pizzas makes MC $1 a pizza. One who adds 5 pizzas makes MC $2.</p>
+    <p>So when MP rises, MC falls, and when MP falls, MC rises. They’re mirror images. Rising MP also means falling AVC.</p>
+    <div data-q="m8-14"></div>
+  </article>
+
+  <article class="chunk" id="m8-s8">
+    <p class="chunk-no">8.8</p>
+    <h2>The long run: choosing plant size</h2>
+    <ul class="pts">
+      <li>The <b>long-run average cost (LRAC)</b> curve is the lower envelope of the short-run ATC curves for each plant size. For each output, pick the plant with the lowest cost.</li>
+      <li><b>Economies of scale</b> (specialization, cheaper inputs and borrowing, technology): LRAC falls.</li>
+      <li><b>Constant returns to scale</b>: the flat bottom.</li>
+      <li><b>Diseconomies of scale</b> (bureaucracy): LRAC rises.</li>
+      <li>Diminishing returns does <b>not</b> explain LRAC. It needs a fixed input, and the long run has none.</li>
+    </ul>
+    <div data-video="v8b"></div>
+    <div data-q="m8-16"></div>
+    <div data-q="m8-ex"></div>
+  </article>
+
+  <div class="dump" id="m8-wrap">
+    <p class="eyebrow">Before you leave Module 8</p>
+    <h3>Brain dump</h3>
+    <p>Write what you remember about profit, market types, production and costs. Then compare.</p>
+    <label class="sr" for="dump-m8">Your brain dump for Module 8</label>
+    <textarea id="dump-m8" rows="5" placeholder="Economic profit subtracts implicit costs like…"></textarea>
+    <div class="row"><button class="btn" type="button" data-reveal="sum-m8">Compare with the summary</button></div>
+    <div class="summary" id="sum-m8" hidden><ul>
+      <li>Economic profit = revenue − explicit − implicit costs. Implicit: depreciation, forgone interest, forgone salary.</li>
+      <li>Adverse selection (before the deal) vs moral hazard (after). Principal-agent fixes: ownership, profit sharing, bonuses, contracts.</li>
+      <li>Perfect competition, monopolistic competition, oligopoly, monopoly. CR4 and HHI (sum of squared shares).</li>
+      <li>Short run has a fixed input. Sunk costs don’t matter.</li>
+      <li>MP = ΔTP, AP = TP ÷ L. Diminishing returns. Never hire when MP &lt; 0.</li>
+      <li>ATC = AFC + AVC. MC crosses AVC and ATC at their minimums. MC = W ÷ MP.</li>
+      <li>LRAC = lower envelope. Economies, constant returns, diseconomies of scale.</li>
+    </ul></div>
+  </div>
+  <nav class="next"><a class="btn ghost" href="#m7">Back: Module 7</a><a class="btn primary" href="#review">Go to mixed review</a></nav>
+</section>
+
+<!-- ========================= REVIEW ========================= -->
+<section class="view" data-view="review" hidden>
+  <header class="mod-head">
+    <p class="eyebrow">Spaced, mixed practice</p>
+    <h1>Review</h1>
+    <p class="lede">Questions you miss come back right away. Ones you get right come back after 1, 3, 7, 14, then 30 days. Each set mixes modules, which feels harder but holds up better on the exam.</p>
+  </header>
+  <div id="rv-start">
+    <div class="rv-stats">
+      <div><b data-due>0</b><span>due now</span></div>
+      <div><b data-seen>0</b><span>questions tried</span></div>
+      <div><b data-mastered>0</b><span>at 7+ day spacing</span></div>
+    </div>
+    <div class="row" style="margin-top:22px">
+      <button class="btn primary" id="rv-due" type="button">Review what’s due</button>
+      <button class="btn" id="rv-mix" type="button">Mixed set of 10</button>
+    </div>
+    <p class="small muted" id="rv-note" style="margin-top:12px"></p>
+  </div>
+  <div id="rv-run" hidden>
+    <div class="rv-bar"><span id="rv-pos"></span><span id="rv-mod"></span></div>
+    <div class="rv-track"><i id="rv-fill"></i></div>
+    <div id="rv-q"></div>
+    <div class="row"><button class="btn primary" id="rv-next" type="button" hidden>Next question</button><button class="btn ghost" id="rv-quit" type="button">End set</button></div>
+  </div>
+  <div id="rv-end" hidden></div>
+</section>
+
+<!-- ========================= MIDTERM ========================= -->
+<section class="view" data-view="midterm" hidden>
+  <header class="mod-head">
+    <p class="eyebrow">Midterm 1 practice · 9 Top Hat items</p>
+    <h1>Midterm 1 practice</h1>
+    <p class="lede">These cover earlier topics: the PPC, demand shifts, opportunity cost and elasticity. The answers are worked out here, since Top Hat hides its key.</p>
+  </header>
+  <div class="worked" style="margin-top:28px">
+    <p class="w-l">Formula refresher</p>
+    <ol class="steps">
+      <li><span>Percent change</span><code>(new − old) ÷ old</code></li>
+      <li><span>Midpoint percent change</span><code>(new − old) ÷ avg</code></li>
+      <li><span>Price elasticity of demand</span><code>|%ΔQd ÷ %ΔP|</code></li>
+      <li><span>Cross-price elasticity (A and B)</span><code>%ΔQ_A ÷ %ΔP_B</code></li>
+      <li><span>Positive cross-price = substitutes; negative = complements</span><code>+ / −</code></li>
+    </ol>
+  </div>
+  <div data-q="mt-1"></div>
+  <div data-q="mt-2"></div>
+  <div data-q="mt-3"></div>
+  <div data-q="mt-4"></div>
+  <div data-q="mt-5"></div>
+  <div data-q="mt-6"></div>
+  <div data-q="mt-7"></div>
+  <div data-q="mt-8"></div>
+  <div data-q="mt-9"></div>
+  <nav class="next"><a class="btn ghost" href="#home">Home</a><a class="btn primary" href="#review">Mixed review</a></nav>
+</section>
+</main>
+
+<script>
+(function(){
+"use strict";
+/* ---------- utilities ---------- */
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const sub=(p,a,b)=>clamp((p-a)/(b-a));
+let RM=false; try{RM=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+const money=v=>{const r=Math.round(v*100)/100;return '$'+r.toLocaleString('en-US',{minimumFractionDigits:r%1?2:0,maximumFractionDigits:2})};
+const mmss=s=>{s=Math.max(0,Math.round(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* ---------- storage ---------- */
+const KEY='e251-guide-v1';
+let S={q:{}};
+try{const raw=localStorage.getItem(KEY); if(raw){S=JSON.parse(raw)||{q:{}}; S.q=S.q||{}}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const DAYS=[0,1,3,7,14,30];
+function record(id,ok,partial){
+  const r=S.q[id]||{box:0,n:0};
+  r.n++;
+  if(ok) r.box=Math.min(r.box+1,5); else if(partial) r.box=Math.max(1,Math.min(r.box,2)); else r.box=0;
+  r.due=Date.now()+DAYS[r.box]*864e5-36e5*(r.box?3:0);
+  r.last=ok?1:0;
+  S.q[id]=r; save(); refresh();
+}
+
+/* ---------- question bank ---------- */
+const QB={
+/* Module 5 */
+"m5-pre":{t:"mc",q:"Concert tickets are sold at a set price, and fans still camp out overnight to get them. Which two allocation methods are at work?",o:["Market price and first-come, first-served","Lottery and command","Contest and force","Majority rule and sharing equally"],a:0,why:"You pay a price (market price) and you also have to be early in line (first-come, first-served). Module 5 opens with this exact example."},
+"m5-1":{t:"mc",q:"A hospital has 50 doses of a lifesaving drug and 200 patients who need it equally. Which method fits best?",o:["Market price","Lottery","Contest","Personal characteristics"],a:1,fb:["Price gives doses to whoever can pay most, not to equally needy patients.","","A contest rewards effort, which isn’t the issue here.","Sorting by traits like age risks discrimination."],why:"A lottery fits when people can’t be told apart and there’s a shortage, like lifesaving medicine."},
+"m5-sort1":{t:"sort",q:"Match each situation to its allocation method.",c:["Market price","First-come, first-served","Lottery","Contest","Command","Majority rule","Personal characteristics"],items:[["A scholarship goes to the best essay","Contest"],["An officer assigns soldiers to posts","Command"],["A theater gives seniors a discount","Personal characteristics"],["Voters decide how tax money is spent","Majority rule"],["A pizza goes to whoever pays $12","Market price"]],why:"Contest: judge results when effort is hard to watch. Command: clear authority. Personal characteristics: discounts by age or status. Majority rule: government goods. Market price: willing and able to pay."},
+"m5-3":{t:"num",q:"Sara’s demand curve also starts at $12. At a price of $6 she buys 15 boxes. What is her consumer surplus?",a:45,pre:"$",hint:"CS is a triangle: ½ × quantity × (intercept − price).",why:"½ × 15 × ($12 − $6) = $45."},
+"m5-4":{t:"num",q:"At $6 the market buys 45 boxes (Steve 30 + Sara 15), and market demand also starts at $12. What is market consumer surplus?",a:135,pre:"$",hint:"Same triangle, but the base is 45 boxes.",why:"½ × 45 × $6 = $135. It also equals Steve’s $90 + Sara’s $45."},
+"m5-5":{t:"mc",q:"Steve’s 10th box is worth $10 to him and costs $6. How much consumer surplus does he get on that one box?",o:["$4","$6","$10","$16"],a:0,why:"Surplus on one unit = value − price = $10 − $6 = $4."},
+"m5-6":{t:"num",q:"Bill’s supply curve also starts at $0. At $8 he sells 15 boxes. What is his producer surplus?",a:60,pre:"$",hint:"PS is a triangle: ½ × quantity × (price − where supply starts).",why:"½ × 15 × $8 = $60."},
+"m5-7":{t:"num",q:"At $8 the market sells 45 boxes (Barbara 30 + Bill 15). What is market producer surplus?",a:180,pre:"$",hint:"½ × 45 × (price − $0).",why:"½ × 45 × $8 = $180, which also equals $120 + $60."},
+"m5-8":{t:"mc",q:"For a seller, total revenue (P × Q) minus total cost (the area under supply) equals…",o:["Producer surplus","Consumer surplus","Deadweight loss","Marginal cost"],a:0,why:"PS = TR − TC. The course treats it as the seller’s profit on those units."},
+"m5-v1":{t:"mc",q:"Equilibrium is 30 boxes, but only 20 are made. At the 20th box, MB is $8 and MC is $4. What’s true?",o:["MB > MC, so making more boxes would add surplus","MC > MB, so too many boxes are made","MB = MC, so the market is efficient","There’s no deadweight loss because fewer resources are used"],a:0,why:"When MB is above MC, each extra box is worth more than it costs. Skipping those boxes is underproduction and creates deadweight loss."},
+"m5-v2":{t:"mc",q:"Output rises to 40 boxes when the efficient amount is 30. Which way does the deadweight loss triangle’s tip point?",o:["Left, toward 30","Right, away from 30","Straight up","There is no triangle"],a:0,why:"The tip always points toward the efficient quantity. Left tip means overproduction; right tip means underproduction."},
+"m5-9":{t:"mc",q:"Which is one of the course’s examples of overproduction?",o:["Pollution from electricity generation","Rent control","Too few immunizations","Public highways"],a:0,why:"Pollution and overfishing are overproduction (MC > MB). Rent control, immunizations and highways are the underproduction examples."},
+"m5-10":{t:"mc",q:"Which of these is NOT one of the causes of market failure in 5.4?",o:["Many buyers and sellers competing","Taxes and subsidies","Externalities","Monopoly"],a:0,why:"The six causes are price and quantity regulations, taxes and subsidies, high transaction costs, externalities, public goods and common resources, and monopoly."},
+"m5-11":{t:"mc",q:"Which thinker judges fairness by the rules, focusing on property rights and voluntary exchange?",o:["Robert Nozick","John Rawls","Adam Smith","Arthur Pigou"],a:0,why:"Nozick (Anarchy, State, and Utopia, 1974) is the rules view. Rawls (A Theory of Justice, 1971) focuses on results for the poorest."},
+"m5-12":{t:"num",q:"Moving $5,000 from a high earner to a low earner costs the high earner 2 utils and gives the low earner 10 utils. What is the net change in total utility?",a:8,suf:"utils",why:"+10 − 2 = +8 utils. Utilitarians keep redistributing until marginal utilities are equal."},
+"m5-13":{t:"mc",q:"Why doesn’t redistribution go all the way to equal incomes in practice?",o:["Taxes shrink the pie: they’re costly to run and reduce work effort","Marginal utility rises with income","Rawls proved equal incomes are inefficient","Markets already give everyone equal incomes"],a:0,why:"Taxing has costs (complex tax code, transaction costs), and taxing elastic things like work effort cuts output. Bigger transfers shrink the total."},
+"m5-ex":{t:"ex",q:"In two or three sentences: why can a market at equilibrium be efficient but still not fair?",model:"At equilibrium MB = MC, so total surplus is as big as it can be and there’s no deadweight loss. That’s efficiency. But efficiency says nothing about who gets the goods: at $6 a box, people who can’t afford $6 get none. Fairness is a separate question, judged by results (utilitarians, Rawls) or by rules (Nozick)."},
+/* Module 6 */
+"m6-pre":{t:"mc",q:"A city caps rent below the market rent. What happens to the number of apartments for rent?",o:["It falls","It rises","It stays the same","It doubles"],a:0,why:"At a lower rent, landlords supply less. You’ll see this as the move from Qe to Qs in 6.1."},
+"m6-1":{t:"mc",q:"Equilibrium rent is $1,200. The city sets a rent ceiling of $1,500. What happens?",o:["Nothing, because the ceiling isn’t binding","A shortage","A surplus","Rents rise to $1,500"],a:0,why:"A ceiling only matters if it’s below equilibrium. At $1,500 the market still settles at $1,200."},
+"m6-v1":{t:"mc",q:"At a $1,000 rent ceiling, landlords supply 20,000 apartments and renters want 40,000. What is the shortage?",o:["20,000 apartments","10,000 apartments","40,000 apartments","There’s a surplus, not a shortage"],a:0,why:"Shortage = quantity demanded − quantity supplied = 40,000 − 20,000 = 20,000."},
+"m6-2":{t:"mc",q:"Under a binding rent ceiling, why can the real cost of an apartment end up above the legal rent?",o:["Time spent searching and side payments add to the cost","Landlords are allowed to charge more","The ceiling raises supply","Demand falls"],a:0,why:"Search activity and black-market payments (like the $50 to the super) raise what renters really pay."},
+"m6-3":{t:"mc",q:"A binding price floor is set ___ equilibrium and creates a ___.",o:["above; surplus","below; surplus","above; shortage","below; shortage"],a:0,why:"Floors bind above equilibrium. Quantity supplied beats quantity demanded, so there’s a surplus."},
+"m6-4":{t:"mc",q:"In the labor market, the surplus created by a binding minimum wage shows up as…",o:["Unemployment","Higher employment","A shortage of workers","Lower wages"],a:0,why:"Workers supply labor and firms demand it. More people want jobs at that wage than firms will hire: unemployment."},
+"m6-v2":{t:"mc",q:"A $5 tax raises the price buyers pay from $5 to $8. How much of the $5 do buyers bear?",o:["$3 (60%)","$5 (100%)","$2 (40%)","$8"],a:0,why:"Buyers pay $3 more ($8 − $5), which is 3 ÷ 5 = 60%. Sellers bear the other $2 (40%)."},
+"m6-v3":{t:"mc",q:"The same $5 pizza tax is put on buyers instead of sellers. What changes?",o:["Nothing about who really pays: it’s still 60/40","Buyers now pay all $5","Sellers now pay all $5","The deadweight loss disappears"],a:0,why:"Which side the law taxes doesn’t matter. Elasticities decide the split."},
+"m6-6":{t:"num",q:"A $5 tax per pizza, and 75 pizzas sell after the tax. How much tax revenue does the government collect?",a:375,pre:"$",hint:"Revenue = tax × quantity sold after the tax.",why:"$5 × 75 = $375. It’s the yellow box."},
+"m6-7":{t:"num",q:"Before the tax, 100 pizzas sold. After the $5 tax, 75 sell. What is the deadweight loss?",a:62.5,pre:"$",hint:"DWL triangle: ½ × (lost quantity) × (tax).",why:"½ × 25 × $5 = $62.50."},
+"m6-8":{t:"mc",q:"Demand for a good is perfectly inelastic. Who pays a tax on it, and is there deadweight loss?",o:["Buyers pay all of it; no DWL","Sellers pay all of it; large DWL","They split it evenly; some DWL","Buyers pay all of it; large DWL"],a:0,why:"Buyers don’t cut back, so they absorb the whole tax and quantity doesn’t fall. No lost trades means no DWL."},
+"m6-9":{t:"mc",q:"Labor supply is fairly inelastic. Who bears most of the income tax?",o:["Workers","Employers","The government","It’s split evenly by law"],a:0,why:"The more inelastic side bears more of a tax. Workers can’t easily cut how much they work."},
+"m6-f1":{t:"num",q:"Movie tickets: a $4 tax raises the price buyers pay from $10 to $11. What price do sellers keep?",a:7,pre:"$",hint:"Sellers keep the buyers’ price minus the tax.",why:"$11 − $4 = $7."},
+"m6-f2":{t:"num",q:"After the tax, 160 tickets sell (down from 200). What is the tax revenue?",a:640,pre:"$",why:"$4 × 160 = $640."},
+"m6-f3":{t:"num",q:"What is the deadweight loss from that ticket tax?",a:80,pre:"$",hint:"½ × (200 − 160) × $4.",why:"½ × 40 × $4 = $80."},
+"m6-f4":{t:"mc",q:"Ticket buyers pay $1 of the $4 tax and sellers pay $3. Which side is more inelastic?",o:["Supply (sellers)","Demand (buyers)","They’re equally elastic","You can’t tell"],a:0,why:"The more inelastic side bears more of the tax. Sellers bear 75%, so supply is more inelastic."},
+"m6-10":{t:"mc",q:"A $6 subsidy per pizza drops the price to $5, and sellers get $11 in total. What results?",o:["Overproduction: MSC $11 > MSB $5","Underproduction: MSB > MSC","Efficiency, since more people get pizza","A shortage"],a:0,why:"Subsidies push output past the efficient amount. The last pizza costs $11 to make but is worth $5 to buyers: deadweight loss."},
+"m6-11":{t:"num",q:"A T-shirt import quota of 50,000 makes buyers pay $12 while a shirt costs $4 to make. What are total quota rents?",a:400000,pre:"$",hint:"Quota rent per shirt = $12 − $4. Multiply by the quota.",why:"($12 − $4) × 50,000 = $400,000. That’s the yellow box. It goes to whoever holds the right to import."},
+"m6-ex":{t:"ex",q:"Super Bowl tickets with a face value of $2,557 resell for about $8,000. Using 6.1, explain what that says about the face-value price.",model:"Face value works like a price ceiling below the market-clearing price. At that price, far more people want seats than there are seats: a shortage. Fans who value seats most will pay well above face value, so a black market (scalpers) appears, and the resale price lands near what the market-clearing price would be."},
+/* Module 7 */
+"m7-pre":{t:"mc",q:"A factory’s smoke harms nearby residents, but the factory pays nothing for that harm. Compared with what’s best for society, the factory produces…",o:["Too much","Too little","Exactly the right amount","Nothing"],a:0,why:"It ignores part of the real cost, so it produces past the point where cost to society equals benefit."},
+"m7-1":{t:"mc",q:"Marginal social cost equals…",o:["Marginal cost + marginal external cost","Marginal benefit + marginal external benefit","Marginal cost − marginal external cost","Price × quantity"],a:0,why:"MSC = MC + MEC. The vertical gap between supply and MSC is the size of the externality."},
+"m7-v1":{t:"mc",q:"With a negative externality, the market makes 30 units but the efficient amount is 20. This is…",o:["Overproduction, and the DWL tip points left","Underproduction, and the DWL tip points right","Efficient","Underproduction, and the DWL tip points left"],a:0,why:"Market quantity above the efficient one is overproduction. The triangle’s tip points to the efficient 20, which is to the left."},
+"m7-2":{t:"mc",q:"A tax equal to the marginal external cost at the efficient quantity is called a…",o:["Pigovian tax","Sin tax","Quota rent","Lump-sum tax"],a:0,why:"Named after Arthur Pigou. It makes producers face the full social cost."},
+"m7-3":{t:"mc",q:"Why do most economists prefer a pollution tax over the other fixes?",o:["It’s the cheapest to run and monitor","It bans pollution completely","It raises the most revenue","It needs no government"],a:0,why:"Emission charges need hard pollution measurement and permits carry transaction costs. A tax is the simplest to run and monitor."},
+"m7-4":{t:"mc",q:"The Coase theorem says private bargaining reaches the efficient outcome when…",o:["Transaction costs are low and few parties are involved","The government owns the resource","Many parties are involved","Property rights are unclear"],a:0,why:"With low transaction costs and few parties, it doesn’t matter who gets the property rights. They’ll bargain to efficiency."},
+"m7-5":{t:"mc",q:"Why can’t the Coase theorem fix air pollution in a big city?",o:["Millions of people are affected and nobody owns the air","Air is excludable","Polluters always win the bargain","Air pollution is a positive externality"],a:0,why:"Bargaining breaks down with many parties, and there are no clear property rights to air, lakes or oceans."},
+"m7-v2":{t:"mc",q:"With a positive externality like vaccines, the market makes 25 but the efficient amount is 35. Which fix moves the market to 35?",o:["A subsidy equal to the marginal external benefit","A Pigovian tax","A price ceiling","A quota at 25"],a:0,why:"A subsidy (or voucher, or public provision) lifts demand up to MSB, so the market reaches the efficient amount."},
+"m7-6":{t:"num",q:"A $4 subsidy per flu shot gets 35 shots given. What does the subsidy cost the government?",a:140,pre:"$",why:"$4 × 35 = $140."},
+"m7-sort":{t:"sort",q:"Classify each good.",c:["Private good","Public good","Common resource","Natural monopoly"],items:[["Pizza","Private good"],["Streetlights","Public good"],["Fish in the ocean","Common resource"],["Electricity from the local grid","Natural monopoly"],["National defense","Public good"],["Clean air","Common resource"]],why:"Rival + excludable = private. Neither = public. Rival but not excludable = common resource. Excludable but not rival = natural monopoly."},
+"m7-v3":{t:"mc",q:"At 40 streetlights, Ana values one more light at $4 and Ben values it at $2. What is marginal social benefit?",o:["$6","$4","$2","$3"],a:0,why:"Public goods add up vertically: everyone gets the same light, so add each person’s value. $4 + $2 = $6."},
+"m7-7":{t:"mc",q:"Given the free-rider problem, what’s the best way to pay for 4th of July fireworks? (Top Hat Q7.9)",o:["Donations","Charge a fee to enter the fireworks grounds","Charge everyone who watches","Tax everyone"],a:3,why:"Fireworks are non-rival and non-excludable. People will watch without donating, and you can’t charge everyone who looks up. So taxes fund them."},
+"m7-8":{t:"mc",q:"Northwest Atlantic cod collapsed by 1992. This is an example of…",o:["The tragedy of the commons","A positive externality","A natural monopoly","A price floor"],a:0,why:"Cod were rival but non-excludable, a common resource. Each boat ignored the cost it put on others, so MSC > MSB and the stock was overused."},
+"m7-9":{t:"mc",q:"Individual transferable fishing quotas (IFQs) work most like…",o:["Marketable pollution permits","A subsidy","A price ceiling","Public provision"],a:0,why:"Both set a total cap and let holders trade their share."},
+"m7-10":{t:"mc",q:"Which IU economist won the 2009 Nobel Prize for showing communities can govern the commons?",o:["Elinor Ostrom","Ronald Coase","Arthur Pigou","John Rawls"],a:0,why:"Elinor Ostrom, the first woman to win the economics Nobel, for Governing the Commons (1990)."},
+"m7-11":{t:"mc",q:"Which is NOT one of Ostrom’s eight design principles?",o:["Sell the resource to one private owner","Clearly defined boundaries","Graduated sanctions","Effective monitoring"],a:0,why:"Her principles describe communities managing a resource themselves: boundaries, local rules, collective choice, monitoring, graduated sanctions, cheap conflict resolution, the right to organize, and nested enterprises."},
+"m7-ex":{t:"ex",q:"Explain how a Pigovian tax fixes overproduction. Use MSC and MSB.",model:"With a negative externality, supply shows only private cost, so the market produces where MSB = MC, past the point where MSB = MSC. A tax equal to the marginal external cost shifts supply up to MSC. Now the market settles where MSB = MSC, the efficient quantity, and the deadweight loss goes away."},
+/* Module 8 */
+"m8-pre":{t:"mc",q:"You quit a $125,000 job to run a pizza shop. Is that $125,000 a cost of running the shop?",o:["Yes, an implicit cost that counts in economic profit","No, because nobody sends you a bill","Only if the shop loses money","Yes, an explicit cost on the accounting books"],a:0,why:"Your forgone salary is an opportunity cost. Accounting profit ignores it; economic profit subtracts it."},
+"m8-1":{t:"num",q:"You put $5,000 of savings into an oven instead of a bank paying 3%. What is the forgone interest for one year?",a:150,pre:"$",why:"$5,000 × 0.03 = $150. It counts in economic profit, not accounting profit."},
+"m8-2":{t:"mc",q:"Which of these is an implicit cost?",o:["The salary you gave up to run the shop","Rent for the shop","Cheese and dough","The electric bill"],a:0,why:"Implicit costs have no bill: forgone salary, forgone interest, depreciation of your own equipment."},
+"m8-3":{t:"num",q:"A pizza shop earns $200,000 in revenue. Explicit costs are $60,000. Implicit costs are $126,150. What is economic profit?",a:13850,pre:"$",hint:"Economic profit = revenue − explicit costs − implicit costs.",why:"$200,000 − $60,000 − $126,150 = $13,850. Accounting profit would be $140,000."},
+"m8-4":{t:"mc",q:"After buying car insurance, a driver starts driving more aggressively. This is…",o:["Moral hazard","Adverse selection","A principal-agent fix","A sunk cost"],a:0,why:"Moral hazard is changed behavior after a deal. Adverse selection is hidden information before the deal, like a used-car seller who knows more than you."},
+"m8-5":{t:"mc",q:"Which business form gives owners limited liability but faces double taxation?",o:["Corporation","Proprietorship","Partnership","None of them"],a:0,why:"Corporations limit owners’ liability, but profit is taxed at the company level and again as dividends."},
+"m8-sort":{t:"sort",q:"Match each industry to its market type.",c:["Perfect competition","Monopolistic competition","Oligopoly","Monopoly"],items:[["Corn farming","Perfect competition"],["Chipotle and other burrito shops","Monopolistic competition"],["The music industry","Oligopoly"],["Your local electric company","Monopoly"]],why:"Many sellers of an identical product: perfect competition. Slightly different products, easy entry: monopolistic competition. A few firms, hard entry: oligopoly. One producer: monopoly."},
+"m8-6":{t:"num",q:"Five firms each have a 20% market share. What is the HHI?",a:2000,hint:"Square each share (20² = 400), then add them up.",why:"5 × 20² = 5 × 400 = 2,000."},
+"m8-7":{t:"mc",q:"An HHI of 2,000 means the market has…",o:["Moderate concentration","Perfect competition","Monopolistic competition","A monopoly"],a:0,why:"Under 100 perfect competition, 100–1,500 monopolistic competition, 1,500–2,500 moderate concentration, over 2,500 oligopoly, 10,000 monopoly."},
+"m8-8":{t:"mc",q:"The four largest firms hold 55% of the market. By the four-firm concentration ratio, this is…",o:["Oligopoly","Monopolistic competition","Perfect competition","Monopoly"],a:0,why:"0–40% monopolistic competition, 40–70% oligopoly, 70–100% very concentrated."},
+"m8-9":{t:"mc",q:"What makes a period the short run?",o:["At least one input, like plant size, is fixed","It lasts less than a year","All inputs can change","Prices are fixed"],a:0,why:"Short run: at least one fixed input. Long run: everything can change. It’s about flexibility, not calendar time."},
+"m8-10":{t:"num",q:"Adding a second worker raises total product from 10 to 26 bushels. What is the second worker’s marginal product?",a:16,suf:"bushels",why:"MP = change in TP = 26 − 10 = 16."},
+"m8-11":{t:"num",q:"With 2 workers producing 26 bushels, what is average product?",a:13,suf:"bushels",why:"AP = TP ÷ workers = 26 ÷ 2 = 13."},
+"m8-12":{t:"mc",q:"A farm should never hire a worker whose marginal product is…",o:["Negative","Falling but positive","Below average product","Rising"],a:0,why:"Keep hiring while MP > 0, even if it’s falling. A negative MP means total output drops."},
+"m8-13":{t:"num",q:"TFC is $20 and TVC is $14 at 2 units. What is ATC?",a:17,pre:"$",hint:"TC = TFC + TVC, then divide by Q.",why:"TC = $34, and $34 ÷ 2 = $17. Or AFC $10 + AVC $7."},
+"m8-f1":{t:"num",q:"At 4 units, TFC is still $20. What is AFC?",a:5,pre:"$",why:"$20 ÷ 4 = $5."},
+"m8-f2":{t:"num",q:"TVC at 4 units is $28. What is AVC?",a:7,pre:"$",why:"$28 ÷ 4 = $7."},
+"m8-f3":{t:"num",q:"What is ATC at 4 units?",a:12,pre:"$",hint:"ATC = AFC + AVC, or TC ÷ Q.",why:"$5 + $7 = $12. Check: TC = $20 + $28 = $48, and $48 ÷ 4 = $12."},
+"m8-f4":{t:"num",q:"TVC at 3 units was $18. What is the marginal cost of the 4th unit?",a:10,pre:"$",hint:"MC = change in TC (or TVC) from 3 to 4 units.",why:"$28 − $18 = $10. Fixed cost cancels out, so ΔTC = ΔTVC."},
+"m8-v1":{t:"mc",q:"Marginal cost is below average total cost. What is ATC doing?",o:["Falling","Rising","At its minimum","Staying constant"],a:0,why:"A margin below the average pulls the average down, just as a semester below your GPA pulls the GPA down."},
+"m8-14":{t:"num",q:"The wage is $10 and the next worker’s marginal product is 5 pizzas. What is the marginal cost of a pizza?",a:2,pre:"$",hint:"MC = wage ÷ MP.",why:"$10 ÷ 5 = $2."},
+"m8-15":{t:"mc",q:"Workers become more productive. Which curves shift down?",o:["AVC, ATC and MC (AFC doesn’t change)","Only AFC","All four, including AFC","None of them"],a:0,why:"Higher productivity or a lower wage cuts variable cost. Fixed cost, and so AFC, stays the same."},
+"m8-v2":{t:"mc",q:"What makes the long-run average cost curve rise at high output?",o:["Diseconomies of scale, like bureaucracy","Diminishing returns","Falling fixed costs","Economies of scale"],a:0,why:"Diminishing returns needs a fixed input, so it explains short-run curves. In the long run nothing is fixed, so a rising LRAC comes from diseconomies of scale."},
+"m8-16":{t:"mc",q:"To make 2,000 bushels, the small plant’s ATC is $16 and the medium plant’s is $25. In the long run the firm should…",o:["Use the small plant","Use the medium plant","Use both","It doesn’t matter"],a:0,why:"In the long run the firm picks the plant with the lowest cost for its output. That’s how the LRAC envelope is built."},
+"m8-ex":{t:"ex",q:"Explain why the marginal cost curve crosses ATC at ATC’s lowest point. Use the GPA idea.",model:"When MC is below ATC, each extra unit costs less than the average, so it pulls the average down, like a semester below your GPA. When MC is above ATC, it pulls the average up. So ATC stops falling and starts rising exactly where MC crosses it, which is ATC’s minimum."},
+/* Midterm practice (answers worked out here, not Top Hat's key) */
+"mt-1":{t:"mc",q:"PPC assumptions. Why do economies not go above full employment?",o:["It is not possible","They would not make more stuff today","It is not sustainable"],a:2,why:"Running above full employment can happen briefly, but it can’t last."},
+"mt-2":{t:"mc",q:"If the price of bicycles increases, what happens in the market for bicycle helmets?",o:["Demand decreases (shifts left)","Demand increases (shifts right)","Supply decreases (shifts left)","Supply increases (shifts right)"],a:0,why:"Bikes and helmets are complements. Pricier bikes mean fewer bikes bought, so helmet demand shifts left."},
+"mt-3":{t:"mc",q:"A country can make at most 400 bicycles or 500 cars, with constant opportunity costs. What is the cost of 1 bicycle in cars?",o:["4/5","5/4","1","500"],a:1,why:"400 bikes = 500 cars, so 1 bike = 500 ÷ 400 = 5/4 cars."},
+"mt-4":{t:"mc",q:"Which would have the most elastic demand?",o:["iPhone 17 Pro Max","Communication devices","Smart phones","iPhones"],a:0,why:"The more narrowly a good is defined, the more substitutes it has, so its demand is more elastic."},
+"mt-5":{t:"num",q:"A concert ticket rises from $25 to $30, and seats demanded fall from 20,000 to 10,000. Using the midpoint formula, what is the price elasticity of demand? (absolute value, nearest tenth)",a:3.7,tol:.051,hint:"%ΔQ = (10,000 − 20,000) ÷ 15,000. %ΔP = (30 − 25) ÷ 27.5.",why:"%ΔQ = −66.7% and %ΔP = 18.2%, so |−66.7 ÷ 18.2| ≈ 3.67, which rounds to 3.7."},
+"mt-6":{t:"num",q:"Cross-price elasticity is 3/4 and 100 units of good A are demanded. If the price of good B rises 20%, what is the new quantity of A? (percent change formula)",a:115,hint:"%ΔQ of A = 0.75 × 20%.",why:"0.75 × 20% = 15%, and 100 × 1.15 = 115."},
+"mt-7":{t:"mc",q:"If the cross-price elasticity between A and B is 3/4, what can we say for certain?",o:["They are complements","They are substitutes","A is inferior","A is normal"],a:1,why:"A positive cross-price elasticity means substitutes: when B’s price rises, people buy more A."},
+"mt-8":{t:"num",q:"Same concert ($25 → $30, 20,000 → 10,000 seats), but with the simple percent change formula. What is the elasticity of demand? (absolute value)",a:2.5,hint:"%ΔQ = −10,000 ÷ 20,000. %ΔP = 5 ÷ 25.",why:"%ΔQ = −50% and %ΔP = 20%, so 50 ÷ 20 = 2.5."},
+"mt-9":{t:"mc",q:"If the price of a good increases, which will occur?",o:["Demand increases","Demand decreases","Supply increases","Supply decreases","Quantity demanded decreases (move along demand)","Quantity supplied decreases (move along supply)"],a:4,why:"A price change moves you along the demand curve; it doesn’t shift it. Quantity supplied would rise, not fall."}
+};
+const MODNAME={m5:"Module 5",m6:"Module 6",m7:"Module 7",m8:"Module 8",mt:"Midterm practice"};
+const modOf=id=>id.split('-')[0];
+
+/* ---------- question renderer ---------- */
+let UID=0;
+function renderQ(id,host,o={}){
+  const q=QB[id]; if(!q){host.textContent='';return}
+  const u='q'+(++UID);
+  const card=document.createElement('div');
+  card.className='q'+(o.pre?' pre':'');
+  const tag=o.pre?'Guess first':q.t==='ex'?'Explain it':q.t==='sort'?'Sort it':'Check yourself';
+  const meta=o.meta||(o.pre?'before you read':'');
+  card.innerHTML=`<div class="q-top"><span class="q-tag">${tag}</span>${meta?`<span class="q-meta">${meta}</span>`:''}</div><p class="q-text">${q.q}</p><div class="q-body"></div><div class="q-fb" role="status" hidden></div>`;
+  host.replaceChildren(card);
+  const body=card.querySelector('.q-body'), fb=card.querySelector('.q-fb');
+  const show=(cls,html)=>{fb.hidden=false;fb.className='q-fb '+cls;fb.innerHTML=html};
+  const done=(ok,partial)=>{record(id,ok,partial); if(o.onDone) o.onDone(ok)};
+
+  if(q.t==='mc'){
+    body.innerHTML=`<div class="opts">${q.o.map((t,i)=>`<button type="button" class="opt" data-i="${i}"><span class="k">${'ABCDEF'[i]}</span><span>${t}</span></button>`).join('')}</div>`;
+    const bs=[...body.querySelectorAll('.opt')];
+    bs.forEach(b=>b.addEventListener('click',()=>{
+      const i=+b.dataset.i, ok=i===q.a;
+      bs.forEach((x,k)=>{x.disabled=true; if(k===q.a) x.classList.add('right')});
+      if(!ok) b.classList.add('wrong');
+      const head=o.pre?(ok?'Good guess.':'Now you know what to look for.'):(ok?'Right.':'Not quite.');
+      const extra=(!ok&&q.fb&&q.fb[i])?q.fb[i]+' ':'';
+      show(ok?'ok':(o.pre?'hint':'no'),`<b>${head}</b> ${extra}${q.why}`);
+      done(ok);
+    }));
+  } else if(q.t==='num'){
+    body.innerHTML=`<form class="numf" novalidate><label class="sr" for="${u}">Your answer</label><div class="numin">${q.pre?`<span>${q.pre}</span>`:''}<input id="${u}" inputmode="decimal" autocomplete="off" placeholder="0">${q.suf?`<span>${q.suf}</span>`:''}</div><button class="btn primary" type="submit">Check</button><button class="btn ghost" type="button" data-show>Show answer</button></form>`;
+    const form=body.querySelector('form'), inp=body.querySelector('input');
+    let tries=0, first=null;
+    const ans=(q.pre||'')+q.a.toLocaleString('en-US')+(q.suf?' '+q.suf:'');
+    const finish=(ok)=>{
+      inp.disabled=true; form.querySelectorAll('button').forEach(b=>b.disabled=true);
+      show(ok?'ok':'no',`<b>${ok?(tries>1?'Right on the second try.':'Right.'):'Answer: '+ans+'.'}</b> ${q.why}`);
+      done(first===null?false:first);
+    };
+    form.addEventListener('submit',e=>{
+      e.preventDefault();
+      const v=parseFloat(inp.value.replace(/[$,%\s]/g,'').replace(/utils|bushels/gi,''));
+      if(isNaN(v)){show('hint','<b>Type a number.</b> Digits only, like 45 or 62.5.');return}
+      tries++;
+      const tol=q.tol!=null?q.tol:Math.max(.011,Math.abs(q.a)*.005);
+      const ok=Math.abs(v-q.a)<=tol;
+      if(first===null) first=ok;
+      if(ok) finish(true);
+      else if(tries===1&&q.hint) {show('hint',`<b>Not yet.</b> Hint: ${q.hint} Try once more.`); inp.select()}
+      else finish(false);
+    });
+    form.querySelector('[data-show]').addEventListener('click',()=>{if(first===null) first=false; finish(false)});
+  } else if(q.t==='sort'){
+    body.innerHTML=`<div class="sort">${q.items.map(([t],k)=>`<div class="srow"><label for="${u}-${k}">${t}</label><select id="${u}-${k}"><option value="">Choose…</option>${q.c.map(c=>`<option>${c}</option>`).join('')}</select><span class="mark" aria-hidden="true"></span></div>`).join('')}</div><button class="btn primary" type="button">Check</button>`;
+    const btn=body.querySelector('.btn'), rows=[...body.querySelectorAll('.srow')];
+    btn.addEventListener('click',()=>{
+      const sels=rows.map(r=>r.querySelector('select'));
+      if(sels.some(s=>!s.value)){show('hint','<b>Almost.</b> Pick an answer for every row first.');return}
+      let all=true;
+      rows.forEach((r,k)=>{const ok=sels[k].value===q.items[k][1]; all=all&&ok; r.classList.add(ok?'ok':'no'); r.querySelector('.mark').textContent=ok?'✓':'✗'; sels[k].disabled=true;
+        if(!ok){const f=document.createElement('p');f.className='fix';f.textContent='Answer: '+q.items[k][1];r.append(f)}});
+      btn.disabled=true;
+      show(all?'ok':'no',`<b>${all?'All right.':'Some to fix.'}</b> ${q.why}`);
+      done(all);
+    });
+  } else if(q.t==='ex'){
+    body.innerHTML=`<label class="sr" for="${u}">Your explanation</label><textarea id="${u}" rows="4" placeholder="Explain it in your own words, as if to a friend…"></textarea><button class="btn primary" type="button">Compare with a model answer</button>`;
+    const sr=document.createElement('div'); sr.className='selfrate'; sr.hidden=true;
+    sr.innerHTML=`<p>How close were you?</p><div class="row"><button class="btn" type="button" data-r="2">Nailed it</button><button class="btn" type="button" data-r="1">Partly</button><button class="btn" type="button" data-r="0">Missed it</button></div>`;
+    card.append(sr);
+    body.querySelector('.btn').addEventListener('click',e=>{e.currentTarget.disabled=true; show('model','<b>Model answer.</b> '+q.model); sr.hidden=false});
+    sr.querySelectorAll('[data-r]').forEach(b=>b.addEventListener('click',()=>{
+      const r=+b.dataset.r; sr.querySelectorAll('[data-r]').forEach(x=>{x.disabled=true; x.classList.toggle('on',x===b)});
+      done(r===2,r===1);
+    }));
+  }
+}
+
+/* ---------- graph helpers (SVG strings) ---------- */
+function plotter(o){
+  const L=78,R=606,T=24,B=336;
+  const X=q=>L+(q/o.qmax)*(R-L), Y=p=>B-(p/o.pmax)*(B-T);
+  const f1=n=>n.toFixed(1);
+  const yf=o.yf||(t=>String(t)), xf=o.xf||(t=>String(t));
+  const h={X,Y,L,R,T,B};
+  h.axes=(op=1,avoid=[])=>{
+    if(op<=0) return '';
+    let s=`<g opacity="${op}">`;
+    for(const t of o.yt){ if(t>0) s+=`<line x1="${L}" x2="${R}" y1="${f1(Y(t))}" y2="${f1(Y(t))}" class="gr"/>`; if(!avoid.some(v=>Math.abs(Y(v)-Y(t))<15)) s+=`<text x="${L-9}" y="${f1(Y(t)+4)}" class="tk" text-anchor="end">${yf(t)}</text>`}
+    for(const t of o.xt){ s+=`<text x="${f1(X(t))}" y="${B+20}" class="tk" text-anchor="middle">${xf(t)}</text>`}
+    s+=`<line x1="${L}" y1="${T-10}" x2="${L}" y2="${B}" class="ax"/><line x1="${L}" y1="${B}" x2="${R+14}" y2="${B}" class="ax"/>`;
+    s+=`<text x="${(L+R)/2}" y="${B+46}" class="al" text-anchor="middle">${o.xl}</text>`;
+    s+=`<text x="16" y="${(T+B)/2}" class="al" text-anchor="middle" transform="rotate(-90 16 ${(T+B)/2})">${o.yl}</text>`;
+    return s+'</g>';
+  };
+  h.path=(pts,st={})=>{
+    const p=st.p==null?1:st.p, op=st.op==null?1:st.op; if(p<=0||op<=0) return '';
+    let px=pts.map(([q,v])=>[X(q),Y(v)]);
+    if(p<1){
+      const lens=[];let tot=0;
+      for(let i=1;i<px.length;i++){const d=Math.hypot(px[i][0]-px[i-1][0],px[i][1]-px[i-1][1]);lens.push(d);tot+=d}
+      let left=tot*p; const out=[px[0]];
+      for(let i=1;i<px.length;i++){ if(left>=lens[i-1]){out.push(px[i]);left-=lens[i-1]} else {const t=lens[i-1]?left/lens[i-1]:0; out.push([lerp(px[i-1][0],px[i][0],t),lerp(px[i-1][1],px[i][1],t)]);break} }
+      px=out;
+    }
+    return `<polyline points="${px.map(a=>f1(a[0])+','+f1(a[1])).join(' ')}" fill="none" style="stroke:var(--${st.c||'ink'})" stroke-width="${st.w||3.2}" ${st.dash?`stroke-dasharray="${st.dash}"`:''} stroke-linecap="round" stroke-linejoin="round" opacity="${op}"/>`;
+  };
+  h.fn=(f,a,b,st={})=>{const n=st.n||64,pts=[];for(let i=0;i<=n;i++){const q=a+(b-a)*i/n;pts.push([q,f(q)])}return h.path(pts,st)};
+  h.area=(pts,st={})=>{const op=st.op==null?1:st.op; if(op<=0) return ''; return `<polygon points="${pts.map(([q,v])=>f1(X(q))+','+f1(Y(v))).join(' ')}" style="fill:var(--${st.c})" fill-opacity="${((st.fo==null?.34:st.fo)*op).toFixed(3)}"/>`};
+  h.dot=(q,v,st={})=>{const op=st.op==null?1:st.op; if(op<=0) return ''; return `<circle cx="${f1(X(q))}" cy="${f1(Y(v))}" r="${st.r||6.5}" style="fill:var(--${st.c||'ink'});stroke:var(--stage)" stroke-width="2.5" opacity="${op}"/>`};
+  h.ring=(q,v,st={})=>{const op=st.op==null?1:st.op; if(op<=0) return ''; return `<circle cx="${f1(X(q))}" cy="${f1(Y(v))}" r="${st.r||11}" fill="none" style="stroke:var(--${st.c||'ink'})" stroke-width="2.5" opacity="${op}"/>`};
+  h.text=(x,y,str,st={})=>{const op=st.op==null?1:st.op; if(op<=0) return ''; return `<text x="${f1(x)}" y="${f1(y)}" class="lbl" text-anchor="${st.a||'start'}" style="fill:var(--${st.c||'ink'});font-size:${st.size||14}px" opacity="${op}">${str}</text>`};
+  h.tl=(q,v,str,st={})=>h.text(X(q)+(st.dx||0),Y(v)+(st.dy||0),str,st);
+  const chip=(x,y,str,anchor,st)=>{const op=st.op==null?1:st.op; if(op<=0) return ''; const w=str.length*7.4+10; const x0=anchor==='end'?x-w+4:x-w/2;
+    return `<g opacity="${op}"><rect x="${f1(x0)}" y="${f1(y-13)}" width="${f1(w)}" height="18" rx="5" style="fill:var(--stage)"/><text x="${f1(anchor==='end'?x:x)}" y="${f1(y)}" class="chip" text-anchor="${anchor}" style="fill:var(--${st.c||'ink'})">${str}</text></g>`};
+  h.xchip=(q,str,st={})=>chip(X(q),B+20,str,'middle',st);
+  h.ychip=(v,str,st={})=>chip(L-9,Y(v)+4,str,'end',st);
+  h.guide=(q,v,st={})=>{const op=st.op==null?1:st.op; if(op<=0) return ''; let s=`<g opacity="${op}"><polyline points="${f1(L)},${f1(Y(v))} ${f1(X(q))},${f1(Y(v))} ${f1(X(q))},${f1(B)}" fill="none" style="stroke:var(--muted)" stroke-width="1.4" stroke-dasharray="4 5"/></g>`;
+    if(st.yl) s+=h.ychip(v,st.yl,{op,c:st.c}); if(st.xl) s+=h.xchip(q,st.xl,{op,c:st.c}); return s};
+  h.arrow=(q0,v0,q1,v1,st={})=>{const op=st.op==null?1:st.op; if(op<=0) return ''; const x0=X(q0),y0=Y(v0),x1=X(q1),y1=Y(v1); const a=Math.atan2(y1-y0,x1-x0),k=9;
+    const len=Math.hypot(x1-x0,y1-y0); if(len<2) return '';
+    const p1=[x1-k*Math.cos(a-.45),y1-k*Math.sin(a-.45)],p2=[x1-k*Math.cos(a+.45),y1-k*Math.sin(a+.45)];
+    return `<g opacity="${op}"><line x1="${f1(x0)}" y1="${f1(y0)}" x2="${f1(x1-4*Math.cos(a))}" y2="${f1(y1-4*Math.sin(a))}" style="stroke:var(--${st.c||'ink'})" stroke-width="${st.w||2.2}"/><polygon points="${f1(x1)},${f1(y1)} ${f1(p1[0])},${f1(p1[1])} ${f1(p2[0])},${f1(p2[1])}" style="fill:var(--${st.c||'ink'})"/></g>`};
+  h.vseg=(q,v0,v1,st={})=>h.path([[q,v0],[q,v1]],Object.assign({w:7,c:'ink'},st));
+  return h;
+}
+
+/* ---------- videos ---------- */
+const VIDEOS={};
+/* Module 5 */
+const D5=q=>12-.2*q, S5=q=>.2*q;
+const P5={qmax:60,pmax:14,xt:[0,10,20,30,40,50,60],yt:[0,2,4,6,8,10,12,14],yf:t=>'$'+t,xl:'Quantity (boxes of cookies)',yl:'Price ($ per box)'};
+function surplus5(h,q,op){
+  let s=''; const qc=Math.min(q,30);
+  s+=h.area([[0,12],[qc,D5(qc)],[qc,6],[0,6]],{c:'cs',op:op.cs});
+  s+=h.area([[0,6],[qc,6],[qc,S5(qc)],[0,0]],{c:'ps',op:op.ps});
+  if(Math.abs(q-30)>.05&&op.dwl>0) s+=h.area([[q,D5(q)],[30,6],[q,S5(q)]],{c:'dwl',fo:.55,op:op.dwl});
+  return s;
+}
+function qmarker5(h,q,o){
+  let s=h.path([[q,0],[q,Math.max(D5(q),S5(q))]],{c:'muted',w:1.5,dash:'5 5',op:o});
+  s+=h.dot(q,D5(q),{c:'d',op:o})+h.dot(q,S5(q),{c:'s',op:o});
+  const up=D5(q)>=S5(q);
+  const fm=v=>'$'+v.toFixed(v%1?1:0);
+  if(up){ s+=h.tl(q,D5(q),'MB '+fm(D5(q)),{c:'d-ink',dx:10,dy:-10,op:o}); s+=h.tl(q,S5(q),'MC '+fm(S5(q)),{c:'s-ink',dx:10,dy:20,op:o}); }
+  else { s+=h.tl(q,S5(q),'MC '+fm(S5(q)),{c:'s-ink',a:'end',dx:-12,dy:-8,op:o}); s+=h.tl(q,D5(q),'MB '+fm(D5(q)),{c:'d-ink',a:'end',dx:-12,dy:20,op:o}); }
+  s+=h.xchip(q,String(Math.round(q)),{op:o,c:'accent'});
+  if(Math.abs(q-30)>2.5) s+=h.tl((2*q+30)/3,6,'DWL',{c:'dwl-ink',a:'middle',dy:5,size:12,op:o});
+  return s;
+}
+VIDEOS.v5={title:'Surplus and deadweight loss',plot:P5,scenes:[
+  {t:'Demand = MB',cap:'Each point on the demand curve shows the most a buyer will pay for one more box of cookies. That’s marginal benefit, so demand is the MB curve.'},
+  {t:'Supply = MC',cap:'Each point on the supply curve shows the least a seller will accept for one more box. That’s marginal cost, so supply is the MC curve.'},
+  {t:'Equilibrium',cap:'The curves cross at $6 and 30 boxes. Here marginal benefit equals marginal cost: MB = MC.'},
+  {t:'Consumer surplus',cap:'Consumer surplus is the green area, below demand and above the price. Buyers valued these boxes above the $6 they paid. ½ × 30 × $6 = $90.'},
+  {t:'Producer surplus',cap:'Producer surplus is the purple area, above supply and below the price. ½ × 30 × $6 = $90. Total surplus is $180, the most this market can create.'},
+  {t:'Underproduction',cap:'Now only 20 boxes get made. The 21st box is worth $8 to a buyer but costs just $4 to make, so good trades are missed. The lost surplus is the gray deadweight loss.',check:'m5-v1'},
+  {t:'Overproduction',cap:'Now 40 boxes get made. The 40th box costs $8 to make but is worth only $4 to a buyer. That destroys value. The gray triangle now points left, back toward 30.',check:'m5-v2'},
+  {t:'The rule',cap:'Efficient means MB = MC. Too little output: MB > MC. Too much: MC > MB. Either way there’s deadweight loss, and the triangle’s tip points to the efficient quantity.'}],
+  draw(sp,h){
+    const [a0,a1,a2,a3,a4,a5,a6,a7]=sp;
+    let q=30; if(a5>0)q=lerp(30,20,a5); if(a6>0)q=lerp(20,40,a6); if(a7>0)q=lerp(40,30,a7);
+    let s=h.axes(sub(a0,0,.35));
+    s+=surplus5(h,q,{cs:a3,ps:a4,dwl:a5>0?1:0});
+    s+=h.fn(D5,0,60,{c:'d',p:a0})+h.fn(S5,0,60,{c:'s',p:a1});
+    s+=h.tl(50,D5(50),'D = MB',{c:'d-ink',dy:-12,op:sub(a0,.7,1)});
+    s+=h.tl(53,S5(53),'S = MC',{c:'s-ink',a:'end',dx:-10,dy:-4,op:sub(a1,.7,1)});
+    s+=h.guide(30,6,{op:a2*(a5>0&&a7<1?.35:1)})+h.dot(30,6,{op:a2});
+    if(a3>0) s+=h.tl(1.5,6.65,a5>0?'CS':'CS = ½ × 30 × $6 = $90',{c:'cs-ink',op:a3,size:13});
+    if(a4>0) s+=h.tl(1.5,5.0,a5>0?'PS':'PS = ½ × 30 × $6 = $90',{c:'ps-ink',op:a4,size:13});
+    if(a5>0&&a7<1) s+=qmarker5(h,q,a7>0?1-a7:1);
+    return s;
+  }};
+
+/* Module 6: rent ceiling */
+const D6a=q=>2200-30*q, S6a=q=>400+30*q;
+VIDEOS.v6a={title:'A rent ceiling, step by step',plot:{qmax:60,pmax:2400,xt:[0,10,20,30,40,50,60],yt:[0,400,800,1200,1600,2000,2400],yf:t=>'$'+t.toLocaleString('en-US'),xl:'Apartments (thousands)',yl:'Monthly rent'},scenes:[
+  {t:'Free market',cap:'With no rent rules, this city’s rental market clears at $1,300 a month, with 30,000 apartments rented.'},
+  {t:'Ceiling below',cap:'The city sets a rent ceiling of $1,000. It’s below the $1,300 equilibrium, so it binds. A ceiling above $1,300 would change nothing.'},
+  {t:'Shortage',cap:'At $1,000, landlords offer only 20,000 apartments, but renters want 40,000. The 20,000 gap is the shortage.',check:'m6-v1'},
+  {t:'Black market price',cap:'Only 20,000 apartments exist now. For the last of them, renters would pay up to $1,600. That gap above $1,000 is where black markets and side payments come from.'},
+  {t:'Search and DWL',cap:'The yellow box is what renters could gain from the low rent, but time spent searching and payments to the super can eat all of it. The gray triangle is deadweight loss: 10,000 apartments that are worth more than they cost never get supplied.'},
+  {t:'Recap',cap:'A binding ceiling means a shortage, underproduction (MSB > MSC at 20,000), search costs and black markets. Yellow box plus gray triangle is the most rent control can cost.'}],
+  draw(sp,h){
+    const [a0,a1,a2,a3,a4,a5]=sp;
+    let s=h.axes(sub(a0,0,.35),[a0>.6?1300:-1e9,a1>0?1000:-1e9,a3>0?1600:-1e9]);
+    if(a4>0){ s+=h.area([[0,1000],[20,1000],[20,1600],[0,1600]],{c:'rev',op:a4,fo:.42}); s+=h.area([[20,1600],[30,1300],[20,1000]],{c:'dwl',op:a4,fo:.55});
+      s+=h.tl(10,1300,'Search costs',{a:'middle',c:'rev-ink',dy:5,size:13,op:a4}); s+=h.tl(23.4,1300,'DWL',{a:'middle',c:'dwl-ink',dy:5,size:12,op:a4}); }
+    s+=h.fn(D6a,0,60,{c:'d',p:a0})+h.fn(S6a,0,60,{c:'s',p:a0});
+    s+=h.tl(52,D6a(52),'Demand',{c:'d-ink',dy:-12,op:sub(a0,.7,1)});
+    s+=h.tl(56,S6a(56),'Supply',{c:'s-ink',a:'end',dx:-10,dy:-2,op:sub(a0,.7,1)});
+    const e=sub(a0,.6,1)*(1-.55*a1);
+    s+=h.guide(30,1300,{op:e,yl:'$1,300'})+h.dot(30,1300,{op:e});
+    if(a1>0){ s+=h.path([[0,1000],[60,1000]],{c:'ink',w:3.2,p:a1}); s+=h.ychip(1000,'$1,000',{op:a1,c:'accent'}); s+=h.tl(0.8,1000,'Rent ceiling',{dy:-10,size:13,op:sub(a1,.6,1)*(1-a4)}); }
+    if(a2>0){
+      s+=h.path([[20,0],[20,1000]],{c:'muted',w:1.4,dash:'4 5',op:a2})+h.path([[40,0],[40,1000]],{c:'muted',w:1.4,dash:'4 5',op:a2});
+      s+=h.dot(20,1000,{c:'s',op:a2})+h.dot(40,1000,{c:'d',op:a2});
+      s+=h.arrow(21.5,760,38.5,760,{op:a2,c:'bad'})+h.arrow(38.5,760,21.5,760,{op:a2,c:'bad'});
+      s+=h.tl(30,560,'Shortage: 20,000',{a:'middle',c:'bad',size:13,op:a2});
+      s+=h.xchip(20,'Qs 20',{op:a2,c:'s-ink'})+h.xchip(40,'Qd 40',{op:a2,c:'d-ink'});
+    }
+    if(a3>0){
+      s+=h.path([[20,1000],[20,2400]],{c:'s',w:3,dash:'2 7',op:a3*.9});
+      s+=h.guide(20,1600,{op:a3,yl:'$1,600'})+h.dot(20,1600,{c:'d',op:a3});
+      s+=h.tl(20,1600,'Renters would pay $1,600',{a:'end',dx:-12,dy:18,size:13,op:a3*(1-a4)});
+    }
+    return s;
+  }};
+
+/* Module 6: tax incidence */
+const D6=q=>17-.12*q, S6=q=>.08*q-3;
+VIDEOS.v6b={title:'Who really pays a $5 pizza tax?',plot:{qmax:160,pmax:18,xt:[0,25,50,75,100,125,150],yt:[0,2,4,6,8,10,12,14,16,18],yf:t=>'$'+t,xl:'Pizzas per day',yl:'Price ($)'},scenes:[
+  {t:'Before the tax',cap:'Before any tax, the pizza market clears at $5 a pizza and 100 pizzas a day.'},
+  {t:'Tax the sellers',cap:'The government charges sellers $5 per pizza. Sellers now need $5 more to supply each pizza, so the supply curve shifts up by exactly $5.'},
+  {t:'Buyers pay $8',cap:'The new equilibrium is 75 pizzas a day, and buyers now pay $8.'},
+  {t:'Sellers keep $3',cap:'Sellers collect $8 but send $5 to the government, so they keep $3.'},
+  {t:'Who really pays',cap:'Buyers pay $3 more than before, which is 60% of the tax. Sellers get $2 less, which is 40%. That split is the tax incidence.',check:'m6-v2'},
+  {t:'Revenue and DWL',cap:'The yellow box is tax revenue: $5 × 75 = $375. The gray triangle is deadweight loss from the 25 pizzas no longer sold: ½ × 25 × $5 = $62.50.'},
+  {t:'Tax buyers instead',cap:'Now put the same $5 tax on buyers. Demand shifts down by $5. Sellers get $3, buyers pay $3 + $5 = $8, and 75 pizzas sell. Same split. Who the law taxes doesn’t matter.',check:'m6-v3'}],
+  draw(sp,h){
+    const [a0,a1,a2,a3,a4,a5,a6]=sp;
+    const ts=5*a1*(1-a6), td=5*a6;
+    let s=h.axes(sub(a0,0,.35),[a0>.6?5:-99,a2>0?8:-99,a3>0?3:-99]);
+    if(a5>0){ s+=h.area([[0,3],[75,3],[75,8],[0,8]],{c:'rev',op:a5,fo:.42}); s+=h.area([[75,8],[100,5],[75,3]],{c:'dwl',op:a5,fo:.55});
+      s+=h.tl(20,5.2,'Tax revenue $375',{c:'rev-ink',size:13,op:a5,dy:5}); s+=h.tl(83.3,5.4,'DWL',{a:'middle',c:'dwl-ink',size:12,dy:5,op:a5}); }
+    s+=h.fn(D6,0,141.6,{c:'d',p:a0})+h.fn(S6,37.5,160,{c:'s',p:a0});
+    s+=h.tl(6,D6(6),'D',{c:'d-ink',dy:-10,op:sub(a0,.7,1)});
+    s+=h.tl(156,S6(156),'S',{c:'s-ink',dy:-10,op:sub(a0,.7,1)});
+    if(ts>.02){ s+=h.fn(q=>S6(q)+ts,Math.max(0,(3-ts)/.08),160,{c:'s',dash:'9 6',op:a1>0?1:0}); s+=h.tl(140,S6(140)+ts,'S + tax',{c:'s-ink',a:'end',dx:-8,dy:-8,op:clamp(ts/5)}); }
+    if(td>.02){ s+=h.fn(q=>D6(q)-td,0,(17-td)/.12,{c:'d',dash:'9 6'}); s+=h.tl(88,D6(88)-td,'D − tax',{c:'d-ink',dx:8,dy:-10,op:clamp(td/5)}); }
+    s+=h.guide(100,5,{op:sub(a0,.6,1)*(1-.6*a2),yl:'$5',xl:'100'})+h.dot(100,5,{op:sub(a0,.6,1)});
+    s+=h.arrow(130,S6(130),130,S6(130)+ts,{c:'s-ink',op:a1>0&&ts>.3?1:0});
+    if(ts>.3) s+=h.tl(130,S6(130)+ts/2,'$5 tax',{c:'s-ink',dx:10,dy:5,size:13,op:a1*(1-a6)});
+    if(td>.3){ s+=h.arrow(30,D6(30),30,D6(30)-td,{c:'d-ink'}); s+=h.tl(30,D6(30)-td/2,'$5 tax',{c:'d-ink',dx:10,dy:5,size:13,op:a6}); }
+    if(a2>0){ s+=h.guide(75,8,{op:a2,yl:'$8',xl:'75',c:'d-ink'}); s+=h.dot(75,8,{c:'d',op:a2}); s+=h.tl(75,8,'Buyers pay $8',{c:'d-ink',dx:12,dy:-10,size:13,op:a2*(1-a4)}); }
+    if(a3>0){ s+=h.path([[0,3],[75,3]],{c:'muted',w:1.4,dash:'4 5',op:a3}); s+=h.ychip(3,'$3',{op:a3,c:'s-ink'}); s+=h.dot(75,3,{c:'s',op:a3}); s+=h.tl(75,3,'Sellers keep $3',{c:'s-ink',dx:12,dy:20,size:13,op:a3*(1-a4)}); }
+    if(a4>0){
+      s+=h.vseg(62,5,8,{c:'d',op:a4,w:7})+h.vseg(62,3,5,{c:'s',op:a4,w:7});
+      s+=h.tl(62,8.6,'Buyers +$3 · 60%',{c:'d-ink',a:'end',dx:-12,dy:5,size:13,op:a4});
+      s+=h.tl(62,2.4,'Sellers −$2 · 40%',{c:'s-ink',a:'end',dx:-12,dy:5,size:13,op:a4});
+    }
+    return s;
+  }};
+
+/* Module 7: externalities */
+const D7=q=>12-.2*q, S7=q=>.2*q, MSC7=q=>.2*q+4, Dp=q=>10-.2*q, MSBp=q=>14-.2*q;
+VIDEOS.v7a={title:'Externalities: too much, too little',plot:{qmax:50,pmax:14,xt:[0,10,20,30,40,50],yt:[0,2,4,6,8,10,12,14],yf:t=>'$'+t,xl:'Quantity (units)',yl:'Price and cost ($)'},scenes:[
+  {t:'Private market',cap:'A power plant sells electricity. Its supply curve counts only its own costs, the private marginal cost. The market settles at 30 units and $6.'},
+  {t:'External cost',cap:'Smoke from the plant harms people downwind, about $4 per unit. Add that to private cost and you get marginal social cost: MSC = MC + marginal external cost.'},
+  {t:'Efficient point',cap:'Society’s best quantity is where MSC meets MSB: 20 units at $8. The market makes 30. That’s overproduction.'},
+  {t:'Deadweight loss',cap:'For units 20 to 30, the cost to society is above the benefit. That loss is the gray triangle. Its tip points left, toward the efficient quantity. Left tip means overproduction.',check:'m7-v1'},
+  {t:'Pigovian tax',cap:'A Pigovian tax equal to the $4 external cost shifts supply up onto MSC. Now the market picks 20 units on its own. Revenue is the tax times the quantity: $4 × 20 = $80.'},
+  {t:'Positive externality',cap:'Flip it. Each flu shot also protects people around you, an external benefit of $4. So MSB = MB + marginal external benefit. The market makes 25, but the efficient amount is 35. Underproduction, and the triangle’s tip points right.',check:'m7-v2'},
+  {t:'Subsidy',cap:'A $4 subsidy equal to the external benefit shifts demand up onto MSB, so the market makes 35. It costs the government $4 × 35 = $140.'}],
+  draw(sp,h){
+    const [a0,a1,a2,a3,a4,a5,a6]=sp;
+    const neg=1-a5, pos=a5;
+    let s=h.axes(sub(a0,0,.35),[a5>.3?lerp(5,7,a6):-99]);
+    if(neg>0){
+      if(a3>0) s+=h.area([[20,8],[30,10],[30,6]],{c:'dwl',fo:.55,op:a3*(1-a4)*neg});
+      if(a3>0) s+=h.tl(27.2,8,'DWL',{a:'middle',c:'dwl-ink',size:12,dy:5,op:a3*(1-a4)*neg});
+      if(a4>0){ s+=h.area([[0,4],[20,4],[20,8],[0,8]],{c:'rev',fo:.42,op:a4*neg}); s+=h.tl(10,6,'Tax revenue $80',{a:'middle',c:'rev-ink',size:13,dy:5,op:a4*neg}); }
+      s+=h.fn(D7,0,50,{c:'d',p:a0,op:neg})+h.fn(S7,0,50,{c:'s',p:a0,op:neg});
+      s+=h.tl(44,D7(44),'D = MSB',{c:'d-ink',dy:-12,op:sub(a0,.7,1)*neg});
+      s+=h.tl(44,S7(44),'S = MC',{c:'s-ink',dx:8,dy:24,op:sub(a0,.7,1)*neg});
+      s+=h.fn(MSC7,0,50,{c:'ext',p:a1,op:neg}); s+=h.tl(44,MSC7(44),'MSC',{c:'ext-ink',a:'end',dx:-10,dy:-6,op:sub(a1,.7,1)*neg});
+      if(a4>0) s+=h.fn(q=>S7(q)+4*a4,0,50,{c:'s',dash:'9 6',op:neg*(a4<.98?1:0)});
+      s+=h.arrow(40,S7(40),40,MSC7(40),{c:'ext-ink',op:a1*(1-a4)*neg}); s+=h.tl(40,10,'$4 external cost',{c:'ext-ink',dx:10,dy:5,size:13,op:a1*(1-a4)*neg});
+      const qm=lerp(30,20,a4);
+      s+=h.guide(qm,D7(qm),{op:sub(a0,.6,1)*neg,xl:String(Math.round(qm)),yl:'$'+D7(qm).toFixed(0)})+h.dot(qm,D7(qm),{op:sub(a0,.6,1)*neg});
+      if(a2>0){ s+=h.ring(20,8,{c:'ext',op:a2*neg*(1-a4)}); s+=h.tl(20,8,'Efficient',{c:'ext-ink',a:'end',dx:-14,dy:-10,size:13,op:a2*neg*(1-a4)});
+        s+=h.arrow(29,1.2,21,1.2,{c:'bad',op:a2*neg*(1-a4)}); s+=h.tl(25,1.2,'overproduction',{a:'middle',c:'bad',size:12,dy:-8,op:a2*neg*(1-a4)}); s+=h.xchip(20,'20',{op:a2*neg*(1-a4),c:'ext-ink'}); }
+    }
+    if(pos>0){
+      s+=h.area([[25,9],[35,7],[25,5]],{c:'dwl',fo:.55,op:pos*(1-a6)}); s+=h.tl(28.3,7,'DWL',{a:'middle',c:'dwl-ink',size:12,dy:5,op:pos*(1-a6)});
+      if(a6>0){ s+=h.area([[0,3],[35,3],[35,7],[0,7]],{c:'rev',fo:.42,op:a6}); s+=h.tl(13,5,'Subsidy cost $140',{a:'middle',c:'rev-ink',size:13,dy:5,op:a6}); }
+      s+=h.fn(Dp,0,50,{c:'d',op:pos})+h.fn(MSBp,0,50,{c:'ext',op:pos})+h.fn(S7,0,50,{c:'s',op:pos});
+      if(a6>0) s+=h.fn(q=>Dp(q)+4*a6,0,50,{c:'d',dash:'9 6',op:a6<.98?1:0});
+      s+=h.tl(29,Dp(29),'D = MB',{c:'d-ink',a:'end',dx:-12,dy:26,op:pos}); s+=h.tl(44,MSBp(44),'MSB',{c:'ext-ink',dy:-10,op:pos}); s+=h.tl(48,S7(48),'S = MSC',{c:'s-ink',a:'end',dx:-10,dy:-8,op:pos});
+      s+=h.arrow(8,Dp(8),8,MSBp(8),{c:'ext-ink',op:pos*(1-a6)}); s+=h.tl(8,10.4,'$4 external benefit',{c:'ext-ink',dx:10,dy:5,size:13,op:pos*(1-a6)});
+      const qm=lerp(25,35,a6);
+      s+=h.guide(qm,S7(qm),{op:pos,xl:String(Math.round(qm)),yl:'$'+S7(qm).toFixed(0)})+h.dot(qm,S7(qm),{op:pos});
+      s+=h.ring(35,7,{c:'ext',op:pos*(1-a6)});
+      s+=h.arrow(26,1.2,34,1.2,{c:'bad',op:pos*(1-a6)}); s+=h.tl(30,1.2,'underproduction',{a:'middle',c:'bad',size:12,dy:-8,op:pos*(1-a6)}); s+=h.xchip(35,'35',{op:pos*(1-a6),c:'ext-ink'});
+    }
+    return s;
+  }};
+
+/* Module 7: horizontal vs vertical sum */
+const sara=q=>12-.4*q, steve=q=>12-.2*q, mkt=q=>12-q/7.5, ana=q=>8-.1*q, ben=q=>4-.05*q, msb=q=>12-.15*q;
+VIDEOS.v7b={title:'Adding up demand: private vs public goods',plot:{qmax:100,pmax:14,xt:[0,20,40,60,80,100],yt:[0,2,4,6,8,10,12,14],yf:t=>'$'+t,xl:'Quantity',yl:'Willingness to pay ($)'},scenes:[
+  {t:'Two buyers',cap:'Private good first: cookies. Sara’s and Steve’s demand curves both start at $12.'},
+  {t:'Add sideways',cap:'For a private good, add quantities sideways at each price. At $6, Sara buys 15 and Steve buys 30, so the market buys 45. That’s the horizontal sum.'},
+  {t:'Stack up and down',cap:'Now a public good: streetlights. Everyone on the street uses the same lights, so stack each person’s value up and down. At 40 lights, Ana values one more at $4 and Ben at $2, so society values it at $6. That’s the vertical sum.',check:'m7-v3'},
+  {t:'Efficient amount',cap:'The efficient number is where marginal social benefit equals marginal social cost: 40 lights at $6. People can free ride, so nobody pays voluntarily, and taxes fund it.'}],
+  draw(sp,h){
+    const [a0,a1,a2,a3]=sp; const pv=1-a2;
+    let s=h.axes(sub(a0,0,.35));
+    if(pv>0){
+      s+=h.fn(sara,0,30,{c:'cs',p:a0,op:pv})+h.fn(steve,0,60,{c:'d',p:a0,op:pv});
+      s+=h.tl(20,sara(20),'Sara',{c:'cs-ink',dx:8,dy:-4,op:sub(a0,.7,1)*pv}); s+=h.tl(48,steve(48),'Steve',{c:'d-ink',dx:6,dy:-6,op:sub(a0,.7,1)*pv});
+      if(a1>0){
+        s+=h.fn(mkt,0,90,{c:'ink',w:3.6,p:a1,op:pv}); s+=h.tl(76,mkt(76),'Market (horizontal sum)',{c:'ink',a:'end',dx:-4,dy:-12,size:13,op:sub(a1,.7,1)*pv});
+        s+=h.path([[0,6],[45,6]],{c:'muted',w:1.4,dash:'4 5',op:a1*pv});
+        s+=h.dot(15,6,{c:'cs',op:a1*pv})+h.dot(30,6,{c:'d',op:a1*pv})+h.dot(45,6,{c:'ink',op:a1*pv});
+        s+=h.tl(45,6,'15 + 30 = 45',{dx:12,dy:5,size:13,op:a1*pv});
+        s+=h.xchip(15,'15',{op:a1*pv,c:'cs-ink'})+h.xchip(30,'30',{op:a1*pv,c:'d-ink'})+h.xchip(45,'45',{op:a1*pv});
+      }
+    }
+    if(a2>0){
+      s+=h.fn(ana,0,80,{c:'cs',op:a2})+h.fn(ben,0,80,{c:'d',op:a2});
+      s+=h.fn(msb,0,80,{c:'ink',w:3.6,p:sub(a2,.35,1)});
+      s+=h.tl(10,ana(10),'Ana',{c:'cs-ink',dy:-10,op:a2}); s+=h.tl(10,ben(10),'Ben',{c:'d-ink',dy:-10,op:a2}); s+=h.tl(10,msb(10),'MSB = Ana + Ben (vertical sum)',{dy:-12,size:13,op:sub(a2,.6,1)});
+      const g=sub(a2,.4,1);
+      s+=h.vseg(40,0,2,{c:'d',op:g,w:9})+h.vseg(40,2,2+4*g,{c:'cs',op:g,w:9});
+      s+=h.tl(40,1,'Ben $2',{c:'d-ink',dx:12,dy:5,size:13,op:g}); s+=h.tl(40,3,'+ Ana $4',{c:'cs-ink',a:'end',dx:-12,dy:5,size:13,op:g});
+      s+=h.dot(40,6,{c:'ink',op:sub(a2,.8,1)}); s+=h.tl(40,6,'= $6',{dx:12,dy:-8,size:13,op:sub(a2,.8,1)*(1-a3)});
+      s+=h.xchip(40,'40',{op:g});
+    }
+    if(a3>0){ s+=h.path([[0,6],[100,6]],{c:'s',p:a3}); s+=h.tl(98,6,'MSC',{c:'s-ink',a:'end',dy:-10,op:a3}); s+=h.ring(40,6,{c:'accent',op:a3}); s+=h.tl(40,6,'Efficient: 40 lights',{c:'accent',dx:16,dy:22,size:13,op:a3}); s+=h.ychip(6,'$6',{op:a3,c:'accent'}); }
+    return s;
+  }};
+
+/* Module 8: cost curves */
+const AFC=q=>20/q, AVC=q=>q*q-6*q+15, ATC=q=>AFC(q)+AVC(q), MC8=q=>3*q*q-12*q+15;
+VIDEOS.v8a={title:'Short-run cost curves',plot:{qmax:6,pmax:30,xt:[0,1,2,3,4,5,6],yt:[0,5,10,15,20,25,30],yf:t=>'$'+t,xl:'Output (units of corn)',yl:'Cost per unit ($)'},scenes:[
+  {t:'AFC',cap:'Fixed cost is $20 no matter how much corn is grown. Spread over more units, average fixed cost keeps falling. At 2 units, AFC = $20 ÷ 2 = $10.'},
+  {t:'AVC',cap:'Average variable cost is U-shaped. At 2 units, total variable cost is $14, so AVC = $14 ÷ 2 = $7. It falls at first, then rises as diminishing returns set in.'},
+  {t:'ATC = AFC + AVC',cap:'Average total cost stacks the two: $10 + $7 = $17 at 2 units. The gap between ATC and AVC is AFC, so it narrows as output grows.'},
+  {t:'MC',cap:'Marginal cost is the extra cost of one more unit. It cuts through the lowest point of AVC and the lowest point of ATC.'},
+  {t:'Your GPA',cap:'Think of your GPA. A 4.0 semester pulls a 3.0 average up to 3.2. A 2.5 semester pulls it down to 2.9. When MC is below the average, the average falls. When MC is above it, the average rises.',check:'m8-v1'}],
+  draw(sp,h){
+    const [a0,a1,a2,a3,a4]=sp; const dim=1-.78*a4;
+    let s=h.axes(sub(a0,0,.35));
+    s+=h.fn(AFC,.7,6,{c:'dwl',p:a0,op:dim}); s+=h.text(h.X(6)+6,h.Y(AFC(6))+5,'AFC',{c:'dwl-ink',size:13,op:sub(a0,.7,1)*dim});
+    s+=h.fn(AVC,.2,6,{c:'d',p:a1,op:dim}); s+=h.text(h.X(6)+6,h.Y(AVC(6))+5,'AVC',{c:'d-ink',size:13,op:sub(a1,.7,1)*dim});
+    s+=h.fn(ATC,1,6,{c:'ink',p:a2,op:dim}); s+=h.text(h.X(6)+6,h.Y(ATC(6))+5,'ATC',{size:13,op:sub(a2,.7,1)*dim});
+    s+=h.fn(MC8,.15,5,{c:'s',p:a3,op:dim}); s+=h.text(h.X(5)+8,h.Y(30)+12,'MC',{c:'s-ink',size:13,op:sub(a3,.7,1)*dim});
+    const k=(1-a3)*dim;
+    s+=h.dot(2,10,{c:'dwl',op:sub(a0,.6,1)*k}); s+=h.tl(2,10,'AFC $10',{c:'dwl-ink',dx:10,dy:-6,size:13,op:sub(a0,.6,1)*k*(1-a2)});
+    s+=h.dot(2,7,{c:'d',op:a1*k}); s+=h.tl(2,7,'AVC $7',{c:'d-ink',dx:8,dy:18,size:13,op:a1*k});
+    if(a2>0){ s+=h.vseg(2,7.6,16.4,{c:'dwl',w:5,op:a2*k}); s+=h.tl(2,12,'= AFC $10',{c:'dwl-ink',dx:12,dy:5,size:13,op:a2*k}); s+=h.dot(2,17,{op:a2*k}); s+=h.tl(2,17,'ATC $17',{dx:10,dy:-10,size:13,op:a2*k}); s+=h.xchip(2,'2',{op:a2*k,c:'accent'}); }
+    if(a3>0){ s+=h.ring(3,6,{c:'s',op:a3*dim}); s+=h.tl(3,6,'min AVC',{c:'s-ink',dx:10,dy:22,size:13,op:a3*dim}); s+=h.ring(3.72,11.9,{c:'s',op:a3*dim}); s+=h.tl(3.72,11.9,'min ATC',{c:'s-ink',dx:14,dy:20,size:13,op:a3*dim}); }
+    if(a4>0){
+      const x0=150,y0=40,w=360,g=a4;
+      s+=`<g opacity="${g.toFixed(3)}"><rect x="${x0}" y="${y0}" width="${w}" height="196" rx="14" style="fill:var(--surface);stroke:var(--line)" stroke-width="1.5"/>`;
+      s+=`<text x="${x0+20}" y="${y0+32}" style="fill:var(--ink);font-weight:700;font-size:16px">Marginal pulls the average</text>`;
+      const bar=(y,label,val,col,note)=>{const bw=val/4*170;return `<text x="${x0+20}" y="${y+14}" style="fill:var(--muted);font-size:13px">${label}</text><rect x="${x0+150}" y="${y}" width="${(bw*sub(g,.2,1)).toFixed(1)}" height="18" rx="4" style="fill:var(--${col})"/><text x="${x0+150+bw+8}" y="${y+14}" style="fill:var(--ink);font-weight:700;font-size:13px">${note}</text>`};
+      s+=bar(y0+56,'GPA so far',3.0,'dwl','3.0');
+      s+=bar(y0+92,'+ a 4.0 semester',3.2,'good','3.2 ↑');
+      s+=bar(y0+128,'+ a 2.5 semester',2.9,'bad','2.9 ↓');
+      s+=`<text x="${x0+20}" y="${y0+178}" style="fill:var(--muted);font-size:13px">MC below ATC → ATC falls. MC above ATC → ATC rises.</text></g>`;
+    }
+    return s;
+  }};
+
+/* Module 8: long run */
+const U=(c,m)=>q=>m+1.6*(q-c)*(q-c);
+const Us=U(2.5,16), Um=U(5,11), Ul=U(7.5,14);
+const LR=q=>q<3.125?Us(q):q<6.625?Um(q):Ul(q);
+VIDEOS.v8b={title:'The long-run average cost curve',plot:{qmax:10,pmax:30,xt:[0,2,4,6,8,10],yt:[0,5,10,15,20,25,30],yf:t=>'$'+t,xl:'Output (thousand bushels)',yl:'Average cost ($)'},scenes:[
+  {t:'Three plant sizes',cap:'In the long run a farm can choose any plant size. Each U-shaped curve is the short-run ATC for one size: small, medium and large.'},
+  {t:'Pick the cheapest',cap:'To grow 2,000 bushels, the small plant costs about $16 a bushel and the medium one about $25. So pick small. Around 5,000 bushels, the medium plant wins.'},
+  {t:'Lower envelope',cap:'Take the lowest cost at every output and you trace the long-run average cost curve: the lower envelope of all the short-run curves.'},
+  {t:'Scale effects',cap:'Where LRAC falls, there are economies of scale from specialization and cheaper inputs. At the bottom, constant returns. Where it rises, diseconomies of scale like bureaucracy. Diminishing returns explains the short-run U shapes, not LRAC.',check:'m8-v2'}],
+  draw(sp,h){
+    const [a0,a1,a2,a3]=sp; const dim=1-.55*a2;
+    let s=h.axes(sub(a0,0,.3));
+    s+=h.fn(Us,0,5.46,{c:'cs',p:sub(a0,0,.45),op:dim,w:2.6})+h.fn(Um,1.55,8.45,{c:'d',p:sub(a0,.25,.7),op:dim,w:2.6})+h.fn(Ul,4.34,10,{c:'ps',p:sub(a0,.5,1),op:dim,w:2.6});
+    s+=h.tl(2.5,16,'Small',{a:'middle',c:'cs-ink',dy:24,size:13,op:sub(a0,.3,.6)*(1-a3)});
+    s+=h.tl(5,11,'Medium',{a:'middle',c:'d-ink',dy:24,size:13,op:sub(a0,.55,.8)*(1-a3)});
+    s+=h.tl(7.5,14,'Large',{a:'middle',c:'ps-ink',dy:24,size:13,op:sub(a0,.8,1)*(1-a3)});
+    if(a1>0){ const o=a1*(1-a2*.7); s+=h.path([[2,0],[2,Um(2)]],{c:'muted',w:1.4,dash:'4 5',op:o}); s+=h.dot(2,Us(2),{c:'cs',op:o})+h.dot(2,Um(2),{c:'d',op:o});
+      s+=h.tl(2,Us(2),'Small: $16',{c:'cs-ink',dx:10,dy:18,size:13,op:o}); s+=h.tl(2,Um(2),'Medium: $25',{c:'d-ink',dx:10,dy:-6,size:13,op:o}); s+=h.xchip(2,'2',{op:o,c:'accent'}); }
+    s+=h.fn(LR,0,10,{c:'accent',w:5,p:a2,n:160}); s+=h.tl(10,Ul(10),'LRAC',{c:'accent',a:'end',dx:-6,dy:-12,op:sub(a2,.8,1)});
+    if(a3>0){ s+=h.tl(1.6,5,'↘ Economies of scale',{a:'middle',c:'cs-ink',size:13,op:a3}); s+=h.tl(5,5,'→ Constant returns',{a:'middle',c:'d-ink',size:13,op:sub(a3,.2,.6)}); s+=h.tl(8.4,5,'↗ Diseconomies',{a:'middle',c:'ps-ink',size:13,op:sub(a3,.4,.8)}); }
+    return s;
+  }};
+
+/* ---------- motion player ---------- */
+const players=[];
+const hasTTS=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window);
+const ICON_PLAY='<svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>';
+function plain(t){return t.replace(/½/g,'one half').replace(/×/g,'times').replace(/÷/g,'divided by').replace(/−/g,'minus').replace(/→/g,'to').replace(/>/g,'is greater than').replace(/MB/g,'M B').replace(/MC/g,'M C').replace(/MSC/g,'M S C').replace(/MSB/g,'M S B').replace(/DWL/g,'deadweight loss')}
+function makePlayer(host,def){
+  const sc=def.scenes, starts=[]; let tot=0;
+  sc.forEach(s=>{s.d=s.d||Math.max(5.5,s.cap.split(/\s+/).length/2.55+2.2); starts.push(tot); tot+=s.d});
+  const h=plotter(def.plot);
+  const nChecks=sc.filter(s=>s.check).length;
+  host.className='vp';
+  host.innerHTML=`<div class="vp-head"><span class="vp-kick">Motion explainer · ${sc.length} steps · ${mmss(tot)}${nChecks?` · ${nChecks} question${nChecks>1?'s':''} inside`:''}</span><h3>${def.title}</h3></div>
+  <div class="vp-stage" tabindex="0" aria-label="${def.title}. Press space to play or pause, arrow keys to change step."><svg viewBox="0 0 640 400" role="img" aria-label="Animated graph: ${def.title}"></svg><button class="vp-big" type="button">${ICON_PLAY}<span>Play</span></button></div>
+  <p class="vp-cap" aria-live="polite"></p>
+  <div class="vp-check" hidden></div>
+  <div class="vp-ctrl"><button class="btn primary vp-play" type="button">Play</button><input class="vp-scrub" type="range" min="0" max="1000" value="1000" aria-label="Seek"><span class="vp-time"></span>${hasTTS?'<button class="btn vp-narr" type="button" aria-pressed="false">Narrate</button>':''}<button class="btn vp-speed" type="button" aria-label="Playback speed">1×</button></div>
+  <ol class="vp-chapters">${sc.map((s,i)=>`<li><button type="button" data-i="${i}" class="${s.check?'chk':''}">${i+1}. ${s.t}</button></li>`).join('')}</ol>
+  <details class="vp-tx"><summary>Transcript</summary><ol>${sc.map(s=>`<li>${s.cap}</li>`).join('')}</ol></details>`;
+  const $=x=>host.querySelector(x);
+  const svg=$('svg'),cap=$('.vp-cap'),scrub=$('.vp-scrub'),time=$('.vp-time'),playB=$('.vp-play'),big=$('.vp-big'),chk=$('.vp-check'),narrB=$('.vp-narr'),spdB=$('.vp-speed'),stage=$('.vp-stage');
+  const chaps=[...host.querySelectorAll('.vp-chapters button')];
+  let T=tot,playing=false,last=0,cur=-1,speed=1,narr=false,speaking=false,raf=0,tok=0;
+  const answered=new Set();
+  const sceneAt=t=>{let i=0;for(let k=0;k<sc.length;k++) if(t>=starts[k]-1e-6) i=k; return i};
+  const sp=()=>sc.map((s,i)=>{ if(RM) return T>=starts[i]?1:0; const span=Math.min(2.6,s.d*.55); return ease(clamp((T-starts[i])/span)) });
+  function say(text){ if(!hasTTS) return; try{ speechSynthesis.cancel(); const my=++tok; const u=new SpeechSynthesisUtterance(plain(text)); u.rate=Math.min(1.7,speed); u.lang='en-US';
+      speaking=true; u.onend=u.onerror=()=>{if(my===tok) speaking=false}; speechSynthesis.speak(u);
+      setTimeout(()=>{if(my===tok) speaking=false},(text.split(/\s+/).length/2.1/speed+3)*1000);
+    }catch(e){speaking=false} }
+  function hush(){ tok++; speaking=false; if(hasTTS) try{speechSynthesis.cancel()}catch(e){} }
+  function render(){
+    svg.innerHTML=def.draw(sp(),h,T);
+    const i=sceneAt(T);
+    if(i!==cur){ cur=i; cap.innerHTML=`<span class="vp-step">${i+1} / ${sc.length}</span>${sc[i].cap}`; chaps.forEach((b,k)=>b.classList.toggle('on',k===i)); if(playing&&narr) say(sc[i].cap) }
+    scrub.value=String(Math.round(T/tot*1000)); time.textContent=mmss(T)+' / '+mmss(tot);
+  }
+  function tick(ts){
+    raf=0; if(!playing) return;
+    const dt=last?Math.min(.1,(ts-last)/1000)*speed:0; last=ts;
+    const i=sceneAt(T), end=starts[i]+sc[i].d;
+    let nT=T+dt;
+    if(nT>=end-1e-4&&i<sc.length){
+      if(narr&&speaking) nT=end-1e-3;
+      else if(sc[i].check&&!answered.has(i)){ T=end-1e-3; render(); pause(); ask(i); return }
+    }
+    T=Math.min(nT,tot); render();
+    if(T>=tot){ pause(); return }
+    raf=requestAnimationFrame(tick);
+  }
+  function play(){
+    if(T>=tot-1e-3){T=0;answered.clear()}
+    hideCheck(); players.forEach(p=>p!==api&&p.pause());
+    playing=true; last=0; cur=-1; playB.textContent='Pause'; big.hidden=true; render();
+    raf=requestAnimationFrame(tick);
+  }
+  function pause(){ playing=false; playB.textContent='Play'; if(raf) cancelAnimationFrame(raf); raf=0; hush(); big.hidden=true; }
+  function ask(i){
+    big.hidden=true; chk.hidden=false; chk.innerHTML='';
+    const box=document.createElement('div'); chk.append(box);
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML='<button class="btn primary" type="button" hidden>Continue the video</button><button class="btn ghost" type="button">Skip question</button>';
+    chk.append(row);
+    const [cont,skip]=row.querySelectorAll('button');
+    renderQ(sc[i].check,box,{meta:'pause and answer',onDone:()=>{cont.hidden=false; skip.hidden=true; cont.focus({preventScroll:true})}});
+    const go=()=>{answered.add(i); T=starts[i]+sc[i].d; play()};
+    cont.addEventListener('click',go); skip.addEventListener('click',go);
+    chk.scrollIntoView({block:'nearest',behavior:RM?'auto':'smooth'});
+  }
+  function hideCheck(){ chk.hidden=true; chk.innerHTML='' }
+  const toggle=()=>{ if(!chk.hidden) return; playing?pause():play() };
+  playB.addEventListener('click',()=>{ if(!chk.hidden){hideCheck()} playing?pause():play() });
+  big.addEventListener('click',e=>{e.stopPropagation();play()});
+  stage.addEventListener('click',toggle);
+  stage.addEventListener('keydown',e=>{
+    if(e.key===' '||e.key==='Enter'){e.preventDefault();toggle()}
+    else if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault(); const i=clamp(sceneAt(T)+(e.key==='ArrowRight'?1:-1),0,sc.length-1); jump(i)}
+  });
+  function jump(i){
+    hideCheck(); hush(); cur=-1;
+    if(playing){ T=starts[i]; render() }
+    else { T=Math.min(tot,starts[i]+Math.min(2.6,sc[i].d*.55)); render(); big.hidden=true }
+  }
+  chaps.forEach(b=>b.addEventListener('click',()=>jump(+b.dataset.i)));
+  scrub.addEventListener('input',()=>{ if(playing) pause(); hideCheck(); T=scrub.value/1000*tot; render(); big.hidden=true });
+  if(narrB) narrB.addEventListener('click',()=>{ narr=!narr; narrB.setAttribute('aria-pressed',String(narr)); if(narr&&playing) say(sc[sceneAt(T)].cap); if(!narr) hush() });
+  const SPEEDS=[1,1.25,1.5,.75];
+  spdB.addEventListener('click',()=>{ speed=SPEEDS[(SPEEDS.indexOf(speed)+1)%SPEEDS.length]; spdB.textContent=speed+'×' });
+  const api={pause:()=>{ if(playing) pause() }};
+  players.push(api);
+  render();
+  cap.innerHTML=`<span class="vp-step">${sc.length} steps</span>Press play to watch the graph build one piece at a time. It pauses for a quick question along the way. Turn on Narrate to hear it.`;
+  cur=-1;
+}
+
+/* ---------- interactive graphs ---------- */
+function ixShell(host,title,kick,ctrls,stats){
+  host.className='ix';
+  host.innerHTML=`<div class="ix-head"><span class="vp-kick">${kick}</span><h3>${title}</h3></div><div class="ix-stage"><svg viewBox="0 0 640 400" role="img" aria-label="${title}"></svg></div><div class="ix-ctrl">${ctrls}</div><div class="stats">${stats}</div>`;
+  return host.querySelector('svg');
+}
+function ix5(host){
+  const svg=ixShell(host,'Move the quantity and watch the deadweight loss','Try it',
+    `<label for="i5-q">Quantity produced <output id="i5-qo">20 boxes</output></label><input id="i5-q" type="range" min="10" max="50" step="1" value="20"><div class="ends"><span>Too little</span><span>Efficient at 30</span><span>Too much</span></div>`,
+    `<div><b id="i5-ts">$160</b><span>Total surplus</span></div><div><b id="i5-dw">$20</b><span>Deadweight loss</span></div><div><span>Verdict</span><br><span class="verdict" id="i5-v"></span></div>`);
+  const h=plotter(P5), inp=host.querySelector('#i5-q');
+  const upd=()=>{
+    const q=+inp.value;
+    let s=h.axes(1)+surplus5(h,q,{cs:1,ps:1,dwl:1})+h.fn(D5,0,60,{c:'d'})+h.fn(S5,0,60,{c:'s'});
+    s+=h.tl(50,D5(50),'D = MB',{c:'d-ink',dy:-12})+h.tl(53,S5(53),'S = MC',{c:'s-ink',a:'end',dx:-10,dy:-4});
+    s+=h.ring(30,6,{c:'muted'});
+    if(q!==30) s+=qmarker5(h,q,1); else s+=h.dot(30,6)+h.xchip(30,'30',{c:'accent'});
+    svg.innerHTML=s;
+    const dwl=.2*(q-30)*(q-30);
+    host.querySelector('#i5-qo').textContent=q+' boxes';
+    host.querySelector('#i5-ts').textContent=money(180-dwl);
+    host.querySelector('#i5-dw').textContent=money(dwl);
+    const v=host.querySelector('#i5-v');
+    v.textContent=q<30?'Underproduction · MB > MC':q>30?'Overproduction · MC > MB':'Efficient · MB = MC';
+    v.className='verdict '+(q===30?'eff':'off');
+  };
+  inp.addEventListener('input',upd); upd();
+}
+function ix6(host){
+  const svg=ixShell(host,'Change the elasticities and see who pays a $4 tax','Try it',
+    `<div class="presets"><button class="btn" type="button" data-p="85,25">Cigarettes (inelastic demand)</button><button class="btn" type="button" data-p="12,55">Restaurant meals (elastic demand)</button><button class="btn" type="button" data-p="20,85">Beachfront land (inelastic supply)</button></div>
+     <label for="i6-d">Demand</label><input id="i6-d" type="range" min="0" max="100" value="60"><div class="ends"><span>Elastic (flat)</span><span>Inelastic (steep)</span></div>
+     <label for="i6-s">Supply</label><input id="i6-s" type="range" min="0" max="100" value="40"><div class="ends"><span>Elastic (flat)</span><span>Inelastic (steep)</span></div>`,
+    `<div style="grid-column:1/-1"><span>Who pays the $4 tax</span><div class="share"><i class="b" id="i6-bb"></i><i class="s" id="i6-sb"></i></div><p class="shl"><span id="i6-bt" style="color:var(--d-ink)"></span><span id="i6-st" style="color:var(--s-ink)"></span></p></div><div><b id="i6-rev"></b><span>Tax revenue</span></div><div><b id="i6-dwl"></b><span>Deadweight loss</span></div>`);
+  const P={qmax:200,pmax:20,xt:[0,50,100,150,200],yt:[0,4,8,12,16,20],yf:t=>'$'+t,xl:'Quantity',yl:'Price ($)'};
+  const h=plotter(P), dI=host.querySelector('#i6-d'), sI=host.querySelector('#i6-s'), T4=4;
+  const slope=v=>.03*Math.pow(.5/.03,v/100);
+  const segOf=(f,m)=>{const qa=(0-f(0))/m,qb=(20-f(0))/m;return [Math.max(0,Math.min(qa,qb)),Math.min(200,Math.max(qa,qb))]};
+  const upd=()=>{
+    const d=slope(+dI.value), sl=slope(+sI.value);
+    const D=q=>10-d*(q-100), Sf=q=>10+sl*(q-100), St=q=>Sf(q)+T4;
+    const Qn=100-T4/(sl+d), Pb=D(Qn), Ps=Pb-T4;
+    let s=h.axes(1,[Pb,Ps,10]);
+    s+=h.area([[0,Ps],[Qn,Ps],[Qn,Pb],[0,Pb]],{c:'rev',fo:.4});
+    s+=h.area([[Qn,Pb],[100,10],[Qn,Ps]],{c:'dwl',fo:.55});
+    let [a,b]=segOf(D,-d); s+=h.fn(D,a,b,{c:'d',n:2});
+    [a,b]=segOf(Sf,sl); s+=h.fn(Sf,a,b,{c:'s',n:2});
+    [a,b]=segOf(St,sl); s+=h.fn(St,a,b,{c:'s',dash:'9 6',n:2});
+    s+=h.guide(100,10,{yl:'$10'})+h.dot(100,10);
+    s+=h.dot(Qn,Pb,{c:'d'})+h.dot(Qn,Ps,{c:'s'});
+    s+=h.ychip(Pb,money(Pb),{c:'d-ink'})+h.ychip(Ps,money(Ps),{c:'s-ink'});
+    svg.innerHTML=s;
+    const bShare=(Pb-10)/T4;
+    host.querySelector('#i6-bb').style.width=(bShare*100).toFixed(1)+'%';
+    host.querySelector('#i6-sb').style.width=((1-bShare)*100).toFixed(1)+'%';
+    host.querySelector('#i6-bt').textContent='Buyers '+money(Pb-10)+' ('+Math.round(bShare*100)+'%)';
+    host.querySelector('#i6-st').textContent='Sellers '+money(10-Ps)+' ('+Math.round((1-bShare)*100)+'%)';
+    host.querySelector('#i6-rev').textContent=money(T4*Qn);
+    host.querySelector('#i6-dwl').textContent=money(.5*T4*(100-Qn));
+  };
+  dI.addEventListener('input',upd); sI.addEventListener('input',upd);
+  host.querySelectorAll('[data-p]').forEach(b=>b.addEventListener('click',()=>{const [x,y]=b.dataset.p.split(',');dI.value=x;sI.value=y;upd()}));
+  upd();
+}
+
+/* ---------- progress ---------- */
+const MODS=['m5','m6','m7','m8','mt'];
+const idsOf=m=>Object.keys(QB).filter(id=>modOf(id)===m);
+function dueIds(){const now=Date.now();return Object.keys(S.q).filter(id=>QB[id]&&S.q[id].due<=now)}
+function refresh(){
+  const due=dueIds().length;
+  document.querySelectorAll('[data-due]').forEach(e=>e.textContent=due);
+  const seen=Object.keys(S.q).filter(id=>QB[id]);
+  document.querySelectorAll('[data-seen]').forEach(e=>e.textContent=seen.length);
+  document.querySelectorAll('[data-mastered]').forEach(e=>e.textContent=seen.filter(id=>S.q[id].box>=3).length);
+  MODS.forEach(m=>{
+    const ids=idsOf(m), tried=ids.filter(id=>S.q[id]), right=tried.filter(id=>S.q[id].last);
+    document.querySelectorAll(`[data-prog="${m}"]`).forEach(el=>{
+      el.querySelector('i').style.width=(tried.length/ids.length*100).toFixed(0)+'%';
+      el.querySelector('.lbl').textContent=tried.length?`${tried.length} of ${ids.length} tried · ${right.length} right last time`:`${ids.length} questions`;
+    });
+  });
+}
+
+/* ---------- review sessions ---------- */
+let RV=null;
+function interleave(ids){
+  const g={}; shuffle(ids.slice()).forEach(id=>{(g[modOf(id)]=g[modOf(id)]||[]).push(id)});
+  const keys=shuffle(Object.keys(g)), out=[];
+  while(keys.some(k=>g[k].length)) keys.forEach(k=>{if(g[k].length) out.push(g[k].shift())});
+  return out;
+}
+function reviewHome(){
+  document.getElementById('rv-start').hidden=false; document.getElementById('rv-run').hidden=true; document.getElementById('rv-end').hidden=true;
+  const due=dueIds().length, note=document.getElementById('rv-note'), b=document.getElementById('rv-due');
+  b.disabled=!due;
+  note.textContent=due?`${due} question${due>1?'s are':' is'} due. Sets mix modules on purpose.`:Object.keys(S.q).length?'Nothing is due right now. Try a mixed set, or come back tomorrow.':'Answer some questions in the modules first. Anything you miss will show up here.';
+}
+function startReview(mode){
+  let pool=mode==='due'?interleave(dueIds()).slice(0,15):interleave(Object.keys(QB).filter(id=>QB[id].t!=='ex')).slice(0,10);
+  if(!pool.length) return;
+  RV={pool,i:0,right:0};
+  document.getElementById('rv-start').hidden=true; document.getElementById('rv-end').hidden=true; document.getElementById('rv-run').hidden=false;
+  showRv();
+}
+function showRv(){
+  const id=RV.pool[RV.i];
+  document.getElementById('rv-pos').textContent=`Question ${RV.i+1} of ${RV.pool.length}`;
+  document.getElementById('rv-mod').textContent=MODNAME[modOf(id)];
+  document.getElementById('rv-fill').style.width=(RV.i/RV.pool.length*100)+'%';
+  const next=document.getElementById('rv-next'); next.hidden=true;
+  renderQ(id,document.getElementById('rv-q'),{onDone:ok=>{ if(ok) RV.right++; next.hidden=false; next.textContent=RV.i+1<RV.pool.length?'Next question':'See results'; next.focus({preventScroll:true}) }});
+}
+function endReview(){
+  const n=RV?RV.i+(document.getElementById('rv-next').hidden?0:1):0;
+  document.getElementById('rv-run').hidden=true;
+  const end=document.getElementById('rv-end'); end.hidden=false;
+  end.innerHTML=`<div class="endcard"><h3>${n?`You got ${RV.right} of ${n} right.`:'Set ended.'}</h3><p>Missed questions are due again right away. Correct ones come back in 1 to 30 days, depending on how many times in a row you’ve got them.</p><div class="row" style="margin-top:14px"><button class="btn primary" type="button" id="rv-again">Back to review</button><a class="btn" href="#home">Home</a></div></div>`;
+  end.querySelector('#rv-again').addEventListener('click',reviewHome);
+  RV=null;
+}
+document.getElementById('rv-due').addEventListener('click',()=>startReview('due'));
+document.getElementById('rv-mix').addEventListener('click',()=>startReview('mix'));
+document.getElementById('rv-next').addEventListener('click',()=>{ RV.i++; if(RV.i>=RV.pool.length){RV.i=RV.pool.length-1; endReview()} else showRv() });
+document.getElementById('rv-quit').addEventListener('click',endReview);
+
+/* ---------- views ---------- */
+const views=[...document.querySelectorAll('[data-view]')];
+function show(v,noScroll){
+  if(!views.some(x=>x.dataset.view===v)) v='home';
+  views.forEach(x=>x.hidden=x.dataset.view!==v);
+  document.querySelectorAll('.tabs a').forEach(a=>{const on=a.getAttribute('href')==='#'+v; a.setAttribute('aria-current',on?'page':'false'); if(on) a.scrollIntoView({block:'nearest',inline:'nearest'})});
+  players.forEach(p=>p.pause());
+  if(v==='review'&&!RV) reviewHome();
+  if(!noScroll) window.scrollTo(0,0);
+}
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href^="#"]');
+  if(a){ e.preventDefault(); const v=a.getAttribute('href').slice(1); show(v); try{history.replaceState(null,'','#'+v)}catch(err){} return }
+  const j=e.target.closest('[data-jump]');
+  if(j){ const t=document.getElementById(j.dataset.jump); if(t) t.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}); return }
+  const r=e.target.closest('[data-reveal]');
+  if(r){ const t=document.getElementById(r.dataset.reveal); if(t){t.hidden=false; r.disabled=true} }
+});
+window.addEventListener('hashchange',()=>show(location.hash.slice(1)));
+
+/* reset with in-page confirm */
+const resetB=document.getElementById('reset'); let armed=false;
+resetB.addEventListener('click',()=>{
+  if(!armed){armed=true;resetB.textContent='Tap again to erase all progress';setTimeout(()=>{armed=false;resetB.textContent='Reset my progress'},4000);return}
+  S={q:{}}; save(); refresh(); armed=false; resetB.textContent='Progress erased';
+});
+
+/* ---------- boot ---------- */
+document.querySelectorAll('[data-q]').forEach(el=>renderQ(el.dataset.q,el,{pre:el.hasAttribute('data-pre'),meta:el.dataset.meta}));
+document.querySelectorAll('[data-video]').forEach(el=>makePlayer(el,VIDEOS[el.dataset.video]));
+document.querySelectorAll('[data-ix]').forEach(el=>({i5:ix5,i6:ix6})[el.dataset.ix](el));
+refresh();
+show((location.hash||'#home').slice(1),true);
+})();
+</script>
+
+</body>
+</html>
