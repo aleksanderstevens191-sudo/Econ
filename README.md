@@ -2,7 +2,11 @@
 
 Interactive study guide for ECON E251 (Fall 2026), Modules 5–8 plus the Midterm 1 practice set.
 
-Open `index.html` in any browser. It's a single self-contained page (fonts load from Google Fonts).
+Open `index.html` in any browser. It's a single self-contained static page (fonts load from Google Fonts), so it needs no build step.
+
+## Deploy on Vercel
+
+Import this repo at https://vercel.com/new, keep the framework preset as **Other**, leave the build command empty, and deploy. Every push to the default branch redeploys.
 
 - Short notes per section, each followed by a quiz question
 - Seven animated graph explainers (SVG motion graphics) with step chapters, optional narration and checkpoint questions
