@@ -10,6 +10,7 @@ Import this repo at https://vercel.com/new, keep the framework preset as **Other
 
 - Short notes per section, each followed by a quiz question
 - Midterm 2 review: topic checklist, a graph lab for the nine graphs on the review list, and the 25 practice questions with figures
+- Mixed checks: after every 2–3 sections, a six-question interleaved quiz pulls from those sections and earlier modules, with the topic hidden until you answer
 - Exam generator: new randomized 12, 25 or 40-question practice midterms (fresh graphs, tables and numbers each time), graded with worked answers
 - Seven animated graph explainers (SVG motion graphics) with step chapters, optional narration and checkpoint questions
 - Two interactive graphs: deadweight loss by quantity, and tax incidence by elasticity

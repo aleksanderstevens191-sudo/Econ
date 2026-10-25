@@ -320,6 +320,22 @@ svg text{font-family:var(--f-body)}
 .gen-note{margin-top:28px}
 .offl{display:inline-block;margin-left:8px;font:600 11.5px/1.2 var(--f-mono);letter-spacing:.02em;padding:4px 9px;border-radius:999px;background:var(--sunk);color:var(--muted);vertical-align:1px}
 #gen-exam{scroll-margin-top:70px}
+.mx{margin-top:64px;padding:20px 20px 22px;border:1.5px solid var(--accent);border-radius:18px;background:var(--surface);scroll-margin-top:84px}
+.mx > h3{margin:8px 0 10px}
+.mx-start p{max-width:62ch;font-size:16.5px}
+.mx-start .row,.mx-run .row,.mx-end .row{margin-top:14px}
+.mx .rv-bar{margin-top:6px}
+.mx-run{scroll-margin-top:84px}
+.mx .q{margin-top:16px}
+.mx-was{margin-top:12px;font-size:15px;color:var(--muted)}
+.mx-was b{color:var(--ink)}
+.mx-was a{font:600 13px var(--f-mono)}
+.mx-end h4{font:800 1.3rem/1.2 var(--f-display);margin:6px 0 12px}
+.mx-res{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px}
+.mx-res li{display:grid;grid-template-columns:1.2em minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 12px;border-radius:10px;font-size:15.5px}
+.mx-res li.ok{background:var(--good-soft)} .mx-res li.no{background:var(--bad-soft)}
+.mx-res li.ok > span:first-child{color:var(--good);font-weight:700} .mx-res li.no > span:first-child{color:var(--bad);font-weight:700}
+.mx-res a{font:600 12.5px/1 var(--f-mono);padding:6px 9px;border-radius:999px;background:var(--surface);text-decoration:none}
 #exam-sum{scroll-margin-top:130px}
 
 @media (max-width:640px){
@@ -406,6 +422,7 @@ svg text{font-family:var(--f-body)}
       <li><b>Worked examples, then fewer hints</b><div><p>You see a full solution, then solve a similar problem yourself, with a hint if your first try misses.</p><cite>Worked-example effect · Sweller &amp; Cooper, 1985 · fading, Renkl &amp; Atkinson, 2003</cite></div></li>
       <li><b>Explain it in your words</b><div><p>Typing an explanation and comparing it with a model answer shows you exactly what you don’t understand yet.</p><cite>Self-explanation · Chi et al., 1994</cite></div></li>
       <li><b>Spaced, mixed review</b><div><p>Missed questions come back right away. Correct ones return after 1, 3, 7, 14 and 30 days. Review sets mix modules, the way an exam does.</p><cite>Spacing · Cepeda et al., 2006 · Interleaving · Rohrer &amp; Taylor, 2007</cite></div></li>
+      <li><b>Blocked first, then mixed</b><div><p>Each section starts with its own questions to get you going. Then, every 2–3 sections, a mixed check pulls questions from those sections and earlier modules with the topic hidden. That makes you decide which idea applies instead of just repeating the one you read last.</p><cite>Interleaved practice · Rohrer &amp; Taylor, 2007 · Taylor &amp; Rohrer, 2010</cite></div></li>
       <li><b>Unlimited practice exams</b><div><p>Each generated exam uses new numbers, so you practice the method instead of remembering answers. Varied, effortful practice feels slower but carries over better to problems you haven’t seen.</p><cite>Practice testing · Dunlosky et al., 2013 · Desirable difficulties · Bjork, 1994</cite></div></li>
       <li><b>Brain dump at the end</b><div><p>Before leaving a module, write everything you remember, then check it against the summary.</p><cite>Free recall · Karpicke &amp; Blunt, 2011</cite></div></li>
     </ul>
@@ -441,7 +458,7 @@ svg text{font-family:var(--f-body)}
     <p class="eyebrow">Module 5</p>
     <h1>Markets: efficiency and equity</h1>
     <p class="lede">Who gets scarce goods, how much value a market creates, and whether the result is fair.</p>
-    <div class="toc"><button data-jump="m5-s1">5.1 Allocation</button><button data-jump="m5-s2">5.2 Demand &amp; CS</button><button data-jump="m5-s3">5.3 Supply &amp; PS</button><button data-jump="m5-s4">5.4 Efficiency</button><button data-jump="m5-s5">5.5 Fairness</button><button data-jump="m5-wrap">Wrap-up</button></div>
+    <div class="toc"><button data-jump="m5-s1">5.1 Allocation</button><button data-jump="m5-s2">5.2 Demand &amp; CS</button><button data-jump="m5-s3">5.3 Supply &amp; PS</button><button data-jump="m5-s4">5.4 Efficiency</button><button data-jump="mx5">Mixed check</button><button data-jump="m5-s5">5.5 Fairness</button><button data-jump="m5-wrap">Wrap-up</button></div>
   </header>
   <div data-q="m5-pre" data-pre></div>
 
@@ -539,6 +556,8 @@ svg text{font-family:var(--f-body)}
     <div data-q="m5-10"></div>
   </article>
 
+  <div data-mix="mx5" id="mx5"></div>
+
   <article class="chunk" id="m5-s5">
     <p class="chunk-no">5.5</p>
     <h2>Is it fair? Results versus rules</h2>
@@ -594,7 +613,7 @@ svg text{font-family:var(--f-body)}
     <p class="eyebrow">Module 6</p>
     <h1>Price ceilings, floors, taxes and subsidies</h1>
     <p class="lede">What happens when the government sets prices or adds a wedge between what buyers pay and what sellers keep.</p>
-    <div class="toc"><button data-jump="m6-s0">Super Bowl</button><button data-jump="m6-s1">6.1 Ceilings</button><button data-jump="m6-s2">6.2 Floors</button><button data-jump="m6-s3">6.3 Taxes</button><button data-jump="m6-s4">6.4 Subsidies &amp; quotas</button><button data-jump="m6-wrap">Wrap-up</button></div>
+    <div class="toc"><button data-jump="m6-s0">Super Bowl</button><button data-jump="m6-s1">6.1 Ceilings</button><button data-jump="m6-s2">6.2 Floors</button><button data-jump="mx6a">Mixed 1</button><button data-jump="m6-s3">6.3 Taxes</button><button data-jump="m6-s4">6.4 Subsidies &amp; quotas</button><button data-jump="mx6b">Mixed 2</button><button data-jump="m6-wrap">Wrap-up</button></div>
   </header>
   <div data-q="m6-pre" data-pre></div>
 
@@ -647,6 +666,8 @@ svg text{font-family:var(--f-body)}
     <div data-q="m6-4"></div>
   </article>
 
+  <div data-mix="mx6a" id="mx6a"></div>
+
   <article class="chunk" id="m6-s3">
     <p class="chunk-no">6.3</p>
     <h2>Taxes: who really pays?</h2>
@@ -698,6 +719,8 @@ svg text{font-family:var(--f-body)}
     <div data-q="m6-ex"></div>
   </article>
 
+  <div data-mix="mx6b" id="mx6b"></div>
+
   <div class="dump" id="m6-wrap">
     <p class="eyebrow">Before you leave Module 6</p>
     <h3>Brain dump</h3>
@@ -723,7 +746,7 @@ svg text{font-family:var(--f-body)}
     <p class="eyebrow">Module 7</p>
     <h1>Other market failures</h1>
     <p class="lede">Spillovers onto third parties, goods nobody can be kept from using, and resources that get used up.</p>
-    <div class="toc"><button data-jump="m7-s1">7.1 Types</button><button data-jump="m7-s2">7.2 Negative ext.</button><button data-jump="m7-s3">7.3 Coase</button><button data-jump="m7-s4">7.4 Positive ext.</button><button data-jump="m7-s5">7.5 Goods</button><button data-jump="m7-s6">7.6 Free riders</button><button data-jump="m7-s7">7.7 Commons</button><button data-jump="m7-wrap">Wrap-up</button></div>
+    <div class="toc"><button data-jump="m7-s1">7.1 Types</button><button data-jump="m7-s2">7.2 Negative ext.</button><button data-jump="m7-s3">7.3 Coase</button><button data-jump="m7-s4">7.4 Positive ext.</button><button data-jump="mx7a">Mixed 1</button><button data-jump="m7-s5">7.5 Goods</button><button data-jump="m7-s6">7.6 Free riders</button><button data-jump="m7-s7">7.7 Commons</button><button data-jump="mx7b">Mixed 2</button><button data-jump="m7-wrap">Wrap-up</button></div>
   </header>
   <div data-q="m7-pre" data-pre></div>
 
@@ -781,6 +804,8 @@ svg text{font-family:var(--f-body)}
     <div data-q="m7-w2" data-meta="Midterm 2 list"></div>
   </article>
 
+  <div data-mix="mx7a" id="mx7a"></div>
+
   <article class="chunk" id="m7-s5">
     <p class="chunk-no">7.5</p>
     <h2>Four types of goods</h2>
@@ -829,6 +854,8 @@ svg text{font-family:var(--f-body)}
     <div data-q="m7-ex"></div>
   </article>
 
+  <div data-mix="mx7b" id="mx7b"></div>
+
   <div class="dump" id="m7-wrap">
     <p class="eyebrow">Before you leave Module 7</p>
     <h3>Brain dump</h3>
@@ -854,7 +881,7 @@ svg text{font-family:var(--f-body)}
     <p class="eyebrow">Module 8 · homework due Mon Oct 26</p>
     <h1>Firms, production and costs</h1>
     <p class="lede">What firms count as cost, how markets are structured, and why cost curves have the shapes they do.</p>
-    <div class="toc"><button data-jump="m8-s1">8.1 Profit</button><button data-jump="m8-s2">8.2 Organizing</button><button data-jump="m8-s3">8.3 Market types</button><button data-jump="m8-s4">8.4 SR vs LR</button><button data-jump="m8-s5">8.5 Production</button><button data-jump="m8-s6">8.6 Costs</button><button data-jump="m8-s7">8.7 MC &amp; MP</button><button data-jump="m8-s8">8.8 Long run</button><button data-jump="m8-s9">8.9 Revenue</button><button data-jump="m8-wrap">Wrap-up</button></div>
+    <div class="toc"><button data-jump="m8-s1">8.1 Profit</button><button data-jump="m8-s2">8.2 Organizing</button><button data-jump="m8-s3">8.3 Market types</button><button data-jump="m8-s4">8.4 SR vs LR</button><button data-jump="m8-s5">8.5 Production</button><button data-jump="mx8a">Mixed 1</button><button data-jump="m8-s6">8.6 Costs</button><button data-jump="m8-s7">8.7 MC &amp; MP</button><button data-jump="m8-s8">8.8 Long run</button><button data-jump="m8-s9">8.9 Revenue</button><button data-jump="mx8b">Final mix</button><button data-jump="m8-wrap">Wrap-up</button></div>
   </header>
   <div data-q="m8-pre" data-pre></div>
 
@@ -974,6 +1001,8 @@ svg text{font-family:var(--f-body)}
     <div data-q="m8-12"></div>
   </article>
 
+  <div data-mix="mx8a" id="mx8a"></div>
+
   <article class="chunk" id="m8-s6">
     <p class="chunk-no">8.6</p>
     <h2>Short-run cost curves</h2>
@@ -1059,6 +1088,8 @@ svg text{font-family:var(--f-body)}
     <div data-q="m8-w1" data-meta="Midterm 2 list"></div>
     <div data-q="m8-w2" data-meta="Midterm 2 list"></div>
   </article>
+
+  <div data-mix="mx8b" id="mx8b"></div>
 
   <div class="dump" id="m8-wrap">
     <p class="eyebrow">Before you leave Module 8</p>
@@ -1399,17 +1430,17 @@ const modOf=id=>id.split('-')[0];
 /* ---------- question renderer ---------- */
 let UID=0;
 function renderQ(id,host,o={}){
-  const q=QB[id]; if(!q){host.textContent='';return}
+  const q=o.q||QB[id]; if(!q){host.textContent='';return}
   const u='q'+(++UID);
   const card=document.createElement('div');
   card.className='q'+(o.pre?' pre':'');
-  const tag=o.pre?'Guess first':q.t==='ex'?'Explain it':q.t==='sort'?'Sort it':'Check yourself';
+  const tag=o.tag||(o.pre?'Guess first':q.t==='ex'?'Explain it':q.t==='sort'?'Sort it':'Check yourself');
   const meta=o.meta||(o.pre?'before you read':'');
   card.innerHTML=`<div class="q-top"><span class="q-tag">${tag}</span>${meta?`<span class="q-meta">${meta}</span>`:''}</div><p class="q-text">${q.q}</p>${q.fig&&!o.noFig?figHTML(q.fig):''}${q.extra&&!o.noFig?q.extra:''}<div class="q-body"></div><div class="q-fb" role="status" hidden></div>`;
   host.replaceChildren(card);
   const body=card.querySelector('.q-body'), fb=card.querySelector('.q-fb');
   const show=(cls,html)=>{fb.hidden=false;fb.className='q-fb '+cls;fb.innerHTML=html};
-  const done=(ok,partial)=>{record(id,ok,partial); if(o.onDone) o.onDone(ok)};
+  const done=(ok,partial)=>{if(!o.noRecord) record(id,ok,partial); if(o.onDone) o.onDone(ok)};
 
   if(q.t==='mc'){
     body.innerHTML=`<div class="opts">${q.o.map((t,i)=>`<button type="button" class="opt" data-i="${i}"><span class="k">${'ABCDEF'[i]}</span><span>${t}</span></button>`).join('')}</div>`;
@@ -2138,6 +2169,8 @@ const GEN={
   extBenDWL:(r,m)=>{const k=r.pick(m.ku),e=k*(m.sd+m.ss);return{topic:'m7',q:`Assume the good creates an external benefit of ${M(e)} per unit and no external cost. Without government intervention, what is the deadweight loss?`,...mcOpts(r,.5*k*e,[k*e,e,e*m.Qe,0]),why:`MSB = MPB + ${M(e)} meets MPC at ${m.Qe+k} units, but the market makes only ${m.Qe}. DWL = ½ × ${k} × ${M(e)} = ${M(.5*k*e)}.`}},
   extPolicy:(r,m)=>{const neg=r.f()<.5,k=neg?r.pick(m.ks):r.pick(m.ku),e=k*(m.sd+m.ss);const right=neg?`A Pigovian tax of ${M(e)} per unit`:`A Pigovian subsidy of ${M(e)} per unit`;return{topic:'m7',q:`Assume the good creates an external ${neg?'cost':'benefit'} of ${M(e)} per unit. Which policy moves the market to the efficient quantity?`,...mcText(r,right,[neg?`A Pigovian subsidy of ${M(e)} per unit`:`A Pigovian tax of ${M(e)} per unit`,`A price ceiling of ${M(m.Pe)}`,neg?`A Pigovian tax of ${M(e*2)} per unit`:`A Pigovian subsidy of ${M(e*2)} per unit`]),why:neg?`An external cost means overproduction. A tax equal to the ${M(e)} external cost shifts MPC up to MSC.`:`An external benefit means underproduction. A subsidy equal to the ${M(e)} external benefit shifts MPB up to MSB.`}}
 };
+const FALLBACK={ceilDWL:[/ceiling/,'taxDWL'],search:[/ceiling/,'taxPb'],profN:[/profit/,'tcN'],mcLink:[/wage/,'mpN']};
+const fixTpl=(nm,q)=>FALLBACK[nm]&&!FALLBACK[nm][0].test(q.q)?FALLBACK[nm][1]:nm;
 const SETS={base:['cs','ps','ts','under','over'],policy:['taxRev','taxDWL','taxPb','taxPs','taxBurden','floor','ceiling','ceilDWL','search','subCost','subDWL','subPb'],ext:['extBen','extCost','extCostDWL','extBenDWL','extPolicy']};
 /* tables (Module 8) and short calculations */
 function costTable(r){
@@ -2196,11 +2229,11 @@ function buildExam(seed,len){
   const r=RNG(seed), plan=PLANS[len], blocks=[];
   plan.sets.forEach(([kind,n])=>{
     const m=genMarket(r); const fig={m,qmax:m.qmax,pmax:m.pmax,lab:kind==='ext'?['MPB','MPC']:['D','S'],title:kind==='ext'?'Marginal Private Benefit and Marginal Private Cost':'Supply and Demand'};
-    const qs=weighted(r,SETS[kind],n).map(nm=>Object.assign(GEN[nm](r,m),{tpl:nm}));
+    const qs=weighted(r,SETS[kind],n).map(nm=>{const q=GEN[nm](r,m);return Object.assign(q,{tpl:fixTpl(nm,q)})});
     blocks.push({fig,qs});
   });
-  if(plan.tables[0]){ const t=costTable(r); blocks.push({table:t.html,cap:'Quantity, variable cost and total revenue for a firm',qs:weighted(r,Object.keys(TQ),plan.tables[0]).map(nm=>Object.assign(TQ[nm](r,t),{tpl:nm}))}); }
-  if(plan.tables[1]){ const t=prodTable(r); blocks.push({table:t.html,cap:'Labor input and output',qs:weighted(r,Object.keys(PQ),plan.tables[1]).map(nm=>Object.assign(PQ[nm](r,t),{tpl:nm}))}); }
+  if(plan.tables[0]){ const t=costTable(r); blocks.push({table:t.html,cap:'Quantity, variable cost and total revenue for a firm',qs:weighted(r,Object.keys(TQ),plan.tables[0]).map(nm=>{const q=TQ[nm](r,t);return Object.assign(q,{tpl:fixTpl(nm,q)})})}); }
+  if(plan.tables[1]){ const t=prodTable(r); blocks.push({table:t.html,cap:'Labor input and output',qs:weighted(r,Object.keys(PQ),plan.tables[1]).map(nm=>{const q=PQ[nm](r,t);return Object.assign(q,{tpl:fixTpl(nm,q)})})}); }
   weighted(r,['profit','privSum','pubSum'],plan.misc).forEach(nm=>blocks.push({qs:[Object.assign(MISC[nm](r),{tpl:nm})]}));
   const ids=r.shuf(CONCEPT_POOL());
   const recent=new Set((S.gen&&S.gen.recent)||[]);
@@ -2286,6 +2319,88 @@ function grade(){
   host.querySelector('#exam-submit').disabled=true; host.querySelector('#exam-warn').textContent='';
   document.getElementById('exam-prog').textContent=`Score: ${right} of ${EX.total}`;
   sum.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+}
+
+/* ---------- mixed checks: interleave sections after blocked practice ---------- */
+const TPLNAME={cs:['Consumer surplus','m5-s2'],ps:['Producer surplus','m5-s3'],ts:['Total surplus','m5-s4'],under:['Deadweight loss from underproduction','m5-s4'],over:['Deadweight loss from overproduction','m5-s4'],privSum:['Market demand for a private good','m5-s2'],
+  ceiling:['Price ceiling: shortage or not?','m6-s1'],ceilDWL:['Deadweight loss of a price ceiling','m6-s1'],search:['Search costs','m6-s1'],floor:['Price floor: surplus or not?','m6-s2'],
+  taxRev:['Tax revenue','m6-s3'],taxDWL:['Deadweight loss of a tax','m6-s3'],taxPb:['Price buyers pay with a tax','m6-s3'],taxPs:['Price sellers keep with a tax','m6-s3'],taxBurden:['Who bears a tax','m6-s3'],
+  subCost:['Cost of a subsidy','m6-s4'],subDWL:['Deadweight loss of a subsidy','m6-s4'],subPb:['Price buyers pay with a subsidy','m6-s4'],
+  extCost:['Efficient outcome with an external cost','m7-s2'],extCostDWL:['Deadweight loss of a negative externality','m7-s2'],extBen:['Efficient outcome with an external benefit','m7-s4'],extBenDWL:['Deadweight loss of a positive externality','m7-s4'],extPolicy:['Fixing an externality','m7-s4'],pubSum:['Marginal social benefit of a public good','m7-s6'],
+  profit:['Accounting vs economic profit','m8-s1'],pattern:['Pattern of marginal product','m8-s5'],mpN:['Marginal product','m8-s5'],apN:['Average product','m8-s5'],mcLink:['MC = wage ÷ MP','m8-s7'],
+  mcN:['Marginal cost','m8-s6'],atcN:['Average total cost','m8-s6'],avcN:['Average variable cost','m8-s6'],afcN:['Average fixed cost','m8-s6'],tcN:['Total cost','m8-s6'],mrN:['Marginal revenue','m8-s9'],arN:['Average revenue','m8-s9'],profN:['Profit from a table','m8-s9']};
+const ALLGEN=Object.keys(TPLNAME);
+const MIXES={
+  mx5:{nf:3,title:'Mixed check: 5.2 to 5.4',covers:'5.2 to 5.4',chunks:['m5-s2','m5-s3','m5-s4'],gen:['cs','ps','ts','under','over','privSum']},
+  mx6a:{nf:2,title:'Mixed check: price controls + Module 5',covers:'6.1, 6.2 and Module 5',chunks:['m6-s1','m6-s2','m5-s2','m5-s3','m5-s4','m5-s5'],gen:['ceiling','floor','ceilDWL','search','cs','ps','ts','under','over']},
+  mx6b:{nf:4,title:'Mixed check: Modules 5 and 6',covers:'all of Module 6 plus Module 5',chunks:['m6-s1','m6-s2','m6-s3','m6-s4','m5-s2','m5-s3','m5-s4','m5-s5'],gen:['taxRev','taxDWL','taxPb','taxPs','taxBurden','subCost','subDWL','subPb','ceiling','floor','ceilDWL','cs','ts','over']},
+  mx7a:{nf:3,title:'Mixed check: surplus, taxes and externalities',covers:'7.2 to 7.4, taxes and subsidies (6.3, 6.4) and surplus (5.4)',chunks:['m7-s2','m7-s3','m7-s4','m6-s3','m6-s4','m5-s4'],gen:['extCost','extCostDWL','extBen','extBenDWL','extPolicy','taxRev','taxDWL','taxBurden','subCost','cs','ps','ts']},
+  mx7b:{nf:6,title:'Mixed check: Modules 5 to 7',covers:'all of Module 7 plus Modules 5 and 6',chunks:['m7-s2','m7-s3','m7-s4','m7-s5','m7-s6','m7-s7','m6-s1','m6-s2','m6-s3','m6-s4','m5-s2','m5-s4','m5-s5'],gen:['extCost','extCostDWL','extBen','extBenDWL','extPolicy','pubSum','privSum','taxRev','taxDWL','taxPb','subCost','subDWL','floor','ceiling','search','under','over','ts']},
+  mx8a:{nf:4,title:'Mixed check: 8.1 to 8.5 + earlier modules',covers:'8.1 to 8.5 plus Modules 6 and 7',chunks:['m8-s1','m8-s2','m8-s4','m8-s5','m7-s2','m7-s4','m6-s3'],gen:['profit','pattern','mpN','apN','taxRev','extCostDWL','subDWL']},
+  mx8b:{nf:8,title:'Final mixed check: Modules 5 to 8',covers:'every section on the Midterm 2 list',chunks:['m8-s1','m8-s2','m8-s4','m8-s5','m8-s6','m8-s7','m8-s8','m8-s9','m7-s2','m7-s3','m7-s4','m7-s5','m7-s6','m7-s7','m6-s1','m6-s2','m6-s3','m6-s4','m5-s2','m5-s3','m5-s4','m5-s5'],gen:ALLGEN}
+};
+function genOne(r,tpl){
+  let q;
+  if(GEN[tpl]){ const m=genMarket(r), ext=SETS.ext.includes(tpl); q=Object.assign(GEN[tpl](r,m),{fig:{m,qmax:m.qmax,pmax:m.pmax,lab:ext?['MPB','MPC']:['D','S'],title:ext?'Marginal private benefit and marginal private cost':'Supply and demand'}}); }
+  else if(TQ[tpl]){ const t=costTable(r); q=Object.assign(TQ[tpl](r,t),{extra:t.html}); }
+  else if(PQ[tpl]){ const t=prodTable(r); q=Object.assign(PQ[tpl](r,t),{extra:t.html}); }
+  else q=MISC[tpl](r);
+  return Object.assign(q,{t:'mc',tpl:fixTpl(tpl,q)});
+}
+const secNo=cid=>{const n=document.querySelector('#'+cid+' .chunk-no');return n?n.firstChild.textContent.trim().split(' ')[0]:''};
+const secName=cid=>{const h=document.querySelector('#'+cid+' h2');return h?h.textContent:''};
+function bankIn(cid,pool){return [...document.querySelectorAll('#'+cid+' [data-q]')].map(e=>e.dataset.q).filter(id=>pool.has(id))}
+function buildMix(spec,n){
+  n=n||6;
+  const r=RNG((Date.now()^Math.floor(Math.random()*1e9))>>>0), pool=new Set(CONCEPT_POOL()), out=[], box=id=>S.q[id]?S.q[id].box:-1;
+  const F=new Set(spec.chunks.slice(0,spec.nf)), secOf=t=>TPLNAME[t][1]; // F = the sections just covered; the rest are earlier ones
+  const cand=r.shuf(spec.chunks).filter(c=>bankIn(c,pool).length), pickC=[];
+  const takeC=pred=>{const c=cand.find(c=>!pickC.includes(c)&&pred(c)); if(c) pickC.push(c); return !!c};
+  takeC(c=>F.has(c)); takeC(c=>!F.has(c)); while(pickC.length<Math.floor(n/2)&&takeC(()=>true));
+  pickC.forEach(c=>{
+    const id=r.shuf(bankIn(c,pool)).sort((x,y)=>box(x)-box(y))[0]; // unseen and missed questions first
+    out.push({id,q:QB[id],sec:c,name:secName(c)});
+  });
+  const used=new Set(pickC), tpls=[], sh=r.shuf(spec.gen), want=n-out.length;
+  const takeT=pred=>{const t=sh.find(t=>!tpls.includes(t)&&pred(t)); if(t){tpls.push(t);used.add(secOf(t))} return !!t};
+  takeT(t=>F.has(secOf(t))&&!used.has(secOf(t)))||takeT(t=>F.has(secOf(t)));
+  takeT(t=>!F.has(secOf(t))&&!used.has(secOf(t)));
+  while(tpls.length<want&&takeT(t=>!used.has(secOf(t))));
+  while(tpls.length<want&&takeT(()=>true));
+  tpls.forEach(t=>{const q=genOne(r,t); out.push({gen:true,q,tpl:q.tpl,sec:TPLNAME[q.tpl][1],name:TPLNAME[q.tpl][0]})});
+  const o=r.shuf(out); // never two from the same section in a row when it can be avoided
+  for(let i=1;i<o.length;i++) if(o[i].sec===o[i-1].sec){ const j=o.findIndex((x,k)=>k>i&&x.sec!==o[i-1].sec); if(j>0) [o[i],o[j]]=[o[j],o[i]]; }
+  return o;
+}
+function mixUI(host){
+  const spec=MIXES[host.dataset.mix]; let set=null,i=0,right=0,res=[];
+  host.className='mx';
+  host.innerHTML=`<p class="vp-kick">Interleaved practice</p><h3>${spec.title}</h3>
+    <div class="mx-start"><p>Six questions mixed from ${spec.covers}. The topic stays hidden until you answer, so you have to work out which idea applies, the way you will on the exam. The numbers are new every time.</p><div class="row"><button class="btn primary" type="button" data-go>Start the mixed check</button></div></div>
+    <div class="mx-run" hidden><div class="rv-bar"><span data-pos></span><span data-score></span></div><div class="rv-track"><i data-fill></i></div><div data-qh></div><div class="row"><button class="btn primary" type="button" data-next hidden>Next question</button></div></div>
+    <div class="mx-end" hidden></div>`;
+  const $=s=>host.querySelector(s), start=$('.mx-start'), run=$('.mx-run'), end=$('.mx-end'), nx=$('[data-next]');
+  const showQ=()=>{
+    const it=set[i];
+    $('[data-pos]').textContent=`Question ${i+1} of ${set.length}`; $('[data-score]').textContent=`${right} right`; $('[data-fill]').style.width=(i/set.length*100)+'%';
+    nx.hidden=true;
+    renderQ(it.id||'gen',$('[data-qh]'),{q:it.q,noRecord:!!it.gen,tag:'Mixed · which idea is this?',onDone:ok=>{
+      if(ok) right++; res.push({it,ok});
+      if(it.gen){S.gen=S.gen||{hist:[],tpl:{},recent:[]}; const s=S.gen.tpl[it.tpl]=S.gen.tpl[it.tpl]||{n:0,ok:0}; s.n++; if(ok) s.ok++; save()}
+      const w=document.createElement('p'); w.className='mx-was'; w.innerHTML=`Topic: <b>${it.name}</b> · <a href="#${it.sec}">${secNo(it.sec)}</a>`;
+      $('[data-qh] .q').append(w);
+      $('[data-score]').textContent=`${right} right`; nx.hidden=false; nx.textContent=i+1<set.length?'Next question':'See results'; nx.focus({preventScroll:true});
+    }});
+  };
+  const finish=()=>{
+    run.hidden=true; end.hidden=false;
+    end.innerHTML=`<h4>${right} of ${set.length} right</h4><ul class="mx-res">${res.map(({it,ok})=>`<li class="${ok?'ok':'no'}"><span aria-hidden="true">${ok?'✓':'✗'}</span><span>${it.name}</span><a href="#${it.sec}">${secNo(it.sec)}</a></li>`).join('')}</ul>
+      <p class="small muted">Mixing feels harder than practicing one section at a time. That effort is what trains you to pick the right tool on the exam. Reread any section you missed, then try a new mix.</p><div class="row"><button class="btn primary" type="button" data-again>New mixed check</button></div>`;
+    end.querySelector('[data-again]').addEventListener('click',begin);
+  };
+  const begin=()=>{ set=buildMix(spec); i=0; right=0; res=[]; start.hidden=true; end.hidden=true; run.hidden=false; showQ() };
+  $('[data-go]').addEventListener('click',begin);
+  nx.addEventListener('click',()=>{ i++; if(i<set.length){ showQ(); run.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}) } else finish() });
 }
 
 /* ---------- progress ---------- */
@@ -2384,6 +2499,7 @@ document.querySelectorAll('[data-fig]').forEach(el=>{el.outerHTML=figHTML(el.dat
 document.querySelectorAll('[data-lab]').forEach(graphLab);
 document.querySelectorAll('[data-can-list]').forEach(topicChecklist);
 genUI();
+document.querySelectorAll('[data-mix]').forEach(mixUI);
 document.querySelectorAll('[data-video]').forEach(el=>makePlayer(el,VIDEOS[el.dataset.video]));
 document.querySelectorAll('[data-ix]').forEach(el=>({i5:ix5,i6:ix6})[el.dataset.ix](el));
 refresh();
