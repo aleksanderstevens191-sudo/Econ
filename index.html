@@ -318,6 +318,7 @@ svg text{font-family:var(--f-body)}
 .topicbars .bar i{display:block;height:100%;background:var(--good);border-radius:4px}
 .topicbars b{text-align:right;font-size:14px}
 .gen-note{margin-top:28px}
+.offl{display:inline-block;margin-left:8px;font:600 11.5px/1.2 var(--f-mono);letter-spacing:.02em;padding:4px 9px;border-radius:999px;background:var(--sunk);color:var(--muted);vertical-align:1px}
 #gen-exam{scroll-margin-top:70px}
 #exam-sum{scroll-margin-top:130px}
 
@@ -376,7 +377,7 @@ svg text{font-family:var(--f-body)}
   <div class="hero">
     <p class="eyebrow">ECON E251 · Fall 2026 · Modules 5–8 · Midterm 2</p>
     <h1>Markets, failures and firms</h1>
-    <p class="lede">Short notes with a question after each one, plus animated graphs that build every key diagram step by step. Built from your Top Hat notes for Modules 5–8, your professor’s Midterm 2 review list and the Midterm 2 practice set. When you’re ready, the exam generator makes a new practice midterm every time you click.</p>
+    <p class="lede">Short notes with a question after each one, plus animated graphs that build every key diagram step by step. Built around your professor’s Midterm 2 review list, with your Top Hat notes for Modules 5–8 filling in the explanations and the Midterm 2 practice set at the end. When you’re ready, the exam generator makes a new practice midterm every time you click.</p>
     <div class="row">
       <a class="btn primary" href="#m5">Start with Module 5</a>
       <a class="btn" href="#midterm2">Midterm 2 review</a>
@@ -429,7 +430,7 @@ svg text{font-family:var(--f-body)}
   </div>
 
   <div class="foot">
-    <p>Notes summarize your Top Hat module pages. Midterm 1 answers are worked out here; Midterm 2 practice answers match the key in your practice document. Generated exams use made-up numbers in the same format. Progress is saved in this browser only.</p>
+    <p>Notes summarize your Top Hat module pages. Midterm 1 answers are worked out here; Midterm 2 practice answers match the key in your practice document. Generated exams use made-up numbers in the same format. Sections that aren’t on the Midterm 2 review list are marked, and the generator and mixed sets skip them. Progress is saved in this browser only.</p>
     <button class="btn ghost" id="reset" type="button">Reset my progress</button>
   </div>
 </section>
@@ -445,7 +446,7 @@ svg text{font-family:var(--f-body)}
   <div data-q="m5-pre" data-pre></div>
 
   <article class="chunk" id="m5-s1">
-    <p class="chunk-no">5.1</p>
+    <p class="chunk-no">5.1 <span class="offl">Not on the Midterm 2 list</span></p>
     <h2>Nine ways to hand out scarce things</h2>
     <p>Scarcity means something has to decide who gets what. Most goods use more than one method. Concert tickets have a price <em>and</em> a line.</p>
     <div class="tw"><table class="t">
@@ -685,7 +686,7 @@ svg text{font-family:var(--f-body)}
   </article>
 
   <article class="chunk" id="m6-s4">
-    <p class="chunk-no">6.4</p>
+    <p class="chunk-no">6.4 <span class="offl">Midterm 2: subsidies yes, quotas no</span></p>
     <h2>Subsidies and quotas</h2>
     <ul class="pts">
       <li><b>Subsidy</b> ($6 per pizza to sellers): supply shifts right. Price falls from $8 to $5, quantity rises from 75 to 100, and sellers get $5 + $6 = $11. Now <b>MSC $11 &gt; MSB $5</b>: overproduction and DWL. Example: farm subsidies.</li>
@@ -808,7 +809,7 @@ svg text{font-family:var(--f-body)}
   </article>
 
   <article class="chunk" id="m7-s7">
-    <p class="chunk-no">7.7</p>
+    <p class="chunk-no">7.7 <span class="offl">Midterm 2: the commons yes, Ostrom no</span></p>
     <h2>The tragedy of the commons</h2>
     <ul class="pts">
       <li>Northwest Atlantic cod were overfished in the 1970s and 1980s and collapsed by 1992. Each boat ignores the cost it puts on everyone else, so <b>MSC &gt; MSB</b> and the resource is overused. It works like a negative externality, and the free-rider problem is worse than with public goods.</li>
@@ -882,7 +883,7 @@ svg text{font-family:var(--f-body)}
   </article>
 
   <article class="chunk" id="m8-s2">
-    <p class="chunk-no">8.2</p>
+    <p class="chunk-no">8.2 <span class="offl">Midterm 2: information yes, business forms no</span></p>
     <h2>Organizing production</h2>
     <ul class="pts">
       <li>Firms run on <b>command systems</b> (orders) or <b>incentive systems</b> (rewards). Information can be perfect or imperfect, symmetric or asymmetric.</li>
@@ -906,7 +907,7 @@ svg text{font-family:var(--f-body)}
   </article>
 
   <article class="chunk" id="m8-s3">
-    <p class="chunk-no">8.3</p>
+    <p class="chunk-no">8.3 <span class="offl">Not on the Midterm 2 list</span></p>
     <h2>Four market types and how to measure them</h2>
     <div class="tw"><table class="t">
       <thead><tr><th>Market</th><th>Features</th><th>Example</th></tr></thead>
@@ -1120,7 +1121,7 @@ svg text{font-family:var(--f-body)}
   <article class="chunk" id="mt2-list">
     <p class="chunk-no">Step 1</p>
     <h2>What’s on it</h2>
-    <p>Your professor lists these sources: the Top Hat modules, the lecture slides and notes on Canvas, the weekly quizzes and the CL questions. Check off each item once you can do it without notes. The tag on the right jumps to that section.</p>
+    <p>Your professor lists these sources: the Top Hat modules, the lecture slides and notes on Canvas, the weekly quizzes and the CL questions. Check off each item once you can do it without notes. The tag on the right jumps to that section. This list decides what the exam generator and mixed review sets cover; module sections that aren’t on it are marked “Not on the Midterm 2 list.”</p>
     <div class="cl" data-can-list>
       <p class="cl-count" id="can-count"></p>
       <div class="cl-g"><h3>Module 5 · Efficiency and equity</h3>
@@ -1219,7 +1220,7 @@ svg text{font-family:var(--f-body)}
   <header class="mod-head">
     <p class="eyebrow">Unlimited practice · Midterm 2</p>
     <h1>Midterm generator</h1>
-    <p class="lede">Every exam is new: new supply and demand graphs, new tax, subsidy and price-control values, new cost and production tables, and concept questions from all four modules. Answer everything, then submit to see your score and a worked answer for every question.</p>
+    <p class="lede">Every exam is new: new supply and demand graphs, new tax, subsidy and price-control values, new cost and production tables, and concept questions from all four modules, limited to topics on the Midterm 2 review list. Answer everything, then submit to see your score and a worked answer for every question.</p>
   </header>
   <div class="gen" id="gen">
     <div>
@@ -2175,7 +2176,9 @@ const MISC={
   pubSum:(r)=>{for(let i=0;i<200;i++){const A=r.int(8,16),B=r.int(6,14),Q=r.int(1,5);const ma=A-Q,mb=B-Q;if(ma<1||mb<1) continue;const v=ma+mb;return{topic:'m7',q:`For a public good, Ana’s marginal benefit is MB = ${A} − Q and Ben’s is MB = ${B} − Q. At Q = ${Q}, what is marginal social benefit?`,...mcOpts(r,v,[ma,mb,Math.max(ma,mb)-Math.min(ma,mb),(ma+mb)/2]),why:`Public goods add up vertically: everyone uses the same units. MSB = ${M(ma)} + ${M(mb)} = ${M(v)}.`}}},
   hhi:(r)=>{const n=r.int(3,5);let sh=[];let left=100;for(let i=0;i<n-1;i++){const s=5*r.int(1,Math.max(1,Math.floor((left-5*(n-1-i))/5*.6)));sh.push(s);left-=s}sh.push(left);sh=sh.sort((a,b)=>b-a);const v=sh.reduce((s,x)=>s+x*x,0);return{topic:'m8',q:`An industry has ${n} firms with market shares of ${sh.join('%, ')}%. What is the HHI?`,...mcOpts(r,v,[100*n,sh.reduce((s,x)=>s+x,0)*sh[0]/10,v+sh[0]*10,sh[0]*sh[0]],x=>Math.round(x).toLocaleString('en-US')),why:`Square each share and add: ${sh.map(x=>x+'²').join(' + ')} = ${v.toLocaleString('en-US')}. ${v>2500?'Over 2,500: oligopoly on the course scale.':v>=1500?'1,500–2,500: moderate concentration.':'Under 1,500: fairly competitive.'}`}}
 };
-const CONCEPT_POOL=()=>Object.keys(QB).filter(id=>QB[id].t==='mc'&&!QB[id].fig&&!QB[id].extra&&!/^mt-|-v\d/.test(id)&&QB[id].o.length<=6);
+/* topics not on the Midterm 2 review list: kept in the modules, left out of generated exams and mixed sets */
+const OFFLIST=new Set(['m5-pre','m5-1','m5-sort1','m6-11','m7-10','m7-11','m8-5','m8-sort','m8-6','m8-7','m8-8']);
+const CONCEPT_POOL=()=>Object.keys(QB).filter(id=>!OFFLIST.has(id)&&QB[id].t==='mc'&&!QB[id].fig&&!QB[id].extra&&!/^mt-|-v\d/.test(id)&&QB[id].o.length<=6);
 const P2MOD={4:'m6',5:'m7',6:'m7',7:'m6',8:'m6',9:'m5',10:'m6',16:'m7',17:'m6',18:'m6',19:'m5',20:'m6',22:'m8',24:'m8',25:'m8'};
 const topicOf=id=>modOf(id)==='p2'?(P2MOD[id.split('-')[1]]||'mix'):modOf(id);
 function weighted(r,names,n){
@@ -2198,7 +2201,7 @@ function buildExam(seed,len){
   });
   if(plan.tables[0]){ const t=costTable(r); blocks.push({table:t.html,cap:'Quantity, variable cost and total revenue for a firm',qs:weighted(r,Object.keys(TQ),plan.tables[0]).map(nm=>Object.assign(TQ[nm](r,t),{tpl:nm}))}); }
   if(plan.tables[1]){ const t=prodTable(r); blocks.push({table:t.html,cap:'Labor input and output',qs:weighted(r,Object.keys(PQ),plan.tables[1]).map(nm=>Object.assign(PQ[nm](r,t),{tpl:nm}))}); }
-  weighted(r,Object.keys(MISC),plan.misc).forEach(nm=>blocks.push({qs:[Object.assign(MISC[nm](r),{tpl:nm})]}));
+  weighted(r,['profit','privSum','pubSum'],plan.misc).forEach(nm=>blocks.push({qs:[Object.assign(MISC[nm](r),{tpl:nm})]}));
   const ids=r.shuf(CONCEPT_POOL());
   const recent=new Set((S.gen&&S.gen.recent)||[]);
   const pickC=[...ids.filter(id=>!recent.has(id)),...ids.filter(id=>recent.has(id))].slice(0,plan.concepts);
@@ -2319,7 +2322,7 @@ function reviewHome(){
   note.textContent=due?`${due} question${due>1?'s are':' is'} due. Sets mix modules on purpose.`:Object.keys(S.q).length?'Nothing is due right now. Try a mixed set, or come back tomorrow.':'Answer some questions in the modules first. Anything you miss will show up here.';
 }
 function startReview(mode){
-  let pool=mode==='due'?interleave(dueIds()).slice(0,15):interleave(Object.keys(QB).filter(id=>QB[id].t!=='ex')).slice(0,10);
+  let pool=mode==='due'?interleave(dueIds()).slice(0,15):interleave(Object.keys(QB).filter(id=>QB[id].t!=='ex'&&!OFFLIST.has(id))).slice(0,10);
   if(!pool.length) return;
   RV={pool,i:0,right:0};
   document.getElementById('rv-start').hidden=true; document.getElementById('rv-end').hidden=true; document.getElementById('rv-run').hidden=false;
