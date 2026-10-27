@@ -11,6 +11,7 @@ Import this repo at https://vercel.com/new, keep the framework preset as **Other
 - Short notes per section, each followed by a quiz question
 - Midterm 2 review: topic checklist, a graph lab for the nine graphs on the review list, and the 25 practice questions with figures
 - Mixed checks: after every 2–3 sections, a six-question interleaved quiz pulls from those sections and earlier modules, with the topic hidden until you answer
+- Flashcards: 72 key-term cards for Modules 5–8 (a meaning and an example on the back), filter by module, term-first or meaning-first, and "Review again" cards come back a few cards later
 - Study together: a two-person routine (take turns teaching a topic out loud, then both answer mixed questions and compare). Two laptops join with a 4-letter room code: messages are encrypted with the code and sent through several free public Nostr relays at once (no accounts or backend; `vendor/` holds the nostr-tools 2.17.0 browser bundle used for signing), or both share one device
 - Exam generator: new randomized 12, 25 or 40-question practice midterms (fresh graphs, tables and numbers each time), graded with worked answers
 - Seven animated graph explainers (SVG motion graphics) with step chapters, optional narration and checkpoint questions

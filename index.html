@@ -65,7 +65,7 @@ code,.mono{font-family:var(--f-mono);font-size:.86em}
 .brand span{color:var(--accent)}
 .tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;padding-block:6px}
 .tabs::-webkit-scrollbar{display:none}
-.tabs a{flex:none;font:700 14px/1 var(--f-body);color:var(--muted);text-decoration:none;padding:9px 12px;border-radius:999px;white-space:nowrap}
+.tabs a{flex:none;font:700 14px/1 var(--f-body);color:var(--muted);text-decoration:none;padding:9px 10px;border-radius:999px;white-space:nowrap}
 .tabs a:hover{color:var(--ink);background:var(--sunk)}
 .tabs a[aria-current="page"]{background:var(--ink);color:var(--bg)}
 .duechip{flex:none;font:600 13px/1 var(--f-mono);padding:8px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);text-decoration:none;white-space:nowrap}
@@ -390,7 +390,46 @@ svg text{font-family:var(--f-body)}
 .duo-quit{justify-content:flex-end;margin-top:-4px}
 .duo-quit .btn{min-height:36px;padding:6px 12px;font-size:14px;color:var(--muted)}
 
+.fc{margin-top:28px;display:grid;gap:16px}
+.fc-tools{display:grid;gap:10px}
+.fc-opts{display:flex;flex-wrap:wrap;gap:10px 22px}
+.fc-stats{display:flex;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;font:400 13px/1.3 var(--f-mono);color:var(--muted);margin-bottom:8px}
+.fc-bar{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;display:flex}
+.fc-bar i{display:block;height:100%;transition:width .3s}
+.fc-bar .k{background:var(--good)} .fc-bar .r{background:var(--rev)}
+.fc-scene{perspective:1400px}
+.fc-card{display:block;width:100%;padding:0;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;border-radius:18px}
+.fc-card:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.fc-inner{display:grid;min-height:300px;transition:transform .45s ease;transform-style:preserve-3d}
+.fc-card.flipped .fc-inner{transform:rotateY(180deg)}
+.fc-face{grid-area:1/1;display:flex;flex-direction:column;gap:14px;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--surface);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+@media (hover:hover){.fc-card:hover .fc-face{border-color:var(--ink)}}
+.fc-back{transform:rotateY(180deg)}
+.fc-tag{display:flex;justify-content:space-between;align-items:center;gap:10px;font:600 12px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fc-term{display:block;font:800 clamp(1.7rem,5vw,2.4rem)/1.12 var(--f-display);margin:auto 0;text-wrap:balance}
+.fc-q{display:block;font-size:clamp(1.15rem,3vw,1.35rem);line-height:1.5;margin:auto 0}
+.fc-hint{display:block;font-size:14px;color:var(--muted)}
+.fc-lbl{display:block;font:600 12px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.fc-def{display:block;font-size:18px;line-height:1.5}
+.fc-ex{display:block;padding:12px 14px;border-radius:10px;background:var(--hint-soft);font-size:16px;line-height:1.5}
+.fc-pill{font:600 11.5px/1 var(--f-mono);letter-spacing:.02em;text-transform:none;padding:5px 9px;border-radius:999px}
+.fc-pill.k{background:var(--good-soft);color:var(--good)} .fc-pill.r{background:var(--hint-soft);color:var(--rev-ink)}
+.fc-rate{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fc-rate .btn{min-height:50px}
+.fc-rate kbd,.fc-nav kbd{font:600 11px/1 var(--f-mono);padding:3px 6px;border-radius:5px;border:1px solid currentColor;opacity:.7}
+@media (hover:none){.fc-rate kbd{display:none}}
+.fc-nav{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fc-nav a{margin-left:auto;font:600 13px var(--f-mono)}
+.fc-done{padding:36px 20px;text-align:center;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.fc-done h3{margin-bottom:6px}
+.fc-foot{display:flex;justify-content:flex-end}
+.fc-foot .btn{min-height:36px;padding:6px 12px;font-size:14px;color:var(--muted)}
+.fc-note{margin-top:18px}
+
 @media (max-width:640px){
+  .fc-face{padding:18px}
+  .fc-inner{min-height:280px}
+  .fc-nav a{margin-left:0;flex-basis:100%}
   .duo-grid{grid-template-columns:minmax(0,1fr)}
   .duo-score li{grid-template-columns:minmax(0,1fr)}
   .duo-card{padding:16px}
@@ -428,12 +467,12 @@ svg text{font-family:var(--f-body)}
   <div class="topbar-in">
     <a class="brand" href="#home">E251<b> <span>5–8</span></b></a>
     <nav class="tabs" aria-label="Study guide sections">
-      <a href="#home">Home</a>
       <a href="#m5">5 · Efficiency</a>
       <a href="#m6">6 · Price controls</a>
       <a href="#m7">7 · Market failures</a>
       <a href="#m8">8 · Firms &amp; costs</a>
       <a href="#midterm2">Midterm 2</a>
+      <a href="#cards">Flashcards</a>
       <a href="#exam">Generator</a>
       <a href="#duo">Study together</a>
       <a href="#review">Review</a>
@@ -464,7 +503,8 @@ svg text{font-family:var(--f-body)}
     <a class="mod" href="#m8"><span class="n">Module 8</span><h3>Firms, production and costs</h3><p>Economic profit, market structures, HHI, diminishing returns, cost curves, LRAC.</p><div class="prog" data-prog="m8"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
     <a class="mod" href="#midterm2"><span class="n">Midterm 2 review</span><h3>Topic checklist, graph lab and the 25 practice questions</h3><p>The nine graphs to know, every calculation on the review list, and worked answers.</p><div class="prog" data-prog="p2"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
     <a class="mod" href="#exam"><span class="n">Exam generator</span><h3>A new practice midterm every click</h3><p>Fresh graphs, numbers and tables each time, graded with a worked answer for every question.</p><div class="prog"><p class="lbl" data-gen-lbl>No exams taken yet</p></div></a>
-    <a class="mod wide" href="#duo"><span class="n">Study together</span><h3>A 15-minute routine for you and a friend</h3><p>Take turns teaching a topic out loud, then both answer mixed questions and compare. Works on two laptops with a room code, or on one shared screen.</p></a>
+    <a class="mod" href="#cards"><span class="n">Flashcards</span><h3>Every key term, front and back</h3><p>72 cards for Modules 5–8 with a meaning and an example for each. Misses come back a few cards later.</p><div class="prog"><p class="lbl" data-fc-lbl>72 cards</p></div></a>
+    <a class="mod" href="#duo"><span class="n">Study together</span><h3>A 15-minute routine for you and a friend</h3><p>Take turns teaching a topic out loud, then both answer mixed questions and compare. Works on two laptops with a room code, or on one shared screen.</p></a>
     <a class="mod wide" href="#midterm"><span class="n">Midterm 1 practice</span><h3>The nine Top Hat practice problems, with worked answers</h3><p>PPC, demand shifts, opportunity cost and three elasticity calculations.</p><div class="prog" data-prog="mt"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
   </div>
 
@@ -1300,6 +1340,18 @@ svg text{font-family:var(--f-body)}
     <div class="row" style="margin-top:14px"><a class="btn primary" href="#exam">Open the exam generator</a><a class="btn" href="#review">Review what’s due</a></div>
   </div>
   <nav class="next"><a class="btn ghost" href="#m8">Back: Module 8</a><a class="btn primary" href="#exam">Next: Exam generator</a></nav>
+</section>
+
+<!-- ========================= FLASHCARDS ========================= -->
+<section class="view" data-view="cards" hidden>
+  <header class="mod-head">
+    <p class="eyebrow">Midterm 2 · Modules 5–8</p>
+    <h1>Flashcards</h1>
+    <p class="lede">Every key term from Modules 5–8. Say the answer out loud before you flip, then mark the card. Cards you mark “Review again” come back a few cards later, so the ones you miss get more practice.</p>
+  </header>
+  <div id="fc" class="fc"></div>
+  <p class="small muted fc-note">Keys: Space flips, ← and → move, K marks “got it”, R marks “review again”. Your marks are saved in this browser.</p>
+  <nav class="next"><a class="btn ghost" href="#midterm2">Back: Midterm 2 review</a><a class="btn primary" href="#exam">Next: Exam generator</a></nav>
 </section>
 
 <!-- ========================= EXAM GENERATOR ========================= -->
@@ -2959,6 +3011,178 @@ function duoBind(app){
   const code=app.querySelector('#duo-code'); if(code) code.addEventListener('keydown',e=>{ if(e.key==='Enter') app.querySelector('[data-d="join"]').click() });
 }
 
+/* ---------- flashcards ---------- */
+/* Alek's own deck, checked against the Top Hat notes and the Midterm 2 review slides (terms renamed to the course's
+   words where they differed), plus cards for review-list topics it didn't cover. "Review again" puts a card back a few
+   places later in the stack, so a miss comes around again in the same sitting. */
+const FC=[
+  // Module 5
+  ['wtp',5,'m5-s2','Maximum willingness to pay','The most a buyer will pay for one more unit. It’s the buyer’s marginal benefit, so the demand curve shows it.','You’d pay up to $5 for a coffee, so your willingness to pay is $5.'],
+  ['wta',5,'m5-s3','Minimum willingness to accept','The least a seller will take for one more unit (the minimum supply price). It equals the seller’s marginal cost, so the supply curve shows it.','A cafe won’t sell a coffee for less than its $2 cost.'],
+  ['cs',5,'m5-s2','Consumer surplus','Willingness to pay minus the price paid, added up over every unit bought. On a graph: the area below demand and above the price.','You pay $3 for a coffee worth $5 to you: $2 of consumer surplus.'],
+  ['ps',5,'m5-s3','Producer surplus','Price received minus the seller’s marginal cost, added up over every unit sold. On a graph: the area above supply and below the price.','You sell a coffee for $3 that cost $2 to make: $1 of producer surplus.'],
+  ['ts',5,'m5-s4','Total surplus','Consumer surplus plus producer surplus.','The area between demand and supply, out to the quantity traded.'],
+  ['eff',5,'m5-s4','Efficiency','The quantity that makes total surplus as big as possible, where marginal benefit equals marginal cost (MB = MC).','With no market failure, the equilibrium quantity is the efficient one.'],
+  ['equity',5,'m5-s5','Equity','How fairly the benefits and costs are shared. An efficient outcome can still be unfair.','The $6 cookie equilibrium is efficient, but anyone who can’t afford $6 gets no cookies.'],
+  ['dwl',5,'m5-s4','Deadweight loss','Total surplus lost when the quantity traded isn’t the efficient quantity.','Coffee trades that would help both sides but never happen.'],
+  ['under',5,'m5-s4','Underproduction','Making less than the efficient quantity. The missing units are worth more than they cost (MB > MC), so there’s deadweight loss.','Output is 20 when the efficient quantity is 30.'],
+  ['over',5,'m5-s4','Overproduction','Making more than the efficient quantity. The extra units cost more than they’re worth (MC > MB), so there’s deadweight loss.','A subsidy pushes pizza output from 75 to 100.'],
+  ['privsum',5,'m5-s2','Market demand for a private good','Add up what each buyer would buy at every price: a horizontal sum.','At $6, Steve buys 30 boxes and Sara buys 15, so the market buys 45.'],
+  ['fair',5,'m5-s5','Fair results vs fair rules','Fair results judges the outcome, who ends up with what (utilitarians, John Rawls). Fair rules judges the process: property rights and voluntary exchange (Robert Nozick).','Fair results points to income inequality; fair rules points to equal opportunity and economic mobility.'],
+  // Module 6
+  ['ceil',6,'m6-s1','Price ceiling','A legal maximum price. It binds only if it’s set below equilibrium, and then it causes a shortage.','Rent control below the market rent.'],
+  ['floor',6,'m6-s2','Price floor','A legal minimum price. It binds only if it’s set above equilibrium, and then it causes a surplus.','A minimum wage above the market wage creates unemployment.'],
+  ['binding',6,'m6-s1','Binding vs non-binding','A price control is binding if it changes the market outcome. A non-binding one has no effect.','A $20 ceiling on a good whose equilibrium price is $10 is non-binding.'],
+  ['short',6,'m6-s1','Shortage','Quantity demanded is greater than quantity supplied. Shortage = Qd − Qs.','Gas lines under a price ceiling.'],
+  ['surplus',6,'m6-s2','Surplus (excess supply)','Quantity supplied is greater than quantity demanded.','Unemployed workers under a minimum wage, or unsold crops under a price floor.'],
+  ['search',6,'m6-s1','Search costs','The time and effort buyers spend hunting for a good during a shortage. At most it’s the yellow box: (what buyers would pay for the last unit supplied − the ceiling) × quantity supplied.','Weeks of apartment hunting under rent control.'],
+  ['wedge',6,'m6-s3','Tax wedge','The gap between the price buyers pay and the price sellers keep. It equals the tax per unit.','With a $1 tax, buyers pay $6 and sellers keep $5.'],
+  ['incid',6,'m6-s3','Tax incidence','Who really bears a tax. The less elastic side pays more of it, and it doesn’t matter whether the law taxes buyers or sellers.','Smokers have inelastic demand, so they bear most of a cigarette tax.'],
+  ['taxrev',6,'m6-s3','Tax revenue','Tax per unit times the quantity sold after the tax.','A $1 tax on 100 units raises $100.'],
+  ['taxel',6,'m6-s3','Taxes and elasticity','The more elastic demand and supply are, the more quantity falls and the bigger the deadweight loss. If either side is perfectly inelastic, there’s no deadweight loss and that side bears the whole tax.','A tax on insulin barely changes the quantity bought, so it causes little deadweight loss.'],
+  ['subsidy',6,'m6-s4','Subsidy','A per-unit payment from the government. Buyers pay less, sellers receive more, and output rises past the efficient amount.','A $6-per-pizza subsidy: buyers pay $5 and sellers get $11.'],
+  ['subcost',6,'m6-s4','Cost of a subsidy','Subsidy per unit times the new, larger quantity. It’s bigger than the gains to buyers and sellers, and the difference is the deadweight loss.','$6 a pizza on 100 pizzas costs the government $600.'],
+  ['wloss',6,'m6-s3','Welfare (deadweight) loss','Surplus lost because of a tax, subsidy or price control.','The gray triangle of trades that would help both sides but no longer happen.'],
+  // Module 7
+  ['mfail',7,'m7-s1','Market failure','A market outcome that isn’t efficient: the market overproduces or underproduces.','Pollution, or too little of a public good.'],
+  ['ext',7,'m7-s2','Externality','A cost or benefit that falls on someone outside the trade, a third party.','Factory smoke; a neighbor’s garden.'],
+  ['negext',7,'m7-s2','Negative externality','A cost imposed on others. Sellers ignore it, so the market overproduces.','Pollution, secondhand smoke.'],
+  ['posext',7,'m7-s4','Positive externality','A benefit to others. Buyers ignore it, so the market underproduces.','Vaccines, education.'],
+  ['msc',7,'m7-s2','Private vs social cost','Marginal social cost = marginal private cost + marginal external cost.','The cost of making steel plus the damage from its pollution.'],
+  ['msb',7,'m7-s4','Private vs social benefit','Marginal social benefit = marginal private benefit + marginal external benefit.','A flu shot protects you and the people around you.'],
+  ['extdwl',7,'m7-s2','Deadweight loss of an externality','The triangle between MSB and MSC, from the market quantity to the efficient quantity. Its tip points toward the efficient quantity.','Tip on the left: overproduction. Tip on the right: underproduction.'],
+  ['pigtax',7,'m7-s2','Pigovian tax','A tax equal to the marginal external cost, so the market makes the efficient quantity.','A carbon tax.'],
+  ['pigsub',7,'m7-s4','Pigovian subsidy','A subsidy equal to the marginal external benefit, so the market makes the efficient quantity of a good with a positive externality.','Pell Grants for college.'],
+  ['coase',7,'m7-s3','Coase theorem','With clear property rights, few parties and low transaction costs, private bargaining reaches the efficient outcome, whoever holds the right.','One gas driller and one environmental group can bargain. Millions of people breathing city air can’t.'],
+  ['rival',7,'m7-s5','Rival','One person’s use leaves less for others.','An apple.'],
+  ['excl',7,'m7-s5','Excludable','People who don’t pay can be kept out.','A movie theater ticket.'],
+  ['private',7,'m7-s5','Private good','Rival and excludable.','A slice of pizza.'],
+  ['public',7,'m7-s5','Public good','Nonrival and nonexcludable.','National defense, streetlights, a tornado siren.'],
+  ['club',7,'m7-s5','Natural monopoly good (club good)','Nonrival but excludable. The course’s table calls these natural monopoly goods; they’re also called club goods.','Electricity, Netflix, a gym with spare capacity.'],
+  ['common',7,'m7-s5','Common resource','Rival but nonexcludable.','Fish stocks, air, water, a public pasture.'],
+  ['pubsum',7,'m7-s6','Market demand for a public good','Add up each person’s marginal benefit at every quantity: a vertical sum. The efficient amount is where MSB = MSC.','If one more streetlight is worth $30 to Ana and $20 to Ben, its marginal social benefit is $50.'],
+  ['freerider',7,'m7-s6','Free rider','Someone who benefits from a good without paying for it. Free riders are why markets underprovide public goods and taxes pay for them.','Watching the 4th of July fireworks without chipping in.'],
+  ['commons',7,'m7-s7','Tragedy of the commons','A common resource gets overused because each user ignores the cost their use puts on others.','Northwest Atlantic cod were overfished until the fishery collapsed in 1992.'],
+  ['commonsfix',7,'m7-s7','Fixing the commons','Property rights, a quota at the sustainable amount, or tradable quotas.','Fishing licenses; individual fishing quotas (IFQs) that can be bought and sold.'],
+  // Module 8
+  ['explicit',8,'m8-s1','Explicit costs','Money the firm actually pays out.','Dough, cheese, electricity, rent.'],
+  ['implicit',8,'m8-s1','Implicit costs','The opportunity cost of using the owner’s own resources.','Salary the owner gave up, forgone interest ($5,000 at 3% is $150 a year), wear on the owner’s equipment.'],
+  ['acctp',8,'m8-s1','Accounting profit','Revenue minus explicit costs.','$100k revenue minus $70k of expenses is $30k.'],
+  ['econp',8,'m8-s1','Economic profit','Revenue minus explicit and implicit costs.','$30k accounting profit minus a $50k forgone salary is a $20k economic loss.'],
+  ['normalp',8,'m8-s1','Normal profit','What the owner could earn elsewhere, counted as a cost. Zero economic profit means the firm earns a normal profit.','The owner makes exactly what their old job paid.'],
+  ['asym',8,'m8-s2','Asymmetric information','One side of a deal knows more than the other.','The seller of a used car knows its history; the buyer doesn’t.'],
+  ['advsel',8,'m8-s2','Adverse selection','Hidden information before a deal leads to bad matches.','People who expect big medical bills are the keenest to buy health insurance.'],
+  ['moral',8,'m8-s2','Moral hazard','Behavior changes after a deal, because someone else now bears the cost.','Driving more aggressively once you’re insured.'],
+  ['pa',8,'m8-s2','Principal-agent problem','The agent (a worker) wants different things than the principal (the owner). Fixes: ownership, profit sharing, bonuses, long-term contracts.','A worker slacks off when the owner isn’t around.'],
+  ['sr',8,'m8-s4','Short run','A period when at least one input, such as plant size, is fixed.','A bakery can’t build a new oven yet.'],
+  ['lr',8,'m8-s4','Long run','A period when every input can change.','The bakery can build a new plant.'],
+  ['sunk',8,'m8-s4','Sunk cost','A cost already paid that can’t be recovered. It shouldn’t affect decisions.','A nonrefundable concert ticket you bought last month.'],
+  ['mp',8,'m8-s5','Marginal product','The extra output from one more worker.','The 5th worker adds 4 loaves.'],
+  ['ap',8,'m8-s5','Average product','Total output divided by the number of workers.','2 workers grow 26 bushels of corn, so average product is 13.'],
+  ['dimret',8,'m8-s5','Diminishing returns','With a fixed input, marginal product eventually falls as you add more workers.','A crowded kitchen: each extra cook adds less.'],
+  ['fc',8,'m8-s6','Fixed cost','A cost that doesn’t change with output. It exists only in the short run.','Monthly rent.'],
+  ['vc',8,'m8-s6','Variable cost','A cost that changes with output.','Flour, hourly labor.'],
+  ['tc',8,'m8-s6','Total cost','Fixed cost plus variable cost.','$200 rent plus $300 of flour is $500.'],
+  ['mc',8,'m8-s6','Marginal cost','The cost of one more unit: change in total cost ÷ change in quantity.','Total cost rises from $500 to $510 for one more loaf, so marginal cost is $10.'],
+  ['atc',8,'m8-s6','Average total cost','Total cost divided by quantity. ATC = AFC + AVC.','$500 ÷ 50 loaves is $10.'],
+  ['avcafc',8,'m8-s6','Average variable and average fixed cost','AVC = variable cost ÷ quantity. AFC = fixed cost ÷ quantity, and it keeps falling as output grows.','2 units of corn with $20 fixed and $14 variable cost: AFC $10, AVC $7, ATC $17.'],
+  ['mcmin',8,'m8-s6','Where MC crosses the averages','Marginal cost crosses AVC and ATC at their lowest points. When MC is below an average it pulls it down; when above, it pulls it up.','Like a GPA: a 4.0 semester raises a 3.0 average, and a 2.5 semester lowers it.'],
+  ['mcmp',8,'m8-s7','Marginal cost and marginal product','MC = wage ÷ MP. They’re mirror images: when MP rises, MC falls, and when MP falls, MC rises.','At a $10 wage, a worker who adds 10 pizzas means MC of $1; one who adds 5 means MC of $2.'],
+  ['scale',8,'m8-s8','Economies and diseconomies of scale','In the long run, average cost falls with size at first (specialization, cheaper inputs), then rises (bureaucracy). Diminishing returns don’t explain this.','The bottom of the long-run average cost curve is constant returns to scale.'],
+  ['tr',8,'m8-s9','Total revenue','Price times quantity.','5 units at $5 each is $25.'],
+  ['mr',8,'m8-s9','Marginal revenue','The change in total revenue from selling one more unit. If the firm must cut its price to sell more, MR falls below the price and can go negative.','Total revenue goes from $24 to $25 when sales go from 4 to 5 units, so MR is $1.'],
+  ['ar',8,'m8-s9','Average revenue','Total revenue divided by quantity, which equals the price.','$25 of revenue from 5 units is $5 per unit.']
+].map(([id,mod,sec,term,def,ex])=>({id,mod,sec,term,def,ex}));
+const FCMOD={5:'5 · Efficiency',6:'6 · Price controls',7:'7 · Market failures',8:'8 · Firms & costs'};
+const FCV={deck:[],i:0,flip:false};
+function fcState(){
+  const f=S.fc=S.fc||{};
+  if(!f.st||typeof f.st!=='object') f.st={};
+  f.mods=Array.isArray(f.mods)?f.mods.filter(m=>FCMOD[m]):[]; if(!f.mods.length) f.mods=[5,6,7,8];
+  if(f.mode!=='left') f.mode='all';
+  if(f.front!=='def') f.front='term';
+  return f;
+}
+function fcBuild(keep){
+  const f=fcState(), cur=FCV.deck[FCV.i];
+  FCV.deck=FC.filter(c=>f.mods.includes(c.mod)&&(f.mode==='all'||f.st[c.id]!=='k'));
+  FCV.i=keep&&cur?Math.max(0,FCV.deck.indexOf(cur)):0; FCV.flip=false;
+}
+function fcLabel(){ const f=fcState(), k=FC.filter(c=>f.st[c.id]==='k').length; document.querySelectorAll('[data-fc-lbl]').forEach(e=>{e.textContent=k?`${k} of ${FC.length} cards marked “got it”`:`${FC.length} cards`}) }
+function fcRender(focus){
+  const host=document.getElementById('fc'); if(!host) return;
+  const f=fcState(), all=FC.filter(c=>f.mods.includes(c.mod)), k=all.filter(c=>f.st[c.id]==='k').length, r=all.filter(c=>f.st[c.id]==='r').length;
+  const D=FCV.deck, c=D[FCV.i], flip=FCV.flip, termFirst=f.front==='term';
+  const seg=(attr,v,on,label)=>`<button type="button" data-${attr}="${v}" aria-pressed="${on}">${label}</button>`;
+  let card;
+  if(!c) card=`<div class="fc-done"><h3>${f.mode==='left'?'You’ve marked every card here “got it”.':'No cards picked.'}</h3><p class="muted">${f.mode==='left'?'Switch to All cards to go through them again, or add more modules.':'Pick at least one module above.'}</p></div>`;
+  else {
+    const pill=f.st[c.id]?`<span class="fc-pill ${f.st[c.id]}">${f.st[c.id]==='k'?'Got it':'Review again'}</span>`:'';
+    const tag=`<span class="fc-tag"><span>Module ${FCMOD[c.mod]}</span>${pill}</span>`;
+    const front=termFirst
+      ?`${tag}<span class="fc-term">${c.term}</span><span class="fc-hint">Say what it means out loud, then tap to check.</span>`
+      :`${tag}<span class="fc-q">${c.def}</span><span class="fc-hint">Name the term, then tap to check.</span>`;
+    const back=termFirst
+      ?`${tag}<span><span class="fc-lbl">${c.term}</span><span class="fc-def">${c.def}</span></span><span><span class="fc-lbl">Example</span><span class="fc-ex">${c.ex}</span></span>`
+      :`${tag}<span class="fc-term">${c.term}</span><span><span class="fc-lbl">Example</span><span class="fc-ex">${c.ex}</span></span>`;
+    card=`<div class="fc-scene"><button type="button" class="fc-card${flip?' flipped':''}" id="fc-card" aria-label="${flip?'Answer showing. Tap to flip back.':termFirst?`Term: ${c.term}. Tap to see the meaning.`:'Meaning showing. Tap to see the term.'}">
+        <span class="fc-inner"><span class="fc-face fc-front"${flip?' aria-hidden="true"':''}>${front}</span><span class="fc-face fc-back"${flip?'':' aria-hidden="true"'}>${back}</span></span></button></div>
+      <div class="fc-rate"><button class="btn" type="button" data-fc="r">Review again <kbd>R</kbd></button><button class="btn primary" type="button" data-fc="k">Got it <kbd>K</kbd></button></div>
+      <div class="fc-nav"><button class="btn" type="button" data-fc="prev">Previous</button><button class="btn" type="button" data-fc="next">Next</button><button class="btn" type="button" data-fc="shuffle">Shuffle</button><a href="#${c.sec}">Read ${secNo(c.sec)} in the notes</a></div>`;
+  }
+  host.innerHTML=`<div class="fc-tools">
+      <div class="seg" role="group" aria-label="Modules">${[5,6,7,8].map(m=>seg('fcmod',m,f.mods.includes(m),FCMOD[m])).join('')}</div>
+      <div class="fc-opts"><div class="seg" role="group" aria-label="Which cards">${seg('fcmode','all',f.mode==='all','All cards')}${seg('fcmode','left',f.mode==='left','Not “got it” yet')}</div>
+        <div class="seg" role="group" aria-label="Card front">${seg('fcfront','term',termFirst,'Term first')}${seg('fcfront','def',!termFirst,'Meaning first')}</div></div></div>
+    <div><div class="fc-stats"><span>${c?`Card ${FCV.i+1} of ${D.length}`:'No cards left'}</span><span>${k} got it · ${r} to review · ${all.length-k-r} new</span></div>
+      <div class="fc-bar" aria-hidden="true"><i class="k" style="width:${all.length?k/all.length*100:0}%"></i><i class="r" style="width:${all.length?r/all.length*100:0}%"></i></div></div>
+    ${card}
+    <div class="fc-foot"><button class="btn ghost" type="button" data-fc="reset">Reset flashcards</button></div>`;
+  fcLabel();
+  if(focus){ const el=document.getElementById('fc-card'); if(el) el.focus({preventScroll:true}) }
+}
+function fcGo(d){ if(!FCV.deck.length) return; FCV.i=(FCV.i+d+FCV.deck.length)%FCV.deck.length; FCV.flip=false; fcRender(true) }
+function fcMark(s){
+  const D=FCV.deck, c=D[FCV.i]; if(!c) return;
+  const f=fcState(); f.st[c.id]=s; save();
+  D.splice(FCV.i,1);
+  if(s==='r') D.splice(Math.min(FCV.i+4,D.length),0,c); // comes back in a few cards
+  else if(f.mode==='all') D.splice(FCV.i,0,c), FCV.i++;
+  if(FCV.i>=D.length) FCV.i=0;
+  FCV.flip=false; fcRender(true);
+}
+function fcInit(){
+  const host=document.getElementById('fc'); if(!host) return;
+  fcBuild(); fcRender();
+  let armed=0;
+  host.addEventListener('click',e=>{
+    const f=fcState(), b=e.target.closest('button'); if(!b) return;
+    if(b.id==='fc-card'){ FCV.flip=!FCV.flip; fcRender(true); return }
+    if(b.dataset.fcmod){ const m=+b.dataset.fcmod; f.mods=f.mods.includes(m)?f.mods.filter(x=>x!==m):[...f.mods,m].sort(); if(!f.mods.length) f.mods=[m]; save(); fcBuild(); fcRender(); return }
+    if(b.dataset.fcmode){ f.mode=b.dataset.fcmode; save(); fcBuild(); fcRender(); return }
+    if(b.dataset.fcfront){ f.front=b.dataset.fcfront; save(); FCV.flip=false; fcRender(); return }
+    const a=b.dataset.fc;
+    if(a==='k'||a==='r') fcMark(a);
+    else if(a==='next') fcGo(1);
+    else if(a==='prev') fcGo(-1);
+    else if(a==='shuffle'){ FCV.deck=shuffle(FCV.deck.slice()); FCV.i=0; FCV.flip=false; fcRender(true) }
+    else if(a==='reset'){
+      if(!armed){ armed=setTimeout(()=>{armed=0; const r=host.querySelector('[data-fc="reset"]'); if(r) r.textContent='Reset flashcards'},4000); b.textContent='Tap again to clear your marks'; return }
+      clearTimeout(armed); armed=0; f.st={}; save(); fcBuild(); fcRender();
+    }
+  });
+  document.addEventListener('keydown',e=>{
+    const v=host.closest('[data-view]'); if(!v||v.hidden||e.metaKey||e.ctrlKey||e.altKey) return;
+    const t=e.target; if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    if(t&&t.tagName==='BUTTON'&&(e.key===' '||e.key==='Enter')) return; // the button handles it
+    if(e.key===' '){ e.preventDefault(); if(FCV.deck.length){ FCV.flip=!FCV.flip; fcRender(true) } }
+    else if(e.key==='ArrowRight') fcGo(1);
+    else if(e.key==='ArrowLeft') fcGo(-1);
+    else if(e.key==='k'||e.key==='K') fcMark('k');
+    else if(e.key==='r'||e.key==='R') fcMark('r');
+  });
+}
+
 /* ---------- progress ---------- */
 const MODS=['m5','m6','m7','m8','mt','p2'];
 const idsOf=m=>Object.keys(QB).filter(id=>modOf(id)===m);
@@ -3047,7 +3271,7 @@ const resetB=document.getElementById('reset'); let armed=false;
 resetB.addEventListener('click',()=>{
   if(!armed){armed=true;resetB.textContent='Tap again to erase all progress';setTimeout(()=>{armed=false;resetB.textContent='Reset my progress'},4000);return}
   S={q:{}}; save(); refresh(); armed=false; resetB.textContent='Progress erased';
-  document.querySelectorAll('[data-can]').forEach(c=>{c.checked=false;c.dispatchEvent(new Event('change'))}); renderHist();
+  document.querySelectorAll('[data-can]').forEach(c=>{c.checked=false;c.dispatchEvent(new Event('change'))}); renderHist(); fcBuild(); fcRender();
 });
 
 /* ---------- boot ---------- */
@@ -3056,6 +3280,7 @@ document.querySelectorAll('[data-fig]').forEach(el=>{el.outerHTML=figHTML(el.dat
 document.querySelectorAll('[data-lab]').forEach(graphLab);
 document.querySelectorAll('[data-can-list]').forEach(topicChecklist);
 genUI();
+fcInit();
 document.querySelectorAll('[data-mix]').forEach(mixUI);
 duoResume(); renderDuo();
 document.querySelectorAll('[data-video]').forEach(el=>makePlayer(el,VIDEOS[el.dataset.video]));
