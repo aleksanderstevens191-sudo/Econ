@@ -338,7 +338,59 @@ svg text{font-family:var(--f-body)}
 .mx-res a{font:600 12.5px/1 var(--f-mono);padding:6px 9px;border-radius:999px;background:var(--surface);text-decoration:none}
 #exam-sum{scroll-margin-top:130px}
 
+.duo{margin-top:28px;display:grid;gap:14px;scroll-margin-top:76px}
+.duo-card{padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.duo-card h3{margin:8px 0 6px}
+.duo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.duo-l{display:block;font:600 12.5px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.duo-in{font:400 17px/1.2 var(--f-body);padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);min-height:44px;width:100%;max-width:20rem}
+.duo-in:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.duo-in.code{font:600 20px/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;width:8.2em}
+.duo-card .row .duo-in{flex:1 1 9rem}
+.duo-card .row .duo-in.code{flex:none}
+.duo-join{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.duo-center{text-align:center}
+.duo-center .muted{max-width:46ch;margin-inline:auto}
+.duo-mid{justify-content:center}
+.duo-code{font:600 clamp(44px,11vw,64px)/1 var(--f-mono);letter-spacing:.18em;margin:12px 0 14px;padding-left:.18em}
+.duo-link{font-size:14px;margin:10px auto 12px;padding:9px 12px;border-radius:10px;background:var(--sunk);word-break:break-all;max-width:36rem}
+.duo-wait{margin-top:12px;font-weight:700;color:var(--muted)}
+.duo-err{padding:12px 16px;border-radius:12px;background:var(--bad-soft);font-size:16px}
+.duo-note{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:12px;background:var(--hint-soft);font-size:16px}
+.duo-bar{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:14px;background:var(--ink);color:var(--bg);font-size:15px}
+.duo-bar .mono{font-size:13.5px;font-variant-numeric:tabular-nums}
+.duo-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.duo-timer{font:600 18px/1 var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 12px;border-radius:999px;background:var(--sunk)}
+.duo-timer.up{background:var(--hint-soft)}
+.duo-prompt{font:800 clamp(1.3rem,3.4vw,1.6rem)/1.3 var(--f-display);margin:14px 0 10px}
+.duo-pts{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
+.duo-pt{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;padding:11px 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);font:inherit;font-size:16.5px;line-height:1.45;color:inherit;cursor:pointer}
+.duo-pt:disabled{cursor:default}
+.duo-pt:not(:disabled):hover{border-color:var(--ink)}
+.duo-pt .bx{flex:none;width:22px;height:22px;margin-top:1px;border:2px solid var(--line);border-radius:6px;display:grid;place-items:center;font:700 14px/1 var(--f-body);color:var(--bg)}
+.duo-pt.on{border-color:var(--good);background:var(--good-soft)}
+.duo-pt.on .bx{background:var(--good);border-color:var(--good)}
+.duo-cov{margin-top:14px;font-size:16.5px}
+.duo-cov a{font:600 13px var(--f-mono);margin-left:4px}
+.duo-turn{margin:12px 0 4px;padding:10px 14px;border-radius:12px;background:var(--accent-soft);font-size:16.5px}
+.duo-hand{padding:26px 8px 10px}
+.duo-who{margin-left:auto;flex:none;font:600 12.5px/1.2 var(--f-mono);padding:5px 9px;border-radius:999px;background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.duo-verdict{margin-top:14px;padding:12px 16px;border-radius:12px;font-size:16.5px;line-height:1.5}
+.duo-verdict.ok{background:var(--good-soft)} .duo-verdict.no{background:var(--hint-soft)}
+.duo-score{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.duo-score li{display:grid;grid-template-columns:minmax(0,9rem) minmax(0,1fr) minmax(0,1fr);gap:4px 14px;padding:12px 14px;border-radius:12px;background:var(--sunk);font-size:16px}
+.duo-fine{margin-top:22px;max-width:64ch}
+.duo-back{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;padding:12px 18px;border-radius:999px;background:var(--ink);color:var(--bg);font:700 15px/1.2 var(--f-body);text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.duo-back[hidden]{display:none}
+
+.duo-top + .small{margin-top:8px}
+.duo .q-text{margin-top:12px}
+.duo .opt.sel:disabled{opacity:1}
+
 @media (max-width:640px){
+  .duo-grid{grid-template-columns:minmax(0,1fr)}
+  .duo-score li{grid-template-columns:minmax(0,1fr)}
+  .duo-card{padding:16px}
   body{font-size:17px}
   .qfig .tk,.lab-stage .tk{font-size:15px}
   .qfig .al{font-size:16px}
@@ -380,8 +432,8 @@ svg text{font-family:var(--f-body)}
       <a href="#m8">8 · Firms &amp; costs</a>
       <a href="#midterm2">Midterm 2</a>
       <a href="#exam">Generator</a>
+      <a href="#duo">Study together</a>
       <a href="#review">Review</a>
-      <a href="#midterm">Midterm 1</a>
     </nav>
     <a class="duechip" href="#review" title="Questions due for review"><span data-due>0</span> due</a>
   </div>
@@ -409,6 +461,7 @@ svg text{font-family:var(--f-body)}
     <a class="mod" href="#m8"><span class="n">Module 8</span><h3>Firms, production and costs</h3><p>Economic profit, market structures, HHI, diminishing returns, cost curves, LRAC.</p><div class="prog" data-prog="m8"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
     <a class="mod" href="#midterm2"><span class="n">Midterm 2 review</span><h3>Topic checklist, graph lab and the 25 practice questions</h3><p>The nine graphs to know, every calculation on the review list, and worked answers.</p><div class="prog" data-prog="p2"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
     <a class="mod" href="#exam"><span class="n">Exam generator</span><h3>A new practice midterm every click</h3><p>Fresh graphs, numbers and tables each time, graded with a worked answer for every question.</p><div class="prog"><p class="lbl" data-gen-lbl>No exams taken yet</p></div></a>
+    <a class="mod wide" href="#duo"><span class="n">Study together</span><h3>A 15-minute routine for you and a friend</h3><p>Take turns teaching a topic out loud, then both answer mixed questions and compare. Works on two laptops with a room code, or on one shared screen.</p></a>
     <a class="mod wide" href="#midterm"><span class="n">Midterm 1 practice</span><h3>The nine Top Hat practice problems, with worked answers</h3><p>PPC, demand shifts, opportunity cost and three elasticity calculations.</p><div class="prog" data-prog="mt"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
   </div>
 
@@ -1271,6 +1324,33 @@ svg text{font-family:var(--f-body)}
   <nav class="next"><a class="btn ghost" href="#midterm2">Back: Midterm 2 review</a><a class="btn primary" href="#review">Review what’s due</a></nav>
 </section>
 
+<!-- ========================= STUDY TOGETHER ========================= -->
+<section class="view" data-view="duo" hidden>
+  <header class="mod-head">
+    <p class="eyebrow">Two people · Midterm 2</p>
+    <h1>Study together</h1>
+    <p class="lede">A short routine for you and a friend. Each round, one of you teaches a topic out loud while the other checks for the key points. Then you both answer two questions from other modules on your own and compare before you see the answer. You swap roles every round.</p>
+  </header>
+  <div id="duo-app" class="duo"></div>
+
+  <section class="section">
+    <h2>How a round works</h2>
+    <ul class="how">
+      <li><b>1 · Teach it</b><div><p>The teacher gets a topic from the Midterm 2 list and explains it from memory for about 90 seconds. The checker ticks off key points as they come up and saves hints for the end.</p></div></li>
+      <li><b>2 · Fill the gaps</b><div><p>You both see which key points were missed, and the teacher says them back in their own words.</p></div></li>
+      <li><b>3 · Answer alone, then compare</b><div><p>Two questions from other modules: a calculation on a fresh graph or table, and a concept question. You each pick on your own, then see both picks. If you disagree, whoever got it right explains why.</p></div></li>
+    </ul>
+    <h2 style="margin-top:44px">Why it works</h2>
+    <ul class="how">
+      <li><b>Teaching it out loud</b><div><p>Explaining material to someone after studying it led to better scores a week later than studying it only for a test.</p><cite>Learning by teaching · Fiorella &amp; Mayer, 2013</cite></div></li>
+      <li><b>Answer alone, then discuss</b><div><p>Students who talked a question over after answering it alone did better on a new question about the same idea, even when nobody in the pair had it right at first.</p><cite>Peer discussion · Smith et al., 2009, Science</cite></div></li>
+      <li><b>Mixed questions</b><div><p>The questions come from different modules than the topic just taught, so you have to work out which idea applies.</p><cite>Interleaving · Rohrer &amp; Taylor, 2007</cite></div></li>
+    </ul>
+    <p class="small muted duo-fine">With two laptops, the page connects your two browsers directly, using PeerJS’s free connection service to find each other. There are no accounts and nothing is saved on a server. Some campus Wi-Fi blocks direct connections; if a code won’t connect, try a phone hotspot or use one device.</p>
+  </section>
+  <nav class="next"><a class="btn ghost" href="#exam">Back: Generator</a><a class="btn primary" href="#review">Review what’s due</a></nav>
+</section>
+
 <!-- ========================= MIDTERM ========================= -->
 <section class="view" data-view="midterm" hidden>
   <header class="mod-head">
@@ -1299,6 +1379,7 @@ svg text{font-family:var(--f-body)}
   <div data-q="mt-9"></div>
   <nav class="next"><a class="btn ghost" href="#home">Home</a><a class="btn primary" href="#review">Mixed review</a></nav>
 </section>
+<a class="duo-back" href="#duo" hidden>Back to your study session</a>
 </main>
 
 <script>
@@ -2403,6 +2484,381 @@ function mixUI(host){
   nx.addEventListener('click',()=>{ i++; if(i<set.length){ showQ(); run.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'}) } else finish() });
 }
 
+/* ---------- study together: two people, one room code or one device ---------- */
+/* Each round: one person teaches a topic out loud while the other checks key points, then both answer two
+   questions from other modules on their own before seeing each other's picks. Roles swap every round. */
+const TEACH=[
+  {sec:'m5-s2',p:'Explain consumer surplus: what it measures and how you find it on a graph.',k:['Buyer’s willingness to pay minus the price paid, added up over every unit bought','Demand shows marginal benefit, the most a buyer will pay for each unit','It’s the area below demand and above the price, out to the quantity bought','As a triangle: ½ × quantity × (top of demand − price)']},
+  {sec:'m5-s3',p:'Explain producer surplus: what it measures and how you find it on a graph.',k:['Price received minus the seller’s minimum price, added up over every unit sold','Supply shows marginal cost, the least a seller will accept for each unit','It’s the area above supply and below the price, out to the quantity sold','As a triangle: ½ × quantity × (price − bottom of supply)']},
+  {sec:'m5-s4',p:'With no market failure, why is the equilibrium quantity the efficient one?',k:['At equilibrium, MB = MC for the last unit','Every unit worth more than it costs gets made','No unit that costs more than it’s worth gets made','Total surplus (CS + PS) is as big as it can be, so there’s no deadweight loss']},
+  {sec:'m5-s4',p:'Compare deadweight loss from underproduction and from overproduction. Sketch where each triangle goes.',k:['Underproduction: units with MB > MC don’t get made','Overproduction: extra units get made where MC > MB','DWL is lost total surplus: the triangle between demand and supply','The triangle’s tip points toward the efficient quantity']},
+  {sec:'m5-s5',p:'Efficiency vs equity: can an efficient market outcome still be unfair?',k:['Efficiency is about the size of the pie: the most total surplus','Equity is about how the pie is shared','So yes: an outcome can be efficient but unequal or seen as unfair','Fairness of results (utilitarians, Rawls) vs fairness of the rules (Nozick)']},
+  {sec:'m5-s2',p:'How do you build market demand for a private good from each person’s demand?',k:['Add quantities at each price: a horizontal sum','It works because each person buys their own units (the good is rival)','Example: at $6, 30 boxes + 15 boxes = 45 boxes','Contrast: for a public good you add values vertically']},
+  {sec:'m6-s1',p:'Why does a binding price ceiling cause a shortage? Who gains and who loses?',k:['It only binds if it’s set below the equilibrium price','Quantity demanded rises and quantity supplied falls: shortage = Qd − Qs','Fewer units trade, so there’s deadweight loss','Buyers who get the good pay less; others lose out or pay in search costs']},
+  {sec:'m6-s1',p:'What are search costs under a price ceiling, and where are they on the graph?',k:['With a shortage, buyers spend time and effort hunting for the good','The yellow box: (what buyers would pay for the last unit supplied − ceiling) × quantity supplied','That’s the most buyers could lose to searching','So the real cost of the good can end up above the legal price']},
+  {sec:'m6-s2',p:'Treat the minimum wage as a price floor. What happens in the labor market?',k:['It only binds if it’s set above the equilibrium wage','Firms hire fewer workers while more people want jobs','The surplus of labor is unemployment, and there’s deadweight loss','Firms’ surplus falls for sure; workers who keep jobs gain and those who lose them lose']},
+  {sec:'m6-s3',p:'Who really pays a per-unit tax, and why doesn’t it matter who the tax is charged to?',k:['The tax drives a wedge: buyers’ price rises and sellers’ price falls','The more inelastic side bears more of the tax','Whether buyers or sellers write the check doesn’t change the split','If one side is perfectly inelastic, it bears all of it']},
+  {sec:'m6-s3',p:'Show tax revenue and the deadweight loss of a tax on a graph, and say how to calculate each.',k:['Revenue = tax per unit × the new, smaller quantity (the box)','DWL = ½ × tax × the drop in quantity (the triangle)','More elastic curves mean a bigger drop in quantity and a bigger DWL','No DWL if demand or supply is perfectly inelastic']},
+  {sec:'m6-s4',p:'What does a per-unit subsidy do to prices, quantity and efficiency?',k:['Supply shifts down by the subsidy','Buyers pay less and sellers receive more: the benefit is shared','Quantity rises past the efficient amount: overproduction, MC > MB','Cost to government = subsidy × new quantity, which is more than the gains, so there’s DWL']},
+  {sec:'m7-s2',p:'Negative externality: why does the market overproduce, and how do you fix it?',k:['Sellers ignore the cost to others: MSC = MPC + external cost','The market stops where MPB = MPC, past the efficient point where MSB = MSC','Price is too low and quantity too high, so there’s deadweight loss','Fix: a Pigovian tax equal to the marginal external cost']},
+  {sec:'m7-s4',p:'Positive externality: why does the market underproduce, and how do you fix it?',k:['Buyers ignore the benefit to others: MSB = MPB + external benefit','The market quantity is below the efficient one, where MSB = MSC','Units worth more to society than they cost don’t get made: deadweight loss','Fix: a Pigovian subsidy equal to the marginal external benefit (vaccines, education)']},
+  {sec:'m7-s3',p:'What does the Coase theorem say, and when does it fail?',k:['With clear property rights and low transaction costs, private bargaining reaches the efficient outcome','For efficiency it doesn’t matter who holds the right, only who pays whom','It fails with many people involved or high bargaining costs, like city air pollution','Then government fixes such as Pigovian taxes are needed']},
+  {sec:'m7-s5',p:'Use rivalry and excludability to sort the four types of goods, with an example of each.',k:['Rival: one person’s use leaves less for others. Excludable: you can keep non-payers out','Private good: rival and excludable (pizza)','Public good: nonrival and nonexcludable (streetlights, fireworks)','Common resource: rival, nonexcludable (ocean fish). Club good: nonrival, excludable (cable TV)']},
+  {sec:'m7-s6',p:'What is the free rider problem, and why do markets underprovide public goods?',k:['Public goods are nonexcludable, so people can benefit without paying','Each person hopes others will pay, so too little gets funded','Marginal social benefit is the vertical sum of everyone’s marginal benefit','So public goods are usually paid for through taxes']},
+  {sec:'m7-s7',p:'What is the tragedy of the commons, and what can fix it?',k:['A common resource is rival but nonexcludable','Each user ignores the cost their use puts on others, so it gets overused (cod)','It works like a negative externality: private cost is below social cost','Fixes: property rights, quotas or tradable quotas (IFQs), regulation']},
+  {sec:'m8-s1',p:'What’s the difference between accounting profit and economic profit? Give an implicit cost.',k:['Accounting profit = revenue − explicit costs','Economic profit also subtracts implicit (opportunity) costs','Implicit costs: forgone salary, forgone interest, wear on your own equipment','Zero economic profit means normal profit: the owner just covers their opportunity cost']},
+  {sec:'m8-s2',p:'Explain adverse selection, moral hazard and the principal-agent problem, with an example of each.',k:['All three come from asymmetric information: one side knows more','Adverse selection: hidden information before the deal (used cars, risky people buying insurance)','Moral hazard: behavior changes after the deal (driving carelessly once insured)','Principal-agent: the agent’s goals differ from the owner’s; fix with profit sharing, bonuses or ownership']},
+  {sec:'m8-s4',p:'What separates the short run from the long run for a firm?',k:['Short run: at least one input, like plant size, is fixed','Long run: every input can change','Fixed costs exist only in the short run','Sunk costs can’t be recovered, so they shouldn’t affect decisions']},
+  {sec:'m8-s5',p:'Explain marginal product, average product and diminishing returns.',k:['MP = the change in output from adding one more worker','AP = total output ÷ number of workers','Diminishing returns: with a fixed input, MP eventually falls as you add workers','Never hire a worker whose MP is negative']},
+  {sec:'m8-s7',p:'Why are marginal product and marginal cost mirror images?',k:['MC = wage ÷ MP','When MP rises, MC falls','When MP falls (diminishing returns), MC rises','That’s why the short-run MC curve eventually slopes up']},
+  {sec:'m8-s6',p:'Describe the shapes of the cost curves. Where does MC cross ATC and AVC, and why there?',k:['ATC = AFC + AVC, and AFC keeps falling as output grows','MC crosses AVC and ATC at their lowest points','If MC is below an average it pulls it down; above, it pulls it up (the GPA idea)','The gap between ATC and AVC is AFC, which shrinks as output grows']},
+  {sec:'m8-s9',p:'Explain total, marginal and average revenue.',k:['TR = P × Q','MR = the change in TR from selling one more unit','AR = TR ÷ Q, which equals the price','If the firm must cut its price to sell more, MR falls below P, can go negative, and TR peaks where MR = 0']}
+];
+const DUO_SECS=['m5-s2','m5-s3','m5-s4','m5-s5','m6-s1','m6-s2','m6-s3','m6-s4','m7-s2','m7-s3','m7-s4','m7-s5','m7-s6','m7-s7','m8-s1','m8-s2','m8-s4','m8-s5','m8-s6','m8-s7','m8-s8','m8-s9'];
+const PEERJS=['https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js','https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js'];
+const ROOM_PREFIX='e251-duo-', TEACH_SECS=90, DUO_V=1, DUO_KEY='e251-duo';
+const DUO={st:null,me:null,host:false,peer:null,conn:null,code:'',err:'',note:'',seen:{},recorded:new Set(),joining:false,mat:null,len:4};
+const modOfSec=sec=>sec.slice(0,2);
+
+/* The plan only holds ids and seeds. Each screen rebuilds the actual questions from its own copy of the guide,
+   so nothing that arrives over the connection is ever rendered as HTML. */
+function buildDuoPlan(rounds){
+  const r=RNG((Date.now()^Math.floor(Math.random()*1e9))>>>0), pool=new Set(CONCEPT_POOL()), box=id=>S.q[id]?S.q[id].box:-1;
+  const byMod={}; r.shuf(TEACH.map((_,i)=>i)).forEach(i=>{const m=modOfSec(TEACH[i].sec);(byMod[m]=byMod[m]||[]).push(i)});
+  const mods=r.shuf(Object.keys(byMod)), teach=[]; let k=0;
+  while(teach.length<rounds){ const m=mods[k++%mods.length]; if(byMod[m].length) teach.push(byMod[m].shift()) }
+  const bank=[]; DUO_SECS.forEach(sec=>bankIn(sec,pool).forEach(id=>bank.push({id,sec})));
+  const usedT=new Set(), usedB=new Set();
+  return teach.map(t=>{
+    const tm=modOfSec(TEACH[t].sec), other=s=>modOfSec(s)!==tm;
+    // one calculation on a fresh graph or table plus one concept question, both from modules other than the teach-back's
+    const tpl=r.shuf(ALLGEN).sort((a,b)=>(usedT.has(a)-usedT.has(b))||(other(TPLNAME[b][1])-other(TPLNAME[a][1])))[0]; usedT.add(tpl);
+    const c=r.shuf(bank).sort((a,b)=>(usedB.has(a.id)-usedB.has(b.id))||(other(b.sec)-other(a.sec))||(box(a.id)-box(b.id)))[0]; usedB.add(c.id);
+    const qs=[{g:tpl,s:r.int(1,2147483646)},{b:c.id,p:r.shuf(QB[c.id].o.map((_,j)=>j))}];
+    return {t,qs:r.f()<.5?qs:qs.reverse()};
+  });
+}
+function duoValid(st,mode){
+  if(!st||st.v!==DUO_V||st.mode!==(mode||'two')||!Array.isArray(st.plan)||st.plan.length>12||!Array.isArray(st.ticks)||!Array.isArray(st.picks)) return false;
+  if(!['lobby','teach','review','q','end'].includes(st.step)||!['A','B'].includes(st.ex)||!['A','B','handoff'].includes(st.turn)||!Number.isInteger(st.sid)) return false;
+  if(!st.names||typeof st.names!=='object'||!st.ans||typeof st.ans!=='object') return false;
+  if(st.step!=='lobby'&&!(Number.isInteger(st.i)&&st.i>=0&&st.i<st.plan.length&&(st.qi===0||st.qi===1))) return false;
+  return st.plan.every((R,i)=>Number.isInteger(R.t)&&TEACH[R.t]&&Array.isArray(R.qs)&&R.qs.length===2&&R.qs.every(x=>
+      x.g?(TPLNAME.hasOwnProperty(x.g)&&Number.isInteger(x.s))
+         :(QB.hasOwnProperty(x.b)&&QB[x.b].t==='mc'&&Array.isArray(x.p)&&x.p.length===QB[x.b].o.length&&[...x.p].sort((a,b)=>a-b).every((v,j)=>v===j)))
+    &&Array.isArray(st.ticks[i])&&st.ticks[i].length===TEACH[R.t].k.length
+    &&Array.isArray(st.picks[i])&&st.picks[i].length===2&&st.picks[i].every(P=>P===null||(P&&typeof P==='object')));
+}
+function duoMat(st){
+  if(DUO.mat&&DUO.mat.sid===st.sid&&DUO.mat.n===st.plan.length) return DUO.mat.rounds;
+  const rounds=st.plan.map(R=>({teach:TEACH[R.t],qs:R.qs.map(x=>{
+    if(x.g){ const g=genOne(RNG(x.s),x.g); return {kind:'gen',tpl:g.tpl,sec:TPLNAME[g.tpl][1],name:TPLNAME[g.tpl][0],q:g} }
+    const cq=QB[x.b], el=document.querySelector(`[data-q="${x.b}"]`), ch=el&&el.closest('.chunk'), sec=ch?ch.id:'';
+    return {kind:'bank',id:x.b,sec,name:sec?secName(sec):MODNAME[modOf(x.b)],q:{q:cq.q,o:x.p.map(j=>cq.o[j]),a:x.p.indexOf(cq.a),why:cq.why}};
+  })}));
+  DUO.mat={sid:st.sid,n:st.plan.length,rounds}; return rounds;
+}
+function duoNewState(mode,rounds,names){ return {v:DUO_V,mode,rounds,names,plan:[],ticks:[],picks:[],step:'lobby',i:0,qi:0,ex:'A',ans:{A:null,B:null},rev:false,turn:'A',sid:0} }
+const duoAt=st=>`${st.sid}.${st.i}.${st.step}.${st.qi}.${st.rev?1:0}.${st.turn}`;
+function duoReduce(st,a){
+  const who=a.by;
+  if(a.at!==undefined&&a.at!==duoAt(st)&&a.t!=='pick'&&a.t!=='tick') return false; // a stale click from the other screen
+  switch(a.t){
+    case 'start':
+      if(st.step!=='lobby'&&st.step!=='end'||!Array.isArray(a.plan)) return false;
+      Object.assign(st,{plan:a.plan,rounds:a.plan.length,ticks:a.plan.map(R=>TEACH[R.t].k.map(()=>false)),picks:a.plan.map(R=>R.qs.map(()=>null)),i:0,qi:0,step:'teach',ex:'A',ans:{A:null,B:null},rev:false,turn:'A',sid:st.sid+1});
+      return true;
+    case 'tick': {
+      const T=st.ticks[st.i];
+      if(!T||(st.step!=='teach'&&st.step!=='review')||!Number.isInteger(a.k)||a.k<0||a.k>=T.length) return false;
+      if(st.mode==='two'&&who===st.ex) return false;
+      T[a.k]=!T[a.k]; return true;
+    }
+    case 'doneTeach': if(st.step!=='teach') return false; st.step='review'; return true;
+    case 'toQ': if(st.step!=='review') return false; Object.assign(st,{step:'q',qi:0,ans:{A:null,B:null},rev:false,turn:'A'}); return true;
+    case 'handoff': if(st.mode!=='one'||st.turn!=='handoff') return false; st.turn='B'; return true;
+    case 'pick': {
+      if(st.step!=='q'||st.rev) return false;
+      const p=st.mode==='one'?st.turn:who, n=duoMat(st)[st.i].qs[st.qi].q.o.length;
+      if((p!=='A'&&p!=='B')||st.ans[p]!=null||!Number.isInteger(a.i)||a.i<0||a.i>=n) return false;
+      st.ans[p]=a.i;
+      if(st.mode==='one'&&p==='A') st.turn='handoff';
+      if(st.ans.A!=null&&st.ans.B!=null){ st.picks[st.i][st.qi]={A:st.ans.A,B:st.ans.B}; st.rev=true }
+      return true;
+    }
+    case 'next':
+      if(st.step!=='q'||!st.rev) return false;
+      if(st.qi<st.plan[st.i].qs.length-1) Object.assign(st,{qi:st.qi+1,ans:{A:null,B:null},rev:false,turn:'A'});
+      else if(st.i<st.plan.length-1) Object.assign(st,{i:st.i+1,step:'teach',qi:0,ex:st.ex==='A'?'B':'A',ans:{A:null,B:null},rev:false,turn:'A'});
+      else st.step='end';
+      return true;
+  }
+  return false;
+}
+function duoSend(m){ try{ if(DUO.conn&&DUO.conn.open) DUO.conn.send(m) }catch(e){} }
+function duoAct(t,extra){
+  if(!DUO.st) return;
+  const a=Object.assign({t,by:DUO.me,at:duoAt(DUO.st)},extra||{});
+  if(t==='start') a.plan=buildDuoPlan(DUO.st.rounds);
+  if(DUO.host){ if(duoReduce(DUO.st,a)){ duoSend({t:'state',st:DUO.st}); renderDuo() } }
+  else duoSend({t:'act',a});
+}
+
+/* connection: PeerJS's free public broker only introduces the two browsers; the session runs directly between them */
+function loadPeer(){
+  if(window.Peer) return Promise.resolve();
+  if(loadPeer.p) return loadPeer.p;
+  const srcs=window.__peerjsSrc?[window.__peerjsSrc]:PEERJS; let k=0;
+  return loadPeer.p=new Promise((res,rej)=>{
+    const tryNext=()=>{ if(k>=srcs.length){loadPeer.p=null; return rej(new Error('load'))}
+      const s=document.createElement('script'); s.src=srcs[k++]; s.async=true;
+      s.onload=()=>window.Peer?res():tryNext(); s.onerror=()=>{s.remove(); tryNext()}; document.head.append(s) };
+    tryNext();
+  });
+}
+const peerOpts=()=>Object.assign({debug:0},window.__duoPeerOpts||{});
+const newCode=()=>{const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s};
+const cleanName=n=>String(n||'').replace(/\s+/g,' ').trim().slice(0,24);
+function duoFail(msg){ DUO.err=msg; DUO.joining=false; renderDuo() }
+function duoLeave(){
+  try{ if(DUO.conn) DUO.conn.close() }catch(e){}
+  try{ if(DUO.peer) DUO.peer.destroy() }catch(e){}
+  Object.assign(DUO,{st:null,me:null,host:false,peer:null,conn:null,code:'',err:'',note:'',joining:false,mat:null});
+  renderDuo();
+}
+async function duoHost(name,rounds,tries,resume){
+  DUO.joining=true; DUO.err=''; renderDuo();
+  try{ await loadPeer() }catch(e){ return duoFail('Couldn’t load the connection tool. Check your internet, or use one device.') }
+  const code=resume?resume.code:newCode(), peer=new Peer(ROOM_PREFIX+code,peerOpts());
+  DUO.peer=peer;
+  peer.on('open',()=>{
+    Object.assign(DUO,{st:resume?resume.st:duoNewState('two',rounds,{A:name,B:''}),me:'A',host:true,code,joining:false,
+      note:resume&&resume.st.step!=='lobby'?`Room ${code} is open again. ${resume.st.names.B||'Your friend'} can tap Rejoin to continue.`:''});
+    renderDuo();
+  });
+  peer.on('connection',c=>{
+    // the newest connection wins, so a friend who reloads can get straight back in
+    const old=DUO.conn; DUO.conn=c;
+    if(old&&old!==c) try{ old.close() }catch(e){}
+    c.on('data',m=>{
+      if(!m||!DUO.st||DUO.conn!==c) return;
+      if(m.t==='hello'){ DUO.st.names.B=cleanName(m.name)||'Friend'; DUO.note=''; duoSend({t:'state',st:DUO.st}); renderDuo() }
+      else if(m.t==='act'&&m.a&&typeof m.a==='object'&&m.a.t!=='start'){ m.a.by='B'; if(duoReduce(DUO.st,m.a)){ duoSend({t:'state',st:DUO.st}); renderDuo() } }
+    });
+    c.on('close',()=>{ if(DUO.conn===c){ DUO.conn=null; DUO.note=`${DUO.st&&DUO.st.names.B||'Your friend'} disconnected. They can rejoin with code ${DUO.code}, and you’ll pick up where you left off.`; renderDuo() } });
+  });
+  peer.on('disconnected',()=>{ try{ if(!peer.destroyed) peer.reconnect() }catch(e){} });
+  peer.on('error',e=>{
+    if(e.type==='unavailable-id'&&(tries||0)<8){
+      try{ peer.destroy() }catch(x){} const n=(tries||0)+1;
+      if(resume&&n<5) return setTimeout(()=>duoHost(name,rounds,n,resume),1500); // after a reload the old room id takes a moment to free up
+      return duoHost(name,rounds,n,resume&&{st:resume.st,code:newCode()});
+    }
+    if(!DUO.st) duoFail('Couldn’t open a room ('+(e.type||'error')+'). Try again, or use one device.');
+  });
+}
+async function duoJoin(name,code,retry){
+  code=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(code.length!==4) return duoFail('Room codes are 4 characters, like K7QM.');
+  DUO.joining=true; DUO.err=''; renderDuo();
+  try{ await loadPeer() }catch(e){ return duoFail('Couldn’t load the connection tool. Check your internet, or use one device.') }
+  const peer=new Peer(peerOpts()); DUO.peer=peer;
+  const timer=setTimeout(()=>{ if(!DUO.st&&DUO.peer===peer){ try{peer.destroy()}catch(e){} duoFail('Couldn’t reach that room. Check the code and that your friend’s page is still open. Some school Wi-Fi blocks this; if it keeps failing, use one device.') } },20000);
+  peer.on('open',()=>{
+    const c=peer.connect(ROOM_PREFIX+code,{reliable:true,serialization:'json'}); DUO.conn=c;
+    c.on('open',()=>{ c.send({t:'hello',name}) });
+    c.on('data',m=>{
+      if(!m||m.t!=='state'||DUO.conn!==c) return;
+      clearTimeout(timer);
+      if(!duoValid(m.st)){ try{peer.destroy()}catch(e){} Object.assign(DUO,{st:null,peer:null,conn:null}); return duoFail('That room is running a different version of the guide. Both of you refresh the page, then try again.') }
+      m.st.names={A:cleanName(m.st.names&&m.st.names.A)||'Friend',B:cleanName(m.st.names&&m.st.names.B)||name};
+      Object.assign(DUO,{st:m.st,me:'B',host:false,code,joining:false,err:'',note:''}); renderDuo();
+    });
+    c.on('close',()=>{ if(DUO.conn===c&&DUO.st){ DUO.conn=null; DUO.note='Lost the connection to the room. Tap Rejoin to continue.'; renderDuo() } });
+  });
+  peer.on('error',e=>{
+    clearTimeout(timer);
+    if(DUO.st) return;
+    if(e.type==='peer-unavailable'&&retry>0){ try{ peer.destroy() }catch(x){} return setTimeout(()=>duoJoin(name,code,retry-1),2000) }
+    if(e.type==='peer-unavailable') return duoFail(`No room with code ${code}. Check the code, and make sure your friend’s page is still open.`);
+    duoFail('Couldn’t connect ('+(e.type||'error')+'). Try again, or use one device.');
+  });
+}
+function duoRejoin(){ const name=DUO.st?DUO.st.names.B:cleanName(S.duoName), code=DUO.code; try{ DUO.peer&&DUO.peer.destroy() }catch(e){} Object.assign(DUO,{st:null,peer:null,conn:null,note:''}); duoJoin(name,code,4) }
+/* a reload in the middle of a session picks it back up (this tab only) */
+function duoKeep(){
+  if(DUO.joining) return;
+  try{
+    const st=DUO.st;
+    if(!st||st.step==='end') sessionStorage.removeItem(DUO_KEY);
+    else sessionStorage.setItem(DUO_KEY,JSON.stringify(DUO.host?{code:DUO.code,st,rec:[...DUO.recorded],t:Date.now()}:{guest:1,code:DUO.code,name:st.names.B,t:Date.now()}));
+  }catch(e){}
+}
+function duoResume(){
+  let s=null; try{ s=JSON.parse(sessionStorage.getItem(DUO_KEY)||'null') }catch(e){}
+  if(!s||typeof s!=='object'||!(Date.now()-s.t<3*36e5)) return;
+  if(s.guest){ const n=cleanName(s.name), c=String(s.code||''); if(n&&c) duoJoin(n,c,4); return }
+  if(!s.st||!duoValid(s.st,s.st.mode==='one'?'one':'two')) return;
+  DUO.recorded=new Set(Array.isArray(s.rec)?s.rec.map(String):[]);
+  if(s.st.mode==='one') Object.assign(DUO,{st:s.st,me:null,host:true,code:''});
+  else duoHost(cleanName(s.st.names.A)||'Host',s.st.rounds,0,{code:String(s.code||'').replace(/[^A-Z0-9]/g,'').slice(0,4)||newCode(),st:s.st});
+}
+
+/* rendering */
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+let duoTick=0;
+function renderDuo(){
+  const app=document.getElementById('duo-app'); if(!app) return;
+  const st=DUO.st, prev=app.dataset.key||'';
+  clearInterval(duoTick);
+  let html;
+  if(!st) html=duoSetupHTML();
+  else if(st.step==='lobby') html=duoLobbyHTML(st);
+  else if(st.step==='end') html=duoEndHTML(st);
+  else html=duoRoundHTML(st);
+  if(DUO.note) html=`<div class="duo-note" role="status"><span>${esc(DUO.note)}</span>${!DUO.host&&!DUO.conn&&st?'<button class="btn" type="button" data-d="rejoin">Rejoin</button>':''}</div>`+html;
+  app.innerHTML=html;
+  const key=st?`${st.sid}.${st.i}.${st.step}.${st.qi}.${st.turn}`:'setup'; app.dataset.key=key; // the reveal stays put so the verdict is in view
+  if(prev&&prev!==key&&st&&st.step!=='lobby'&&!/\.lobby\./.test(prev)&&!app.closest('[data-view]').hidden) app.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
+  duoBind(app);
+  if(st&&st.step==='teach'){
+    const tk=st.sid+'.'+st.i; if(!DUO.seen[tk]) DUO.seen[tk]=Date.now();
+    const upd=()=>{ const el=app.querySelector('.duo-timer'); if(!el) return clearInterval(duoTick); const left=TEACH_SECS-(Date.now()-DUO.seen[tk])/1000; el.textContent=left>0?mmss(left):'Time’s up'; el.classList.toggle('up',left<=0) };
+    upd(); duoTick=setInterval(upd,500);
+  }
+  if(st&&st.step==='q'&&st.rev) duoRecord(st);
+  duoKeep();
+}
+function duoRecord(st){
+  const Q=duoMat(st)[st.i].qs[st.qi], P=st.picks[st.i][st.qi], k=st.sid+'.'+st.i+'.'+st.qi, who=st.mode==='two'?DUO.me:'A';
+  if(DUO.recorded.has(k)||!P) return; DUO.recorded.add(k);
+  const ok=P[who]===Q.q.a;
+  if(Q.kind==='bank') record(Q.id,ok);
+  else { S.gen=S.gen||{hist:[],tpl:{},recent:[]}; const s=S.gen.tpl[Q.tpl]=S.gen.tpl[Q.tpl]||{n:0,ok:0}; s.n++; if(ok) s.ok++; save() }
+}
+function duoSetupHTML(){
+  const name=esc(S.duoName||''), inv=(new URLSearchParams(location.search).get('room')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4), len=DUO.len;
+  return `${inv?`<div class="duo-note"><span>You’ve been invited to room <b class="mono">${inv}</b>. Type your name and tap Join.</span></div>`:''}
+  <div class="duo-card">
+    <label class="duo-l" for="duo-name">Your name</label>
+    <input id="duo-name" class="duo-in" maxlength="24" autocomplete="given-name" placeholder="e.g. Alek" value="${name}">
+    <p class="duo-l" style="margin-top:16px">Session length (whoever starts the room picks)</p>
+    <div class="seg" role="group" aria-label="Session length"><button type="button" data-len="4" aria-pressed="${len===4}">4 rounds · about 15 min</button><button type="button" data-len="8" aria-pressed="${len===8}">8 rounds · about 30 min</button></div>
+  </div>
+  <div class="duo-grid">
+    <div class="duo-card"><p class="vp-kick">Two laptops · recommended</p><h3>Each on your own screen</h3>
+      <p class="small muted">One of you starts a room and reads out the 4-letter code. The other types it in. No accounts or downloads.</p>
+      <div class="row" style="margin-top:12px"><button class="btn primary" type="button" data-d="host" ${DUO.joining?'disabled':''}>Start a room</button></div>
+      <div class="duo-join"><label class="duo-l" for="duo-code">Got a code from your friend?</label><div class="row"><input id="duo-code" class="duo-in code" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="K7QM" value="${inv}"><button class="btn" type="button" data-d="join" ${DUO.joining?'disabled':''}>Join</button></div></div>
+    </div>
+    <div class="duo-card"><p class="vp-kick">One device</p><h3>Share one laptop</h3>
+      <p class="small muted">Same activity. You pass the screen back and forth, and it hides each person’s answer until you’ve both picked.</p>
+      <label class="duo-l" for="duo-friend" style="margin-top:12px">Friend’s name</label>
+      <div class="row"><input id="duo-friend" class="duo-in" maxlength="24" placeholder="e.g. Sam"><button class="btn" type="button" data-d="local">Start on this device</button></div>
+    </div>
+  </div>
+  ${DUO.joining?'<p class="duo-wait" role="status">Connecting…</p>':''}${DUO.err?`<p class="duo-err" role="alert">${esc(DUO.err)}</p>`:''}`;
+}
+function duoLobbyHTML(st){
+  if(!DUO.host) return `<div class="duo-card duo-center"><p class="vp-kick">Room ${esc(DUO.code)}</p><h3>Connected to ${duoName(st,'A')}’s room</h3><p class="muted">Waiting for ${duoName(st,'A')} to start…</p><div class="row duo-mid" style="margin-top:14px"><button class="btn ghost" type="button" data-d="leave">Leave</button></div></div>`;
+  const link=location.origin+location.pathname+'?room='+DUO.code+'#duo', both=!!st.names.B&&!!DUO.conn;
+  return `<div class="duo-card duo-center"><p class="vp-kick">Your room code</p><p class="duo-code mono" aria-label="Room code ${DUO.code.split('').join(' ')}">${DUO.code}</p>
+    <p class="muted">Your friend opens this site, goes to <b>Study together</b> and types the code. Or send them this link:</p>
+    <p class="duo-link mono">${esc(link)}</p>
+    <div class="row duo-mid"><button class="btn" type="button" data-d="copy">Copy link</button></div>
+    <p class="duo-wait" role="status">${both?`✓ ${duoName(st,'B')} joined. Start when you’re both ready.`:'Waiting for your friend to join…'}</p>
+    <div class="row duo-mid" style="margin-top:10px"><button class="btn primary" type="button" data-d="start" ${both?'':'disabled'}>Start the session</button><button class="btn ghost" type="button" data-d="leave">Cancel</button></div></div>`;
+}
+const duoName=(st,p)=>esc(st.names[p]||(p==='A'?'Player 1':'Player 2'));
+const duoOk=(st,M,p)=>st.picks.reduce((s,row,i)=>s+row.filter((P,j)=>P&&P[p]===M[i].qs[j].q.a).length,0);
+function duoBar(st,M){
+  const ex=duoName(st,st.ex), ch=duoName(st,st.ex==='A'?'B':'A');
+  return `<div class="duo-bar"><b>Round ${st.i+1} of ${st.plan.length}</b><span>${ex} teaches · ${ch} checks</span><span class="mono">${duoName(st,'A')} ${duoOk(st,M,'A')} · ${duoName(st,'B')} ${duoOk(st,M,'B')}</span></div>`;
+}
+const optsHTML=(q,f)=>`<div class="opts">${q.o.map((t,i)=>f(t,i)).join('')}</div>`;
+function duoRoundHTML(st){
+  const M=duoMat(st), R=M[st.i], T=R.teach, ticks=st.ticks[st.i], two=st.mode==='two', me=DUO.me, isEx=two&&me===st.ex, ch=st.ex==='A'?'B':'A';
+  const exN=duoName(st,st.ex), chN=duoName(st,ch);
+  let h=duoBar(st,M);
+  if(st.step==='teach'||st.step==='review'){
+    const showPts=st.step==='review'||(two&&!isEx), canTick=!two||!isEx, cov=ticks.filter(Boolean).length, left=T.k.length-cov;
+    const how=st.step==='teach'
+      ?(two?(isEx?`Explain it out loud from memory, as if ${chN} has never heard of it. Sketch the graph on paper if it helps. ${chN} is checking for ${T.k.length} key points.`
+                 :`Listen while ${exN} explains. Tick each key point as soon as they cover it, and hold any hints until they’re done.`)
+           :`${exN}: explain it out loud from memory, about 90 seconds. ${chN}: just listen. The key points stay hidden until ${exN} is done.`)
+      :`${chN}: tick every point ${exN} covered.`;
+    h+=`<div class="duo-card"><div class="duo-top"><p class="vp-kick">Step 1 · Teach it</p>${st.step==='teach'?'<span class="duo-timer mono"></span>':''}</div>
+      <p class="duo-prompt">${esc(T.p)}</p>
+      <p class="small muted">${how}</p>
+      ${showPts?`<ul class="duo-pts">${T.k.map((x,k)=>`<li><button type="button" class="duo-pt${ticks[k]?' on':''}" data-tick="${k}" ${canTick?'':'disabled'} aria-pressed="${ticks[k]}"><span class="bx" aria-hidden="true">${ticks[k]?'✓':''}</span><span>${esc(x)}</span></button></li>`).join('')}</ul>`:''}
+      ${st.step==='review'?`<p class="duo-cov"><b>${cov} of ${T.k.length}</b> key points covered.${left?` ${exN}, say the missed ${left===1?'point':'points'} back in your own words now.`:' Nice.'} <a href="#${T.sec}">Reread ${secNo(T.sec)}</a></p>`:''}
+      <div class="row" style="margin-top:14px">${st.step==='teach'?`<button class="btn primary" type="button" data-d="doneTeach">${two&&!isEx?`${exN} is done`:'Done explaining'}</button>`:`<button class="btn primary" type="button" data-d="toQ">Next: both answer</button>`}</div></div>`;
+    return h;
+  }
+  const Q=R.qs[st.qi], q=Q.q;
+  h+=`<div class="duo-card"><div class="duo-top"><p class="vp-kick">Step 2 · Both answer (${st.qi+1} of ${R.qs.length})</p></div>`;
+  const qhead=`<p class="q-text">${q.q}</p>${q.fig?figHTML(q.fig):''}${q.extra||''}`;
+  if(!st.rev){
+    if(two){
+      const mine=st.ans[me], other=me==='A'?'B':'A';
+      h+=`<p class="small muted">Answer on your own first. You’ll see each other’s pick once you’ve both locked in.</p>${qhead}
+        ${optsHTML(q,(t,i)=>`<button type="button" class="opt${mine===i?' sel':''}" data-pick="${i}" ${mine!=null?'disabled':''}><span class="k">${'ABCDEF'[i]}</span><span>${t}</span></button>`)}
+        ${mine!=null?`<p class="duo-wait" role="status">Locked in. Waiting for ${duoName(st,other)}…</p>`:''}`;
+    } else if(st.turn==='handoff'){
+      h+=`<div class="duo-center duo-hand"><p class="duo-prompt">Hand the screen to ${duoName(st,'B')}.</p><p class="muted">${duoName(st,'A')}’s answer is hidden.</p><div class="row duo-mid" style="margin-top:12px"><button class="btn primary" type="button" data-d="handoff">I’m ${duoName(st,'B')}, show the question</button></div></div>`;
+    } else {
+      const p=st.turn, o=p==='A'?'B':'A';
+      h+=`<p class="duo-turn"><b>${duoName(st,p)}’s turn.</b> ${duoName(st,o)}, look away.</p>${qhead}
+        ${optsHTML(q,(t,i)=>`<button type="button" class="opt" data-pick="${i}"><span class="k">${'ABCDEF'[i]}</span><span>${t}</span></button>`)}`;
+    }
+  } else {
+    const P=st.picks[st.i][st.qi], a=q.a, okA=P.A===a, okB=P.B===a, nA=duoName(st,'A'), nB=duoName(st,'B');
+    const verdict=okA&&okB?`<b>You both got it.</b> Quick check: each of you say in one sentence why the most tempting wrong answer is wrong.`
+      :okA!==okB?`<b>You disagreed.</b> ${okA?nA:nB} got it right: explain your reasoning to ${okA?nB:nA} in 30 seconds, then read the explanation together.`
+      :P.A===P.B?`<b>You both picked the same wrong answer.</b> Read the explanation together, then each say the right idea back in one sentence.`
+      :`<b>You both missed it.</b> Read the explanation together, then each say the right idea back in one sentence.`;
+    h+=`${qhead}${optsHTML(q,(t,i)=>{const who=[P.A===i?nA:'',P.B===i?nB:''].filter(Boolean).join(' & ');return `<button type="button" class="opt${i===a?' right':''}${i!==a&&who?' wrong':''}" disabled><span class="k">${'ABCDEF'[i]}</span><span>${t}</span>${who?`<span class="duo-who">${who}</span>`:''}</button>`})}
+      <div class="duo-verdict ${okA&&okB?'ok':'no'}">${verdict}</div>
+      <div class="q-fb">${q.why}</div>
+      <p class="mx-was">Topic: <b>${esc(Q.name)}</b>${Q.sec?` · <a href="#${Q.sec}">${secNo(Q.sec)}</a>`:''}</p>
+      <div class="row" style="margin-top:14px"><button class="btn primary" type="button" data-d="next">${st.qi<R.qs.length-1?'Next question':st.i<st.plan.length-1?`Next round: ${chN} teaches`:'See results'}</button></div>`;
+  }
+  return h+'</div>';
+}
+function duoEndHTML(st){
+  const M=duoMat(st);
+  const per=p=>{let n=0; st.picks.forEach(row=>row.forEach(P=>{ if(P) n++ })); return [duoOk(st,M,p),n]};
+  const teach=p=>{let c=0,n=0; st.ticks.forEach((T,i)=>{ if((i%2===0?'A':'B')===p){ c+=T.filter(Boolean).length; n+=T.length } }); return [c,n]};
+  const miss=[];
+  M.forEach((R,i)=>{ if(st.ticks[i].some(x=>!x)) miss.push([R.teach.sec,'Teach-back: '+R.teach.p]); R.qs.forEach((Q,j)=>{ const P=st.picks[i][j]; if(P&&(P.A!==Q.q.a||P.B!==Q.q.a)) miss.push([Q.sec,Q.name]) }) });
+  const row=p=>{const [r,n]=per(p),[c,m]=teach(p);return `<li><b>${duoName(st,p)}</b><span>${r} of ${n} questions right</span><span>${m?`${c} of ${m} key points when teaching`:''}</span></li>`};
+  const [rA,n]=per('A'),[rB]=per('B');
+  return `<div class="duo-card"><p class="vp-kick">Session done</p><h3>${rA+rB} of ${n*2} answers right as a team</h3>
+    <ul class="duo-score">${row('A')}${row('B')}</ul>
+    ${miss.length?`<p class="duo-l" style="margin-top:18px">Go over these together</p><ul class="mx-res">${miss.map(([sec,name])=>`<li class="no"><span aria-hidden="true">✗</span><span>${esc(name)}</span>${sec?`<a href="#${sec}">${secNo(sec)}</a>`:'<span></span>'}</li>`).join('')}</ul>`:'<p class="muted" style="margin-top:12px">Clean sweep. Next time, try 8 rounds.</p>'}
+    <p class="small muted" style="margin-top:12px">Questions you answered also went into ${st.mode==='one'?`${duoName(st,'A')}’s review queue on this device`:'your own review queue'}.</p>
+    <div class="row" style="margin-top:14px">${DUO.host?`<button class="btn primary" type="button" data-d="start">Play again with new questions</button>`:`<span class="muted small">${duoName(st,'A')} can start another session.</span>`}<button class="btn ghost" type="button" data-d="leave">Leave</button></div></div>`;
+}
+function duoBind(app){
+  const v=s=>{const e=app.querySelector(s);return e?e.value.trim():''};
+  app.querySelectorAll('[data-len]').forEach(b=>b.addEventListener('click',()=>{ DUO.len=+b.dataset.len; app.querySelectorAll('[data-len]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))) }));
+  const nameOk=()=>{ const n=cleanName(v('#duo-name')); if(!n){ DUO.err='Type your name first.'; renderDuo(); const e=document.getElementById('duo-name'); if(e) e.focus(); return null } S.duoName=n; save(); return n };
+  app.querySelectorAll('[data-d]').forEach(b=>b.addEventListener('click',()=>{
+    const d=b.dataset.d;
+    if(d==='host'){ const n=nameOk(); if(n) duoHost(n,DUO.len) }
+    else if(d==='join'){ const n=nameOk(); if(n) duoJoin(n,v('#duo-code')) }
+    else if(d==='local'){ const n=nameOk(); if(!n) return;
+      Object.assign(DUO,{st:duoNewState('one',DUO.len,{A:n,B:cleanName(v('#duo-friend'))||'Friend'}),me:null,host:true,err:'',code:'',mat:null}); duoAct('start') }
+    else if(d==='copy'){ const t=app.querySelector('.duo-link').textContent; try{ navigator.clipboard.writeText(t).then(()=>{b.textContent='Copied'},()=>{}) }catch(e){} }
+    else if(d==='leave') duoLeave();
+    else if(d==='rejoin') duoRejoin();
+    else duoAct(d);
+  }));
+  app.querySelectorAll('[data-tick]').forEach(b=>b.addEventListener('click',()=>duoAct('tick',{k:+b.dataset.tick})));
+  app.querySelectorAll('[data-pick]').forEach(b=>b.addEventListener('click',()=>duoAct('pick',{i:+b.dataset.pick})));
+  const code=app.querySelector('#duo-code'); if(code) code.addEventListener('keydown',e=>{ if(e.key==='Enter') app.querySelector('[data-d="join"]').click() });
+}
+
 /* ---------- progress ---------- */
 const MODS=['m5','m6','m7','m8','mt','p2'];
 const idsOf=m=>Object.keys(QB).filter(id=>modOf(id)===m);
@@ -2472,6 +2928,7 @@ function show(v,noScroll){
   views.forEach(x=>x.hidden=x.dataset.view!==v);
   document.querySelectorAll('.tabs a').forEach(a=>{const on=a.getAttribute('href')==='#'+v; a.setAttribute('aria-current',on?'page':'false'); if(on) a.scrollIntoView({block:'nearest',inline:'nearest'})});
   players.forEach(p=>p.pause());
+  const back=document.querySelector('.duo-back'); if(back) back.hidden=!(DUO.st&&DUO.st.step!=='lobby'&&DUO.st.step!=='end'&&v!=='duo');
   if(v==='review'&&!RV) reviewHome();
   if(target) target.scrollIntoView({block:'start'}); else if(!noScroll) window.scrollTo(0,0);
 }
@@ -2500,10 +2957,11 @@ document.querySelectorAll('[data-lab]').forEach(graphLab);
 document.querySelectorAll('[data-can-list]').forEach(topicChecklist);
 genUI();
 document.querySelectorAll('[data-mix]').forEach(mixUI);
+duoResume(); renderDuo();
 document.querySelectorAll('[data-video]').forEach(el=>makePlayer(el,VIDEOS[el.dataset.video]));
 document.querySelectorAll('[data-ix]').forEach(el=>({i5:ix5,i6:ix6})[el.dataset.ix](el));
 refresh();
-show((location.hash||'#home').slice(1),true);
+show((location.hash||(new URLSearchParams(location.search).has('room')?'#duo':'#home')).slice(1),true);
 })();
 </script>
 
