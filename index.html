@@ -397,39 +397,32 @@ svg text{font-family:var(--f-body)}
 .fc-bar{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;display:flex}
 .fc-bar i{display:block;height:100%;transition:width .3s}
 .fc-bar .k{background:var(--good)} .fc-bar .r{background:var(--rev)}
-.fc-scene{perspective:1400px}
-.fc-card{display:block;width:100%;padding:0;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;border-radius:18px}
-.fc-card:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.fc-inner{display:grid;min-height:300px;transition:transform .45s ease;transform-style:preserve-3d}
-.fc-card.flipped .fc-inner{transform:rotateY(180deg)}
-.fc-face{grid-area:1/1;display:flex;flex-direction:column;gap:14px;padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--surface);backface-visibility:hidden;-webkit-backface-visibility:hidden}
-@media (hover:hover){.fc-card:hover .fc-face{border-color:var(--ink)}}
-.fc-back{transform:rotateY(180deg)}
-.fc-tag{display:flex;justify-content:space-between;align-items:center;gap:10px;font:600 12px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.fc-term{display:block;font:800 clamp(1.7rem,5vw,2.4rem)/1.12 var(--f-display);margin:auto 0;text-wrap:balance}
-.fc-q{display:block;font-size:clamp(1.15rem,3vw,1.35rem);line-height:1.5;margin:auto 0}
-.fc-hint{display:block;font-size:14px;color:var(--muted)}
-.fc-lbl{display:block;font:600 12px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
-.fc-def{display:block;font-size:18px;line-height:1.5}
-.fc-ex{display:block;padding:12px 14px;border-radius:10px;background:var(--hint-soft);font-size:16px;line-height:1.5}
-.fc-pill{font:600 11.5px/1 var(--f-mono);letter-spacing:.02em;text-transform:none;padding:5px 9px;border-radius:999px}
-.fc-pill.k{background:var(--good-soft);color:var(--good)} .fc-pill.r{background:var(--hint-soft);color:var(--rev-ink)}
-.fc-rate{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.fc-rate .btn{min-height:50px}
-.fc-rate kbd,.fc-nav kbd{font:600 11px/1 var(--f-mono);padding:3px 6px;border-radius:5px;border:1px solid currentColor;opacity:.7}
-@media (hover:none){.fc-rate kbd{display:none}}
-.fc-nav{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.fc-nav a{margin-left:auto;font:600 13px var(--f-mono)}
-.fc-done{padding:36px 20px;text-align:center;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.fc .q{margin-top:0;scroll-margin-top:76px}
+.fc-q:focus,.fc-done:focus{outline:none}
+.fc-q .q-text.fc-term{font:800 clamp(1.5rem,4.6vw,2rem)/1.15 var(--f-display);margin:4px 0 2px;text-wrap:balance}
+.fc-fb{display:grid;gap:10px}
+.fc-fb p{margin:0}
+.fc-lbl{display:block;font:600 12px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.fc-ex{display:block;padding:10px 13px;border-radius:10px;background:var(--surface);font-size:15.5px;line-height:1.5}
+.fc-next{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:14px}
+.fc-next a{margin-left:auto;font:600 13px var(--f-mono)}
+.fc-next kbd{font:600 11px/1 var(--f-mono);padding:3px 6px;border-radius:5px;border:1px solid currentColor;opacity:.7}
+@media (hover:none){.fc-next kbd{display:none}}
+.fc-done{padding:32px 20px;text-align:center;border:1px solid var(--line);border-radius:18px;background:var(--surface);scroll-margin-top:76px}
 .fc-done h3{margin-bottom:6px}
+.fc-score{font:800 clamp(2.2rem,7vw,3rem)/1 var(--f-display);margin:0 0 6px}
+.fc-miss{list-style:none;margin:10px auto 0;padding:0;max-width:30rem;text-align:left;display:grid;gap:6px}
+.fc-miss li{display:flex;justify-content:space-between;gap:12px;padding:9px 13px;border-radius:10px;background:var(--sunk)}
+.fc-miss a{flex:none;font:600 13px/1.6 var(--f-mono)}
+.fc-again{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
 .fc-foot{display:flex;justify-content:flex-end}
 .fc-foot .btn{min-height:36px;padding:6px 12px;font-size:14px;color:var(--muted)}
 .fc-note{margin-top:18px}
-
 @media (max-width:640px){
-  .fc-face{padding:18px}
-  .fc-inner{min-height:280px}
-  .fc-nav a{margin-left:0;flex-basis:100%}
+  .fc .q{padding:16px}
+  .fc-next .btn{flex:1 1 100%}
+  .fc-next a{margin-left:0}
+  .fc-miss li{flex-wrap:wrap}
   .duo-grid{grid-template-columns:minmax(0,1fr)}
   .duo-score li{grid-template-columns:minmax(0,1fr)}
   .duo-card{padding:16px}
@@ -472,7 +465,7 @@ svg text{font-family:var(--f-body)}
       <a href="#m7">7 · Market failures</a>
       <a href="#m8">8 · Firms &amp; costs</a>
       <a href="#midterm2">Midterm 2</a>
-      <a href="#cards">Flashcards</a>
+      <a href="#cards">Term quiz</a>
       <a href="#exam">Generator</a>
       <a href="#duo">Study together</a>
       <a href="#review">Review</a>
@@ -503,7 +496,7 @@ svg text{font-family:var(--f-body)}
     <a class="mod" href="#m8"><span class="n">Module 8</span><h3>Firms, production and costs</h3><p>Economic profit, market structures, HHI, diminishing returns, cost curves, LRAC.</p><div class="prog" data-prog="m8"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
     <a class="mod" href="#midterm2"><span class="n">Midterm 2 review</span><h3>Topic checklist, graph lab and the 25 practice questions</h3><p>The nine graphs to know, every calculation on the review list, and worked answers.</p><div class="prog" data-prog="p2"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
     <a class="mod" href="#exam"><span class="n">Exam generator</span><h3>A new practice midterm every click</h3><p>Fresh graphs, numbers and tables each time, graded with a worked answer for every question.</p><div class="prog"><p class="lbl" data-gen-lbl>No exams taken yet</p></div></a>
-    <a class="mod" href="#cards"><span class="n">Flashcards</span><h3>Every key term, front and back</h3><p>72 cards for Modules 5–8 with a meaning and an example for each. Misses come back a few cards later.</p><div class="prog"><p class="lbl" data-fc-lbl>72 cards</p></div></a>
+    <a class="mod" href="#cards"><span class="n">Term quiz</span><h3>Every key term, both ways</h3><p>72 terms from Modules 5–8 as multiple choice: pick the term for a meaning, or the meaning for a term. Misses come back a few questions later.</p><div class="prog"><p class="lbl" data-fc-lbl>72 terms</p></div></a>
     <a class="mod" href="#duo"><span class="n">Study together</span><h3>A 15-minute routine for you and a friend</h3><p>Take turns teaching a topic out loud, then both answer mixed questions and compare. Works on two laptops with a room code, or on one shared screen.</p></a>
     <a class="mod wide" href="#midterm"><span class="n">Midterm 1 practice</span><h3>The nine Top Hat practice problems, with worked answers</h3><p>PPC, demand shifts, opportunity cost and three elasticity calculations.</p><div class="prog" data-prog="mt"><div class="bar"><i></i></div><p class="lbl"></p></div></a>
   </div>
@@ -1342,15 +1335,15 @@ svg text{font-family:var(--f-body)}
   <nav class="next"><a class="btn ghost" href="#m8">Back: Module 8</a><a class="btn primary" href="#exam">Next: Exam generator</a></nav>
 </section>
 
-<!-- ========================= FLASHCARDS ========================= -->
+<!-- ========================= TERM QUIZ ========================= -->
 <section class="view" data-view="cards" hidden>
   <header class="mod-head">
     <p class="eyebrow">Midterm 2 · Modules 5–8</p>
-    <h1>Flashcards</h1>
-    <p class="lede">Every key term from Modules 5–8. Say the answer out loud before you flip, then mark the card. Cards you mark “Review again” come back a few cards later, so the ones you miss get more practice.</p>
+    <h1>Term quiz</h1>
+    <p class="lede">All 72 key terms from Modules 5–8 as quick multiple-choice questions. Some show a meaning and ask for the term; others show a term and ask what it means. The wrong options come from the same module, so you have to tell look-alike ideas apart. Miss one and it comes back a few questions later.</p>
   </header>
   <div id="fc" class="fc"></div>
-  <p class="small muted fc-note">Keys: Space flips, ← and → move, K marks “got it”, R marks “review again”. Your marks are saved in this browser.</p>
+  <p class="small muted fc-note">Keys: 1–4 or A–D pick an answer, Enter or → goes to the next question. Your results are saved in this browser.</p>
   <nav class="next"><a class="btn ghost" href="#midterm2">Back: Midterm 2 review</a><a class="btn primary" href="#exam">Next: Exam generator</a></nav>
 </section>
 
@@ -3011,10 +3004,11 @@ function duoBind(app){
   const code=app.querySelector('#duo-code'); if(code) code.addEventListener('keydown',e=>{ if(e.key==='Enter') app.querySelector('[data-d="join"]').click() });
 }
 
-/* ---------- flashcards ---------- */
-/* Alek's own deck, checked against the Top Hat notes and the Midterm 2 review slides (terms renamed to the course's
-   words where they differed), plus cards for review-list topics it didn't cover. "Review again" puts a card back a few
-   places later in the stack, so a miss comes around again in the same sitting. */
+/* ---------- term quiz ---------- */
+/* Alek's own flashcard deck, checked against the Top Hat notes and the Midterm 2 review slides (terms renamed to the
+   course's words where they differed), plus terms for review-list topics it didn't cover. Each term is asked as
+   multiple choice, meaning → term or term → meaning, with wrong options from the same module. A miss goes back a few
+   places later in the round, so it comes around again in the same sitting. */
 const FC=[
   // Module 5
   ['wtp',5,'m5-s2','Maximum willingness to pay','The most a buyer will pay for one more unit. It’s the buyer’s marginal benefit, so the demand curve shows it.','You’d pay up to $5 for a coffee, so your willingness to pay is $5.'],
@@ -3094,80 +3088,142 @@ const FC=[
   ['ar',8,'m8-s9','Average revenue','Total revenue divided by quantity, which equals the price.','$25 of revenue from 5 units is $5 per unit.']
 ].map(([id,mod,sec,term,def,ex])=>({id,mod,sec,term,def,ex}));
 const FCMOD={5:'5 · Efficiency',6:'6 · Price controls',7:'7 · Market failures',8:'8 · Firms & costs'};
-const FCV={deck:[],i:0,flip:false};
+// Shorter wording for the quiz where a card's meaning names its own term ("Shortage = Qd − Qs") or would make the
+// right option obvious. Feedback still shows the card's full meaning.
+const FCQD={
+  wta:'The least a seller will take for one more unit. It equals the seller’s marginal cost, so the supply curve shows it.',
+  fair:'One view judges the outcome, who ends up with what (utilitarians, John Rawls). The other judges the process: property rights and voluntary exchange (Robert Nozick).',
+  binding:'Whether a price control actually changes the market outcome. One set on the wrong side of equilibrium has no effect.',
+  short:'Quantity demanded is greater than quantity supplied.',
+  taxel:'The more buyers and sellers respond to price, the more quantity falls under a tax and the bigger the deadweight loss. If either side doesn’t respond at all, there’s no deadweight loss and that side bears the whole tax.',
+  pigtax:'The government’s fix for a negative externality: a per-unit amount equal to the marginal external cost.',
+  pigsub:'The government’s fix for a positive externality: a per-unit amount equal to the marginal external benefit.',
+  club:'Nonrival but excludable.',
+  commons:'A shared resource gets overused because each user ignores the cost their use puts on others.',
+  freerider:'Someone who benefits from a good without paying for it.',
+  normalp:'What the owner could earn in their next-best job, counted as a cost. It’s the accounting profit at which economic profit is zero.',
+  pa:'A worker wants different things than the owner who hired them. Fixes: ownership, profit sharing, bonuses, long-term contracts.',
+  atc:'Total cost divided by quantity.',
+  avcafc:'Variable cost ÷ quantity, and fixed cost ÷ quantity. The second one keeps falling as output grows.',
+  mcmin:'Marginal cost meets AVC and ATC at their lowest points. Below an average, it pulls the average down; above, it pulls it up.',
+  mr:'The change in total revenue from selling one more unit.'
+};
+FC.forEach(c=>{c.qd=FCQD[c.id]||c.def});
+// Look-alike pairs: each is offered as a wrong answer for the other whenever possible, so a question asks you to tell them apart.
+const FCTWIN=[['wtp','wta'],['cs','ps'],['ts','cs'],['ts','ps'],['under','over'],['privsum','pubsum'],['ceil','floor'],['short','surplus'],['taxrev','subcost'],['negext','posext'],['msc','msb'],['pigtax','pigsub'],['rival','excl'],['private','public'],['club','common'],['explicit','implicit'],['acctp','econp'],['normalp','econp'],['advsel','moral'],['sr','lr'],['mp','ap'],['fc','vc'],['mc','mr'],['tc','tr'],['atc','ar'],['avcafc','atc']];
+// Never in the same question: either answer could fairly be called right.
+const FCCLASH=[['ext','negext'],['ext','posext'],['common','commons'],['asym','advsel'],['asym','moral'],['asym','pa'],['dwl','wloss'],['implicit','normalp']];
+const fcHas=(L,a,b)=>L.some(([x,y])=>x===a&&y===b||x===b&&y===a);
+const FCV={deck:[],i:0,q:null,pick:null,first:{},round:[]};
 function fcState(){
   const f=S.fc=S.fc||{};
   if(!f.st||typeof f.st!=='object') f.st={};
   f.mods=Array.isArray(f.mods)?f.mods.filter(m=>FCMOD[m]):[]; if(!f.mods.length) f.mods=[5,6,7,8];
   if(f.mode!=='left') f.mode='all';
-  if(f.front!=='def') f.front='term';
+  if(!['mix','d2t','t2d'].includes(f.dir)) f.dir='mix';
+  if(![10,20,0].includes(f.n)) f.n=20;
+  delete f.front; // from the flip-card version
   return f;
 }
-function fcBuild(keep){
-  const f=fcState(), cur=FCV.deck[FCV.i];
-  FCV.deck=FC.filter(c=>f.mods.includes(c.mod)&&(f.mode==='all'||f.st[c.id]!=='k'));
-  FCV.i=keep&&cur?Math.max(0,FCV.deck.indexOf(cur)):0; FCV.flip=false;
+// A round: the picked modules, missed and new terms first when the round is shorter than the pool.
+function fcBuild(only){
+  const f=fcState();
+  let pool=only||FC.filter(c=>f.mods.includes(c.mod)&&(f.mode==='all'||f.st[c.id]!=='k'));
+  if(!only&&f.n&&pool.length>f.n){ const rank=c=>f.st[c.id]==='r'?0:f.st[c.id]?2:1; pool=shuffle(pool.slice()).sort((a,b)=>rank(a)-rank(b)).slice(0,f.n) }
+  FCV.deck=shuffle(pool.slice()); FCV.round=FCV.deck.slice(); FCV.i=0; FCV.first={}; FCV.q=null; FCV.pick=null;
 }
-function fcLabel(){ const f=fcState(), k=FC.filter(c=>f.st[c.id]==='k').length; document.querySelectorAll('[data-fc-lbl]').forEach(e=>{e.textContent=k?`${k} of ${FC.length} cards marked “got it”`:`${FC.length} cards`}) }
+function fcFoils(c){
+  const ok=x=>x!==c&&!fcHas(FCCLASH,c.id,x.id);
+  const twins=FC.filter(x=>ok(x)&&fcHas(FCTWIN,c.id,x.id));
+  const sec=shuffle(FC.filter(x=>ok(x)&&x.sec===c.sec&&!twins.includes(x)));
+  const mod=shuffle(FC.filter(x=>ok(x)&&x.mod===c.mod&&x.sec!==c.sec&&!twins.includes(x)));
+  return [...twins,...sec.slice(0,2),...mod,...sec.slice(2)].slice(0,3);
+}
+function fcAsk(c){
+  const f=fcState(), dir=f.dir==='mix'?(Math.random()<.5?'d2t':'t2d'):f.dir;
+  return {c,dir,opts:shuffle([c,...fcFoils(c)]),again:c.id in FCV.first};
+}
+function fcLabel(){ const f=fcState(), k=FC.filter(c=>f.st[c.id]==='k').length; document.querySelectorAll('[data-fc-lbl]').forEach(e=>{e.textContent=k?`${k} of ${FC.length} terms right last time`:`${FC.length} terms`}) }
 function fcRender(focus){
   const host=document.getElementById('fc'); if(!host) return;
   const f=fcState(), all=FC.filter(c=>f.mods.includes(c.mod)), k=all.filter(c=>f.st[c.id]==='k').length, r=all.filter(c=>f.st[c.id]==='r').length;
-  const D=FCV.deck, c=D[FCV.i], flip=FCV.flip, termFirst=f.front==='term';
+  const D=FCV.deck, c=D[FCV.i];
   const seg=(attr,v,on,label)=>`<button type="button" data-${attr}="${v}" aria-pressed="${on}">${label}</button>`;
-  let card;
-  if(!c) card=`<div class="fc-done"><h3>${f.mode==='left'?'You’ve marked every card here “got it”.':'No cards picked.'}</h3><p class="muted">${f.mode==='left'?'Switch to All cards to go through them again, or add more modules.':'Pick at least one module above.'}</p></div>`;
-  else {
-    const pill=f.st[c.id]?`<span class="fc-pill ${f.st[c.id]}">${f.st[c.id]==='k'?'Got it':'Review again'}</span>`:'';
-    const tag=`<span class="fc-tag"><span>Module ${FCMOD[c.mod]}</span>${pill}</span>`;
-    const front=termFirst
-      ?`${tag}<span class="fc-term">${c.term}</span><span class="fc-hint">Say what it means out loud, then tap to check.</span>`
-      :`${tag}<span class="fc-q">${c.def}</span><span class="fc-hint">Name the term, then tap to check.</span>`;
-    const back=termFirst
-      ?`${tag}<span><span class="fc-lbl">${c.term}</span><span class="fc-def">${c.def}</span></span><span><span class="fc-lbl">Example</span><span class="fc-ex">${c.ex}</span></span>`
-      :`${tag}<span class="fc-term">${c.term}</span><span><span class="fc-lbl">Example</span><span class="fc-ex">${c.ex}</span></span>`;
-    card=`<div class="fc-scene"><button type="button" class="fc-card${flip?' flipped':''}" id="fc-card" aria-label="${flip?'Answer showing. Tap to flip back.':termFirst?`Term: ${c.term}. Tap to see the meaning.`:'Meaning showing. Tap to see the term.'}">
-        <span class="fc-inner"><span class="fc-face fc-front"${flip?' aria-hidden="true"':''}>${front}</span><span class="fc-face fc-back"${flip?'':' aria-hidden="true"'}>${back}</span></span></button></div>
-      <div class="fc-rate"><button class="btn" type="button" data-fc="r">Review again <kbd>R</kbd></button><button class="btn primary" type="button" data-fc="k">Got it <kbd>K</kbd></button></div>
-      <div class="fc-nav"><button class="btn" type="button" data-fc="prev">Previous</button><button class="btn" type="button" data-fc="next">Next</button><button class="btn" type="button" data-fc="shuffle">Shuffle</button><a href="#${c.sec}">Read ${secNo(c.sec)} in the notes</a></div>`;
+  let body, where;
+  if(!FCV.round.length){
+    where='No questions';
+    body=`<div class="fc-done"><h3>${f.mode==='left'?'You’ve gotten every term here right.':'No terms picked.'}</h3><p class="muted">${f.mode==='left'?'Switch to All terms to go through them again, or add more modules.':'Pick at least one module above.'}</p></div>`;
+  } else if(!c){
+    where='Round done';
+    const miss=FCV.round.filter(x=>FCV.first[x.id]===false), n=FCV.round.length;
+    body=`<div class="fc-done" id="fc-q" tabindex="-1"><p class="fc-score">${n-miss.length} / ${n}</p><h3>${miss.length?'right on the first try':'All right on the first try.'}</h3>
+      ${miss.length?`<p class="muted">Worth another look:</p><ul class="fc-miss">${miss.map(x=>`<li><b>${x.term}</b> <a href="#${x.sec}">Read ${secNo(x.sec)}</a></li>`).join('')}</ul>`:'<p class="muted">Start a new round, or add modules for more terms.</p>'}
+      <div class="fc-again">${miss.length?`<button class="btn primary" type="button" data-fc="misses">${miss.length>1?`Quiz me on these ${miss.length}`:'Quiz me on that one'}</button>`:''}<button class="btn${miss.length?'':' primary'}" type="button" data-fc="new">New round</button></div></div>`;
+  } else {
+    if(!FCV.q||FCV.q.c!==c) FCV.q=fcAsk(c), FCV.pick=null;
+    const q=FCV.q, d2t=q.dir==='d2t', a=q.opts.indexOf(c), p=FCV.pick, done=p!==null;
+    where=`Question ${FCV.i+1} of ${D.length}`;
+    const opts=q.opts.map((x,i)=>`<button type="button" class="opt${done&&i===a?' right':''}${done&&i===p&&p!==a?' wrong':''}" data-fcpick="${i}"${done?' disabled':''}><span class="k">${'ABCD'[i]}</span><span>${d2t?x.term:x.qd}</span></button>`).join('');
+    let fb='';
+    if(done){
+      const ok=p===a, y=q.opts[p];
+      fb=`<div class="q-fb fc-fb ${ok?'ok':'no'}" role="status"><p><b>${ok?'Right.':'Not quite.'}</b> ${ok?'':(d2t?`<b>${y.term}</b> means: ${y.qd}`:`The meaning you picked is <b>${y.term}</b>.`)+' You’ll see this term again in a few questions.'}</p>
+        <p><span class="fc-lbl">${c.term}</span>${c.def}</p><p><span class="fc-lbl">Example</span><span class="fc-ex">${c.ex}</span></p></div>
+        <div class="fc-next"><button class="btn primary" type="button" data-fc="next" id="fc-next">${FCV.i+1<D.length?'Next question':'See results'} <kbd>Enter</kbd></button><a href="#${c.sec}">Read ${secNo(c.sec)} in the notes</a></div>`;
+    }
+    body=`<div class="q fc-q" id="fc-q" tabindex="-1" aria-labelledby="fc-qt">
+      <div class="q-top"><span class="q-tag">${d2t?'Which term is this?':'What does this term mean?'}</span><span class="q-meta">${q.again?'Back for another try':'Module '+FCMOD[c.mod]}</span></div>
+      <p class="q-text${d2t?'':' fc-term'}" id="fc-qt">${d2t?c.qd:c.term}</p>
+      <div class="opts">${opts}</div>${fb}</div>`;
   }
   host.innerHTML=`<div class="fc-tools">
       <div class="seg" role="group" aria-label="Modules">${[5,6,7,8].map(m=>seg('fcmod',m,f.mods.includes(m),FCMOD[m])).join('')}</div>
-      <div class="fc-opts"><div class="seg" role="group" aria-label="Which cards">${seg('fcmode','all',f.mode==='all','All cards')}${seg('fcmode','left',f.mode==='left','Not “got it” yet')}</div>
-        <div class="seg" role="group" aria-label="Card front">${seg('fcfront','term',termFirst,'Term first')}${seg('fcfront','def',!termFirst,'Meaning first')}</div></div></div>
-    <div><div class="fc-stats"><span>${c?`Card ${FCV.i+1} of ${D.length}`:'No cards left'}</span><span>${k} got it · ${r} to review · ${all.length-k-r} new</span></div>
+      <div class="fc-opts"><div class="seg" role="group" aria-label="Which terms">${seg('fcmode','all',f.mode==='all','All terms')}${seg('fcmode','left',f.mode==='left','Not right yet')}</div>
+        <div class="seg" role="group" aria-label="Question type">${seg('fcdir','mix',f.dir==='mix','Mixed')}${seg('fcdir','d2t',f.dir==='d2t','Meaning → term')}${seg('fcdir','t2d',f.dir==='t2d','Term → meaning')}</div>
+        <div class="seg" role="group" aria-label="Questions per round">${[10,20,0].map(n=>seg('fcn',n,f.n===n,n?n+' a round':'All at once')).join('')}</div></div></div>
+    <div><div class="fc-stats"><span>${where}</span><span>${k} right · ${r} missed · ${all.length-k-r} new</span></div>
       <div class="fc-bar" aria-hidden="true"><i class="k" style="width:${all.length?k/all.length*100:0}%"></i><i class="r" style="width:${all.length?r/all.length*100:0}%"></i></div></div>
-    ${card}
-    <div class="fc-foot"><button class="btn ghost" type="button" data-fc="reset">Reset flashcards</button></div>`;
+    ${body}
+    <div class="fc-foot"><button class="btn ghost" type="button" data-fc="reset">Reset quiz results</button></div>`;
   fcLabel();
-  if(focus){ const el=document.getElementById('fc-card'); if(el) el.focus({preventScroll:true}) }
+  if(focus){
+    const box=document.getElementById('fc-q'), nx=document.getElementById('fc-next'); if(!box) return;
+    if(nx){ // answered: keep the feedback and the Next button on screen
+      nx.focus({preventScroll:true});
+      const d=Math.min(nx.getBoundingClientRect().bottom+16-innerHeight, box.querySelector('.fc-fb').getBoundingClientRect().top-76); if(d>0) scrollBy(0,d);
+    } else {
+      box.focus({preventScroll:true});
+      const top=box.getBoundingClientRect().top; if(top<70||top>innerHeight*.5) box.scrollIntoView({block:'start'});
+    }
+  }
 }
-function fcGo(d){ if(!FCV.deck.length) return; FCV.i=(FCV.i+d+FCV.deck.length)%FCV.deck.length; FCV.flip=false; fcRender(true) }
-function fcMark(s){
-  const D=FCV.deck, c=D[FCV.i]; if(!c) return;
-  const f=fcState(); f.st[c.id]=s; save();
-  D.splice(FCV.i,1);
-  if(s==='r') D.splice(Math.min(FCV.i+4,D.length),0,c); // comes back in a few cards
-  else if(f.mode==='all') D.splice(FCV.i,0,c), FCV.i++;
-  if(FCV.i>=D.length) FCV.i=0;
-  FCV.flip=false; fcRender(true);
+// The first answer in a round is the one that counts; a miss comes back 4 questions later until it's answered right.
+function fcPick(i){
+  const c=FCV.deck[FCV.i]; if(!c||!FCV.q||FCV.pick!==null||!FCV.q.opts[i]) return;
+  const ok=FCV.q.opts[i]===c, f=fcState();
+  FCV.pick=i;
+  if(!(c.id in FCV.first)){ FCV.first[c.id]=ok; f.st[c.id]=ok?'k':'r'; save() }
+  if(!ok) FCV.deck.splice(Math.min(FCV.i+5,FCV.deck.length),0,c);
+  fcRender(true);
 }
+function fcNext(){ if(FCV.pick===null||!FCV.deck[FCV.i]) return; FCV.i++; FCV.q=null; FCV.pick=null; fcRender(true) }
 function fcInit(){
   const host=document.getElementById('fc'); if(!host) return;
   fcBuild(); fcRender();
   let armed=0;
   host.addEventListener('click',e=>{
     const f=fcState(), b=e.target.closest('button'); if(!b) return;
-    if(b.id==='fc-card'){ FCV.flip=!FCV.flip; fcRender(true); return }
+    if(b.dataset.fcpick) return fcPick(+b.dataset.fcpick);
     if(b.dataset.fcmod){ const m=+b.dataset.fcmod; f.mods=f.mods.includes(m)?f.mods.filter(x=>x!==m):[...f.mods,m].sort(); if(!f.mods.length) f.mods=[m]; save(); fcBuild(); fcRender(); return }
     if(b.dataset.fcmode){ f.mode=b.dataset.fcmode; save(); fcBuild(); fcRender(); return }
-    if(b.dataset.fcfront){ f.front=b.dataset.fcfront; save(); FCV.flip=false; fcRender(); return }
+    if(b.dataset.fcn){ f.n=+b.dataset.fcn; save(); fcBuild(); fcRender(); return }
+    if(b.dataset.fcdir){ f.dir=b.dataset.fcdir; save(); if(FCV.pick===null) FCV.q=null; fcRender(); return }
     const a=b.dataset.fc;
-    if(a==='k'||a==='r') fcMark(a);
-    else if(a==='next') fcGo(1);
-    else if(a==='prev') fcGo(-1);
-    else if(a==='shuffle'){ FCV.deck=shuffle(FCV.deck.slice()); FCV.i=0; FCV.flip=false; fcRender(true) }
+    if(a==='next') fcNext();
+    else if(a==='new'){ fcBuild(); fcRender(true) }
+    else if(a==='misses'){ fcBuild(FCV.round.filter(x=>FCV.first[x.id]===false)); fcRender(true) }
     else if(a==='reset'){
-      if(!armed){ armed=setTimeout(()=>{armed=0; const r=host.querySelector('[data-fc="reset"]'); if(r) r.textContent='Reset flashcards'},4000); b.textContent='Tap again to clear your marks'; return }
+      if(!armed){ armed=setTimeout(()=>{armed=0; const r=host.querySelector('[data-fc="reset"]'); if(r) r.textContent='Reset quiz results'},4000); b.textContent='Tap again to clear your results'; return }
       clearTimeout(armed); armed=0; f.st={}; save(); fcBuild(); fcRender();
     }
   });
@@ -3175,11 +3231,9 @@ function fcInit(){
     const v=host.closest('[data-view]'); if(!v||v.hidden||e.metaKey||e.ctrlKey||e.altKey) return;
     const t=e.target; if(t&&(t.isContentEditable||/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
     if(t&&t.tagName==='BUTTON'&&(e.key===' '||e.key==='Enter')) return; // the button handles it
-    if(e.key===' '){ e.preventDefault(); if(FCV.deck.length){ FCV.flip=!FCV.flip; fcRender(true) } }
-    else if(e.key==='ArrowRight') fcGo(1);
-    else if(e.key==='ArrowLeft') fcGo(-1);
-    else if(e.key==='k'||e.key==='K') fcMark('k');
-    else if(e.key==='r'||e.key==='R') fcMark('r');
+    const n='1234'.indexOf(e.key)+1||'abcd'.indexOf(e.key.toLowerCase())+1;
+    if(n&&FCV.pick===null) fcPick(n-1);
+    else if((e.key==='Enter'||e.key==='ArrowRight')&&FCV.pick!==null){ e.preventDefault(); fcNext() }
   });
 }
 
