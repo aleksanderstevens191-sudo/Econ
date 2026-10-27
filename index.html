@@ -387,6 +387,9 @@ svg text{font-family:var(--f-body)}
 .duo .q-text{margin-top:12px}
 .duo .opt.sel:disabled{opacity:1}
 
+.duo-quit{justify-content:flex-end;margin-top:-4px}
+.duo-quit .btn{min-height:36px;padding:6px 12px;font-size:14px;color:var(--muted)}
+
 @media (max-width:640px){
   .duo-grid{grid-template-columns:minmax(0,1fr)}
   .duo-score li{grid-template-columns:minmax(0,1fr)}
@@ -1346,8 +1349,7 @@ svg text{font-family:var(--f-body)}
       <li><b>Answer alone, then discuss</b><div><p>Students who talked a question over after answering it alone did better on a new question about the same idea, even when nobody in the pair had it right at first.</p><cite>Peer discussion · Smith et al., 2009, Science</cite></div></li>
       <li><b>Mixed questions</b><div><p>The questions come from different modules than the topic just taught, so you have to work out which idea applies.</p><cite>Interleaving · Rohrer &amp; Taylor, 2007</cite></div></li>
     </ul>
-    <p class="small muted duo-fine">With two laptops, the page connects your two browsers directly, using PeerJS’s free connection service to find each other. There are no accounts and nothing is saved on a server. Some campus Wi-Fi blocks direct connections; if a code won’t connect, try a phone hotspot or use one device.</p>
-  </section>
+    <p class="small muted duo-fine">With two laptops, each click is encrypted with your room code and sent through several free public relay servers at the same time, so one being slow or down doesn’t stop you. There are no accounts and nothing is saved on a server. If it still won’t connect, use one device.</p>  </section>
   <nav class="next"><a class="btn ghost" href="#exam">Back: Generator</a><a class="btn primary" href="#review">Review what’s due</a></nav>
 </section>
 
@@ -2515,9 +2517,11 @@ const TEACH=[
   {sec:'m8-s9',p:'Explain total, marginal and average revenue.',k:['TR = P × Q','MR = the change in TR from selling one more unit','AR = TR ÷ Q, which equals the price','If the firm must cut its price to sell more, MR falls below P, can go negative, and TR peaks where MR = 0']}
 ];
 const DUO_SECS=['m5-s2','m5-s3','m5-s4','m5-s5','m6-s1','m6-s2','m6-s3','m6-s4','m7-s2','m7-s3','m7-s4','m7-s5','m7-s6','m7-s7','m8-s1','m8-s2','m8-s4','m8-s5','m8-s6','m8-s7','m8-s8','m8-s9'];
-const PEERJS=['https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js','https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js'];
-const ROOM_PREFIX='e251-duo-', TEACH_SECS=90, DUO_V=1, DUO_KEY='e251-duo';
-const DUO={st:null,me:null,host:false,peer:null,conn:null,code:'',err:'',note:'',seen:{},recorded:new Set(),joining:false,mat:null,len:4};
+// free public relays; the same list on both screens, and any one of them working is enough
+const RELAYS=['wss://nos.lol','wss://relay.damus.io','wss://relay.primal.net','wss://nostr.mom','wss://relay.snort.social','wss://nostr.robosats.org','wss://relay.nostr.dev.br','wss://relay.layer.systems'];
+const NOSTR_JS=['vendor/nostr-tools-2.17.0.js','https://cdn.jsdelivr.net/npm/nostr-tools@2.17.0/lib/nostr.bundle.js','https://unpkg.com/nostr-tools@2.17.0/lib/nostr.bundle.js'];
+const TEACH_SECS=90, DUO_V=1, DUO_KEY='e251-duo', BEAT=window.__duoBeat||10000;
+const DUO={st:null,me:null,host:false,code:'',err:'',note:'',seen:{},recorded:new Set(),joining:false,mat:null,len:4,peer:'',lastPeer:0,lost:false,pend:{},aids:[],myName:''};
 const modOfSec=sec=>sec.slice(0,2);
 
 /* The plan only holds ids and seeds. Each screen rebuilds the actual questions from its own copy of the guide,
@@ -2595,113 +2599,207 @@ function duoReduce(st,a){
   }
   return false;
 }
-function duoSend(m){ try{ if(DUO.conn&&DUO.conn.open) DUO.conn.send(m) }catch(e){} }
 function duoAct(t,extra){
   if(!DUO.st) return;
   const a=Object.assign({t,by:DUO.me,at:duoAt(DUO.st)},extra||{});
   if(t==='start') a.plan=buildDuoPlan(DUO.st.rounds);
-  if(DUO.host){ if(duoReduce(DUO.st,a)){ duoSend({t:'state',st:DUO.st}); renderDuo() } }
-  else duoSend({t:'act',a});
+  if(DUO.host){ if(duoReduce(DUO.st,a)){ if(DUO.st.mode==='two') duoBroadcast(); renderDuo() } return }
+  // the guest's click goes to the host's screen, which owns the session; resend it until the host confirms it
+  a.aid=rid(); DUO.pend[a.aid]={a,k:0}; netSend({t:'act',a});
+  clearInterval(DUO.pt); DUO.pt=setInterval(()=>{
+    const ids=Object.keys(DUO.pend); if(!ids.length) return clearInterval(DUO.pt);
+    ids.forEach(id=>{ const p=DUO.pend[id]; if(++p.k>4){ delete DUO.pend[id]; renderDuo() } else netSend({t:'act',a:p.a}) });
+  },2500);
 }
 
-/* connection: PeerJS's free public broker only introduces the two browsers; the session runs directly between them */
-function loadPeer(){
-  if(window.Peer) return Promise.resolve();
-  if(loadPeer.p) return loadPeer.p;
-  const srcs=window.__peerjsSrc?[window.__peerjsSrc]:PEERJS; let k=0;
-  return loadPeer.p=new Promise((res,rej)=>{
-    const tryNext=()=>{ if(k>=srcs.length){loadPeer.p=null; return rej(new Error('load'))}
-      const s=document.createElement('script'); s.src=srcs[k++]; s.async=true;
-      s.onload=()=>window.Peer?res():tryNext(); s.onerror=()=>{s.remove(); tryNext()}; document.head.append(s) };
-    tryNext();
+/* connection: there's no server of our own. Both screens post small messages, encrypted with the room code, to the
+   same handful of free public Nostr relays at once, so one relay being slow or down doesn't matter, and it works on
+   any network that can load ordinary web pages. */
+const rid=()=>Math.random().toString(36).slice(2,10);
+const te=new TextEncoder(), td=new TextDecoder();
+const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+const sha=s=>crypto.subtle.digest('SHA-256',te.encode(s));
+const b64=u=>{let s='';for(let i=0;i<u.length;i++)s+=String.fromCharCode(u[i]);return btoa(s)};
+const unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+let ntP=null;
+function loadNostr(){
+  if(window.NostrTools) return Promise.resolve();
+  const srcs=window.__ntSrc?[window.__ntSrc]:NOSTR_JS; let k=0;
+  return ntP=ntP||new Promise((res,rej)=>{
+    const next=()=>{ if(k>=srcs.length){ ntP=null; return rej(new Error('load')) }
+      const s=document.createElement('script'), t=setTimeout(()=>{ s.onload=s.onerror=null; s.remove(); next() },8000);
+      s.src=srcs[k++]; s.async=true;
+      s.onload=()=>{ clearTimeout(t); window.NostrTools?res():next() };
+      s.onerror=()=>{ clearTimeout(t); s.remove(); next() };
+      document.head.append(s) };
+    next();
   });
 }
-const peerOpts=()=>Object.assign({debug:0},window.__duoPeerOpts||{});
+const NET={gen:0,key:null,topic:'',kind:0,sk:null,pk:'',me:rid(),socks:[],seen:new Set(),on:null,q:Promise.resolve(),pend:[],beat:0};
+async function netOpen(code,on){
+  netClose();
+  const gen=NET.gen;
+  await loadNostr();
+  if(!(window.crypto&&crypto.subtle)) throw new Error('crypto');
+  const topic=hex(await sha('e251-duo-topic|'+code));
+  const key=await crypto.subtle.importKey('raw',await sha('e251-duo-key|'+code),'AES-GCM',false,['encrypt','decrypt']);
+  if(gen!==NET.gen) throw new Error('stale');
+  const sk=NostrTools.generateSecretKey();
+  Object.assign(NET,{key,topic,kind:20000+parseInt(topic.slice(0,8),16)%10000,sk,pk:NostrTools.getPublicKey(sk),socks:[],seen:new Set(),on,pend:[]});
+  return new Promise((res,rej)=>{
+    let done=false; const t=setTimeout(()=>{ if(!done){ done=true; netClose(); rej(new Error('relays')) } },12000);
+    (window.__duoRelays||RELAYS).forEach(url=>netSock(url,gen,()=>{ if(!done){ done=true; clearTimeout(t); res() } },2000));
+  });
+}
+function netSock(url,gen,ready,delay){
+  if(gen!==NET.gen) return;
+  let ws; try{ ws=new WebSocket(url) }catch(e){ return }
+  const so={ws,ok:false}, sub='e251'+rid(); NET.socks.push(so);
+  ws.onopen=()=>{
+    if(gen!==NET.gen) return ws.close();
+    so.ok=true; delay=2000;
+    ws.send(JSON.stringify(['REQ',sub,{kinds:[NET.kind],'#x':[NET.topic],since:Math.floor(Date.now()/1000)-60}]));
+    NET.pend.forEach(m=>{ try{ ws.send(m) }catch(e){} });
+    ready();
+  };
+  ws.onmessage=e=>{ let m; try{ m=JSON.parse(e.data) }catch(x){ return } if(Array.isArray(m)&&m[0]==='EVENT'&&m[1]===sub) netIn(m[2]) };
+  ws.onerror=()=>{};
+  ws.onclose=()=>{ so.ok=false; NET.socks=NET.socks.filter(x=>x!==so); if(gen===NET.gen) setTimeout(()=>netSock(url,gen,ready,Math.min(delay*2,30000)),delay) };
+}
+async function netIn(ev){
+  if(!ev||typeof ev!=='object'||typeof ev.id!=='string'||NET.seen.has(ev.id)||ev.pubkey===NET.pk||ev.kind!==NET.kind) return;
+  if(!Array.isArray(ev.tags)||!ev.tags.some(t=>Array.isArray(t)&&t[0]==='x'&&t[1]===NET.topic)) return;
+  NET.seen.add(ev.id); if(NET.seen.size>4000) NET.seen=new Set([...NET.seen].slice(-1500));
+  const key=NET.key; let m;
+  try{ const raw=unb64(String(ev.content)); m=JSON.parse(td.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:raw.slice(0,12)},key,raw.slice(12)))) }catch(e){ return }
+  if(key===NET.key&&m&&typeof m==='object'&&m.v===DUO_V&&typeof m.f==='string'&&m.f!==NET.me&&NET.on) NET.on(m);
+}
+function netSend(m){
+  const key=NET.key, sk=NET.sk; if(!key) return NET.q;
+  return NET.q=NET.q.then(async()=>{
+    const iv=crypto.getRandomValues(new Uint8Array(12));
+    const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,te.encode(JSON.stringify(Object.assign({v:DUO_V,f:NET.me},m)))));
+    if(key!==NET.key) return;
+    const all=new Uint8Array(12+ct.length); all.set(iv); all.set(ct,12);
+    const ev=NostrTools.finalizeEvent({kind:NET.kind,created_at:Math.floor(Date.now()/1000),tags:[['x',NET.topic]],content:b64(all)},sk);
+    const out=JSON.stringify(['EVENT',ev]); NET.seen.add(ev.id);
+    const open=NET.socks.filter(s=>s.ok);
+    if(!open.length){ NET.pend.push(out); NET.pend=NET.pend.slice(-12); return }
+    open.forEach(s=>{ try{ s.ws.send(out) }catch(e){} });
+  }).catch(()=>{});
+}
+function netClose(){
+  NET.gen++; clearInterval(NET.beat);
+  NET.socks.forEach(s=>{ try{ s.ws.onclose=null; s.ws.close() }catch(e){} });
+  Object.assign(NET,{socks:[],key:null,on:null,pend:[]});
+}
+const netErr=e=>({load:'Couldn’t load the connection tool. Check your internet connection and try again, or use one device.',
+  relays:'Couldn’t reach any of the connection servers. Your network may be blocking them. Try a phone hotspot, or use one device.',
+  crypto:'This browser can’t make the secure connection. Try an up-to-date Chrome, Safari or Firefox, or use one device.'})[e&&e.message]||'Couldn’t connect. Try again, or use one device.';
+
+let duoBc=0;
+function duoBroadcast(){ clearTimeout(duoBc); duoBc=setTimeout(()=>{ if(DUO.host&&DUO.st) netSend({t:'state',h:DUO.hid,n:++DUO.n,ack:DUO.aids.slice(-24),st:DUO.st}) },120) }
+function duoBeat(){
+  clearInterval(NET.beat);
+  NET.beat=setInterval(()=>{
+    if(!DUO.st) return;
+    if(DUO.host){ if(DUO.peer) netSend({t:'ping',h:DUO.hid,n:DUO.n}) } else netSend({t:'ping',h:DUO.hh,n:DUO.hn});
+    if(DUO.peer&&!DUO.lost&&Date.now()-DUO.lastPeer>BEAT*3.2){
+      DUO.lost=true;
+      DUO.note=DUO.host?`Haven’t heard from ${DUO.st.names.B||'your friend'} for a bit. If their page is still open, they’ll reconnect on their own. If not, they can join again with code ${DUO.code}.`
+                       :`Lost touch with ${DUO.st.names.A||'your friend'}’s room. It reconnects on its own while their page is open.`;
+      renderDuo();
+    }
+  },BEAT);
+}
+function duoHeard(){ DUO.lastPeer=Date.now(); if(DUO.lost||DUO.note){ DUO.lost=false; DUO.note=''; renderDuo() } }
+function duoHostMsg(m){
+  if(!DUO.host||!DUO.st) return;
+  if(m.t==='hello'){
+    // whoever said hello last is the friend, so a reload or a second device takes over the seat
+    DUO.peer=m.f; DUO.st.names.B=cleanName(m.name)||'Friend'; DUO.lastPeer=Date.now(); DUO.lost=false; DUO.note='';
+    duoBroadcast(); renderDuo(); return;
+  }
+  if(m.f!==DUO.peer) return;
+  if(m.t==='bye'){ DUO.peer=''; DUO.note=`${DUO.st.names.B||'Your friend'} left the room. They can join again with code ${DUO.code}.`; renderDuo(); return }
+  duoHeard();
+  if(m.t==='ping'&&(m.h!==DUO.hid||!(m.n>=DUO.n))) return duoBroadcast(); // they're behind, so send the latest again
+  if(m.t==='act'&&m.a&&typeof m.a==='object'&&m.a.t!=='start'){
+    const aid=String(m.a.aid||'').slice(0,12);
+    if(aid&&DUO.aids.includes(aid)) return duoBroadcast(); // a resend: they just missed the update
+    if(aid){ DUO.aids.push(aid); DUO.aids=DUO.aids.slice(-60) }
+    m.a.by='B'; if(duoReduce(DUO.st,m.a)) renderDuo();
+    duoBroadcast();
+  }
+}
+function duoGuestMsg(m){
+  if(DUO.host) return;
+  if(m.t==='state'){
+    if(m.h===DUO.hh&&!(m.n>DUO.hn)) return; // an older copy
+    if(!duoValid(m.st)){ if(!DUO.st) duoFail('That room is running a different version of the guide. Both of you refresh the page, then try again.'); return }
+    m.st.names={A:cleanName(m.st.names&&m.st.names.A)||'Friend',B:cleanName(m.st.names&&m.st.names.B)||DUO.myName};
+    (Array.isArray(m.ack)?m.ack:[]).forEach(id=>delete DUO.pend[id]);
+    clearInterval(DUO.ht);
+    Object.assign(DUO,{st:m.st,me:'B',hh:m.h,hn:m.n,peer:m.f,lastPeer:Date.now(),joining:false,err:'',lost:false,note:''});
+    renderDuo(); return;
+  }
+  if(m.f!==DUO.peer) return;
+  if(m.t==='bye'){ DUO.lost=true; DUO.note=`${DUO.st&&DUO.st.names.A||'Your friend'} closed the room.`; renderDuo(); return }
+  duoHeard();
+  if(m.t==='ping'&&(m.h!==DUO.hh||m.n>DUO.hn)) netSend({t:'hello',name:DUO.myName}); // missed an update, so ask again
+}
+
 const newCode=()=>{const A='ABCDEFGHJKMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<4;i++)s+=A[Math.floor(Math.random()*A.length)];return s};
 const cleanName=n=>String(n||'').replace(/\s+/g,' ').trim().slice(0,24);
-function duoFail(msg){ DUO.err=msg; DUO.joining=false; renderDuo() }
+function duoFail(msg){ if(!DUO.st) netClose(); clearInterval(DUO.ht); DUO.err=msg; DUO.joining=false; renderDuo() }
 function duoLeave(){
-  try{ if(DUO.conn) DUO.conn.close() }catch(e){}
-  try{ if(DUO.peer) DUO.peer.destroy() }catch(e){}
-  Object.assign(DUO,{st:null,me:null,host:false,peer:null,conn:null,code:'',err:'',note:'',joining:false,mat:null});
+  const g=NET.gen; NET.on=null; // stop listening right away; the goodbye still goes out
+  if(NET.key&&DUO.st&&DUO.st.mode==='two') netSend({t:'bye'}).then(()=>setTimeout(()=>{ if(NET.gen===g) netClose() },400)); else netClose();
+  clearInterval(DUO.ht); clearInterval(DUO.pt);
+  Object.assign(DUO,{st:null,me:null,host:false,code:'',err:'',note:'',joining:false,mat:null,peer:'',lost:false,pend:{}});
   renderDuo();
 }
-async function duoHost(name,rounds,tries,resume){
+async function duoHost(name,rounds,resume){
   DUO.joining=true; DUO.err=''; renderDuo();
-  try{ await loadPeer() }catch(e){ return duoFail('Couldn’t load the connection tool. Check your internet, or use one device.') }
-  const code=resume?resume.code:newCode(), peer=new Peer(ROOM_PREFIX+code,peerOpts());
-  DUO.peer=peer;
-  peer.on('open',()=>{
-    Object.assign(DUO,{st:resume?resume.st:duoNewState('two',rounds,{A:name,B:''}),me:'A',host:true,code,joining:false,
-      note:resume&&resume.st.step!=='lobby'?`Room ${code} is open again. ${resume.st.names.B||'Your friend'} can tap Rejoin to continue.`:''});
-    renderDuo();
-  });
-  peer.on('connection',c=>{
-    // the newest connection wins, so a friend who reloads can get straight back in
-    const old=DUO.conn; DUO.conn=c;
-    if(old&&old!==c) try{ old.close() }catch(e){}
-    c.on('data',m=>{
-      if(!m||!DUO.st||DUO.conn!==c) return;
-      if(m.t==='hello'){ DUO.st.names.B=cleanName(m.name)||'Friend'; DUO.note=''; duoSend({t:'state',st:DUO.st}); renderDuo() }
-      else if(m.t==='act'&&m.a&&typeof m.a==='object'&&m.a.t!=='start'){ m.a.by='B'; if(duoReduce(DUO.st,m.a)){ duoSend({t:'state',st:DUO.st}); renderDuo() } }
-    });
-    c.on('close',()=>{ if(DUO.conn===c){ DUO.conn=null; DUO.note=`${DUO.st&&DUO.st.names.B||'Your friend'} disconnected. They can rejoin with code ${DUO.code}, and you’ll pick up where you left off.`; renderDuo() } });
-  });
-  peer.on('disconnected',()=>{ try{ if(!peer.destroyed) peer.reconnect() }catch(e){} });
-  peer.on('error',e=>{
-    if(e.type==='unavailable-id'&&(tries||0)<8){
-      try{ peer.destroy() }catch(x){} const n=(tries||0)+1;
-      if(resume&&n<5) return setTimeout(()=>duoHost(name,rounds,n,resume),1500); // after a reload the old room id takes a moment to free up
-      return duoHost(name,rounds,n,resume&&{st:resume.st,code:newCode()});
-    }
-    if(!DUO.st) duoFail('Couldn’t open a room ('+(e.type||'error')+'). Try again, or use one device.');
-  });
+  const code=resume?resume.code:newCode();
+  try{ await netOpen(code,duoHostMsg) }catch(e){ if(e.message!=='stale') duoFail(netErr(e)); return }
+  Object.assign(DUO,{st:resume?resume.st:duoNewState('two',rounds,{A:name,B:''}),me:'A',host:true,code,joining:false,hid:rid(),n:0,aids:[],
+    peer:resume&&resume.peer||'',lastPeer:Date.now(),lost:false,note:resume&&resume.st.step!=='lobby'?`Room ${code} is open again.`:''});
+  if(DUO.peer) duoBroadcast();
+  duoBeat(); renderDuo();
 }
-async function duoJoin(name,code,retry){
+async function duoJoin(name,code){
   code=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
   if(code.length!==4) return duoFail('Room codes are 4 characters, like K7QM.');
-  DUO.joining=true; DUO.err=''; renderDuo();
-  try{ await loadPeer() }catch(e){ return duoFail('Couldn’t load the connection tool. Check your internet, or use one device.') }
-  const peer=new Peer(peerOpts()); DUO.peer=peer;
-  const timer=setTimeout(()=>{ if(!DUO.st&&DUO.peer===peer){ try{peer.destroy()}catch(e){} duoFail('Couldn’t reach that room. Check the code and that your friend’s page is still open. Some school Wi-Fi blocks this; if it keeps failing, use one device.') } },20000);
-  peer.on('open',()=>{
-    const c=peer.connect(ROOM_PREFIX+code,{reliable:true,serialization:'json'}); DUO.conn=c;
-    c.on('open',()=>{ c.send({t:'hello',name}) });
-    c.on('data',m=>{
-      if(!m||m.t!=='state'||DUO.conn!==c) return;
-      clearTimeout(timer);
-      if(!duoValid(m.st)){ try{peer.destroy()}catch(e){} Object.assign(DUO,{st:null,peer:null,conn:null}); return duoFail('That room is running a different version of the guide. Both of you refresh the page, then try again.') }
-      m.st.names={A:cleanName(m.st.names&&m.st.names.A)||'Friend',B:cleanName(m.st.names&&m.st.names.B)||name};
-      Object.assign(DUO,{st:m.st,me:'B',host:false,code,joining:false,err:'',note:''}); renderDuo();
-    });
-    c.on('close',()=>{ if(DUO.conn===c&&DUO.st){ DUO.conn=null; DUO.note='Lost the connection to the room. Tap Rejoin to continue.'; renderDuo() } });
-  });
-  peer.on('error',e=>{
-    clearTimeout(timer);
-    if(DUO.st) return;
-    if(e.type==='peer-unavailable'&&retry>0){ try{ peer.destroy() }catch(x){} return setTimeout(()=>duoJoin(name,code,retry-1),2000) }
-    if(e.type==='peer-unavailable') return duoFail(`No room with code ${code}. Check the code, and make sure your friend’s page is still open.`);
-    duoFail('Couldn’t connect ('+(e.type||'error')+'). Try again, or use one device.');
-  });
+  Object.assign(DUO,{joining:true,err:'',code,myName:name,hh:'',hn:0,peer:'',pend:{}}); renderDuo();
+  try{ await netOpen(code,duoGuestMsg) }catch(e){ if(e.message!=='stale') duoFail(netErr(e)); return }
+  let tries=0; const hello=()=>netSend({t:'hello',name});
+  hello(); clearInterval(DUO.ht);
+  DUO.ht=setInterval(()=>{
+    if(DUO.st||!DUO.joining) return clearInterval(DUO.ht);
+    if(++tries>=8) return duoFail(`No room ${code} answered. Check the code, and make sure your friend’s page is open and showing that code.`);
+    hello();
+  },2000);
+  duoBeat();
 }
-function duoRejoin(){ const name=DUO.st?DUO.st.names.B:cleanName(S.duoName), code=DUO.code; try{ DUO.peer&&DUO.peer.destroy() }catch(e){} Object.assign(DUO,{st:null,peer:null,conn:null,note:''}); duoJoin(name,code,4) }
+function duoRejoin(){ DUO.note='Trying to reach the room…'; renderDuo(); netSend({t:'hello',name:DUO.myName}) }
 /* a reload in the middle of a session picks it back up (this tab only) */
 function duoKeep(){
   if(DUO.joining) return;
   try{
     const st=DUO.st;
     if(!st||st.step==='end') sessionStorage.removeItem(DUO_KEY);
-    else sessionStorage.setItem(DUO_KEY,JSON.stringify(DUO.host?{code:DUO.code,st,rec:[...DUO.recorded],t:Date.now()}:{guest:1,code:DUO.code,name:st.names.B,t:Date.now()}));
+    else sessionStorage.setItem(DUO_KEY,JSON.stringify(DUO.host?{code:DUO.code,st,rec:[...DUO.recorded],peer:DUO.peer||'',t:Date.now()}:{guest:1,code:DUO.code,name:DUO.myName||st.names.B,t:Date.now()}));
   }catch(e){}
 }
 function duoResume(){
   let s=null; try{ s=JSON.parse(sessionStorage.getItem(DUO_KEY)||'null') }catch(e){}
   if(!s||typeof s!=='object'||!(Date.now()-s.t<3*36e5)) return;
-  if(s.guest){ const n=cleanName(s.name), c=String(s.code||''); if(n&&c) duoJoin(n,c,4); return }
+  if(s.guest){ const n=cleanName(s.name), c=String(s.code||''); if(n&&c) duoJoin(n,c); return }
   if(!s.st||!duoValid(s.st,s.st.mode==='one'?'one':'two')) return;
   DUO.recorded=new Set(Array.isArray(s.rec)?s.rec.map(String):[]);
   if(s.st.mode==='one') Object.assign(DUO,{st:s.st,me:null,host:true,code:''});
-  else duoHost(cleanName(s.st.names.A)||'Host',s.st.rounds,0,{code:String(s.code||'').replace(/[^A-Z0-9]/g,'').slice(0,4)||newCode(),st:s.st});
+  else duoHost(cleanName(s.st.names.A)||'Host',s.st.rounds,{code:String(s.code||'').replace(/[^A-Z0-9]/g,'').slice(0,4)||newCode(),st:s.st,peer:typeof s.peer==='string'?s.peer.slice(0,12):''});
 }
 
 /* rendering */
@@ -2716,7 +2814,7 @@ function renderDuo(){
   else if(st.step==='lobby') html=duoLobbyHTML(st);
   else if(st.step==='end') html=duoEndHTML(st);
   else html=duoRoundHTML(st);
-  if(DUO.note) html=`<div class="duo-note" role="status"><span>${esc(DUO.note)}</span>${!DUO.host&&!DUO.conn&&st?'<button class="btn" type="button" data-d="rejoin">Rejoin</button>':''}</div>`+html;
+  if(DUO.note) html=`<div class="duo-note" role="status"><span>${esc(DUO.note)}</span>${!DUO.host&&DUO.lost&&st?'<button class="btn" type="button" data-d="rejoin">Try again</button>':''}</div>`+html;
   app.innerHTML=html;
   const key=st?`${st.sid}.${st.i}.${st.step}.${st.qi}.${st.turn}`:'setup'; app.dataset.key=key; // the reveal stays put so the verdict is in view
   if(prev&&prev!==key&&st&&st.step!=='lobby'&&!/\.lobby\./.test(prev)&&!app.closest('[data-view]').hidden) app.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'});
@@ -2761,7 +2859,7 @@ function duoSetupHTML(){
 }
 function duoLobbyHTML(st){
   if(!DUO.host) return `<div class="duo-card duo-center"><p class="vp-kick">Room ${esc(DUO.code)}</p><h3>Connected to ${duoName(st,'A')}’s room</h3><p class="muted">Waiting for ${duoName(st,'A')} to start…</p><div class="row duo-mid" style="margin-top:14px"><button class="btn ghost" type="button" data-d="leave">Leave</button></div></div>`;
-  const link=location.origin+location.pathname+'?room='+DUO.code+'#duo', both=!!st.names.B&&!!DUO.conn;
+  const link=location.origin+location.pathname+'?room='+DUO.code+'#duo', both=!!st.names.B&&!!DUO.peer&&!DUO.lost;
   return `<div class="duo-card duo-center"><p class="vp-kick">Your room code</p><p class="duo-code mono" aria-label="Room code ${DUO.code.split('').join(' ')}">${DUO.code}</p>
     <p class="muted">Your friend opens this site, goes to <b>Study together</b> and types the code. Or send them this link:</p>
     <p class="duo-link mono">${esc(link)}</p>
@@ -2775,6 +2873,7 @@ function duoBar(st,M){
   const ex=duoName(st,st.ex), ch=duoName(st,st.ex==='A'?'B':'A');
   return `<div class="duo-bar"><b>Round ${st.i+1} of ${st.plan.length}</b><span>${ex} teaches · ${ch} checks</span><span class="mono">${duoName(st,'A')} ${duoOk(st,M,'A')} · ${duoName(st,'B')} ${duoOk(st,M,'B')}</span></div>`;
 }
+const duoQuit=()=>`<div class="row duo-quit"><button class="btn ghost" type="button" data-d="leave">${DUO.st&&DUO.st.mode==='two'&&DUO.host?'End the session':'Leave the session'}</button></div>`;
 const optsHTML=(q,f)=>`<div class="opts">${q.o.map((t,i)=>f(t,i)).join('')}</div>`;
 function duoRoundHTML(st){
   const M=duoMat(st), R=M[st.i], T=R.teach, ticks=st.ticks[st.i], two=st.mode==='two', me=DUO.me, isEx=two&&me===st.ex, ch=st.ex==='A'?'B':'A';
@@ -2793,7 +2892,7 @@ function duoRoundHTML(st){
       ${showPts?`<ul class="duo-pts">${T.k.map((x,k)=>`<li><button type="button" class="duo-pt${ticks[k]?' on':''}" data-tick="${k}" ${canTick?'':'disabled'} aria-pressed="${ticks[k]}"><span class="bx" aria-hidden="true">${ticks[k]?'✓':''}</span><span>${esc(x)}</span></button></li>`).join('')}</ul>`:''}
       ${st.step==='review'?`<p class="duo-cov"><b>${cov} of ${T.k.length}</b> key points covered.${left?` ${exN}, say the missed ${left===1?'point':'points'} back in your own words now.`:' Nice.'} <a href="#${T.sec}">Reread ${secNo(T.sec)}</a></p>`:''}
       <div class="row" style="margin-top:14px">${st.step==='teach'?`<button class="btn primary" type="button" data-d="doneTeach">${two&&!isEx?`${exN} is done`:'Done explaining'}</button>`:`<button class="btn primary" type="button" data-d="toQ">Next: both answer</button>`}</div></div>`;
-    return h;
+    return h+duoQuit();
   }
   const Q=R.qs[st.qi], q=Q.q;
   h+=`<div class="duo-card"><div class="duo-top"><p class="vp-kick">Step 2 · Both answer (${st.qi+1} of ${R.qs.length})</p></div>`;
@@ -2823,7 +2922,7 @@ function duoRoundHTML(st){
       <p class="mx-was">Topic: <b>${esc(Q.name)}</b>${Q.sec?` · <a href="#${Q.sec}">${secNo(Q.sec)}</a>`:''}</p>
       <div class="row" style="margin-top:14px"><button class="btn primary" type="button" data-d="next">${st.qi<R.qs.length-1?'Next question':st.i<st.plan.length-1?`Next round: ${chN} teaches`:'See results'}</button></div>`;
   }
-  return h+'</div>';
+  return h+'</div>'+duoQuit();
 }
 function duoEndHTML(st){
   const M=duoMat(st);
@@ -2852,10 +2951,11 @@ function duoBind(app){
     else if(d==='copy'){ const t=app.querySelector('.duo-link').textContent; try{ navigator.clipboard.writeText(t).then(()=>{b.textContent='Copied'},()=>{}) }catch(e){} }
     else if(d==='leave') duoLeave();
     else if(d==='rejoin') duoRejoin();
-    else duoAct(d);
+    else { if(guest()) b.disabled=true; duoAct(d) }
   }));
-  app.querySelectorAll('[data-tick]').forEach(b=>b.addEventListener('click',()=>duoAct('tick',{k:+b.dataset.tick})));
-  app.querySelectorAll('[data-pick]').forEach(b=>b.addEventListener('click',()=>duoAct('pick',{i:+b.dataset.pick})));
+  const guest=()=>DUO.st&&DUO.st.mode==='two'&&!DUO.host;
+  app.querySelectorAll('[data-tick]').forEach(b=>b.addEventListener('click',()=>{ if(guest()){ const on=!b.classList.contains('on'); b.classList.toggle('on',on); b.querySelector('.bx').textContent=on?'✓':'' } duoAct('tick',{k:+b.dataset.tick}) }));
+  app.querySelectorAll('[data-pick]').forEach(b=>b.addEventListener('click',()=>{ if(guest()){ app.querySelectorAll('[data-pick]').forEach(x=>x.disabled=true); b.classList.add('sel') } duoAct('pick',{i:+b.dataset.pick}) }));
   const code=app.querySelector('#duo-code'); if(code) code.addEventListener('keydown',e=>{ if(e.key==='Enter') app.querySelector('[data-d="join"]').click() });
 }
 
